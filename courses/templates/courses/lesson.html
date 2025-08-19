@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h2>{{ lesson.title }}</h2>
+
+<div id="player">
+  {# We'll set the iframe src from JS after normalizing the URL. #}
+  <div id="video-wrapper" data-video-url="{{ lesson.video_url|default:'' }}">
+    <iframe id="yt" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+  </div>
+</div>
+
+<p>Watch the full video to unlock the quiz.</p>
+
+<form id="quiz" method="post" action="{% url 'courses:submit_quiz' course.id lesson.id %}" style="display:none">
+  {% csrf_token %}
+  {# QUESTIONS: support both Django ORM and plain dict shapes #}
+  {% if lesson.questions.all %}
+    {% for q in lesson.questions.all %}
+      <div class="question-block">
+        <p><strong>Q{{ forloop.counter }}.</strong> {{ q.text }}</p>
+        {% if q.choices.all %}
+          {% for ch in q.choices.all %}
+            <label><input type="radio" name="q_{{ q.id }}" value="{{ ch.id }}"> {{ ch.text }}</label><br>
+          {% endfor %}
+        {% else %}
+          {% for ch in q.choices %}
+            <label><input type="radio" name="q_{{ q.id }}" value="{{ ch.id|default:forloop.counter0 }}">{{ ch.text }}</label><br>
+          {% endfor %}
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% else %}
+    {% for q in lesson.questions %}
+      <div class="question-block">
+        <p><strong>Q{{ forloop.counter }}.</strong> {{ q.question }}</p>
+        {% for ch in q.choices %}
+          {# for dict-shape choices we assume each ch is a string; value uses index #}
+          <label><input type="radio" name="q_{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}" value="{{ forloop.counter0 }}"> {{ ch }}</label><br>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  {% endif %}
+  <button type="submit">Submit Quiz</button>
+</form>
+
+<script>
+/* CSRF token: Django makes {{ csrf_token }} available in templates when using RequestContext */
+const CSRF_TOKEN = '{{ csrf_token }}';
+
+/* Normalize different YouTube URL forms to an embed URL.
+   Accepts:
+     - https://www.youtube.com/embed/VIDEOID
+     - https://www.youtube.com/watch?v=VIDEOID (&... params allowed)
+     - https://youtu.be/VIDEOID
+   Returns embed URL or empty string.
+*/
+function normalizeToEmbed(rawUrl) {
+  if (!rawUrl) return '';
+  rawUrl = rawUrl.trim();
+
+  // If already embed
+  const embedMatch = rawUrl.match(/^https?:\/\/(www\.)?youtube\.com\/embed\/([A-Za-z0-9_-]{6,})/i);
+  if (embedMatch) return `https://www.youtube.com/embed/${embedMatch[2]}`;
+
+  // watch?v=VIDEOID (may have additional params)
+  const watchMatch = rawUrl.match(/[?&]v=([A-Za-z0-9_-]{6,})/i);
+  if (watchMatch) return `https://www.youtube.com/embed/${watchMatch[1]}`;
+
+  // short youtu.be/VIDEOID
+  const shortMatch = rawUrl.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/i);
+  if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}`;
+
+  // As a last resort, try to extract the last path segment if it's likely an id
+  const lastSegment = rawUrl.split('/').pop();
+  if (/^[A-Za-z0-9_-]{6,}$/.test(lastSegment)) return `https://www.youtube.com/embed/${lastSegment}`;
+
+  return '';
+}
+
+/* Set iframe src from data attribute */
+(function setIframeSrcFromDataAttr(){
+  const wrapper = document.getElementById('video-wrapper');
+  if (!wrapper) return;
+  const raw = wrapper.getAttribute('data-video-url') || '';
+  const embed = normalizeToEmbed(raw);
+
+  const iframe = document.getElementById('yt');
+  if (embed) {
+    iframe.setAttribute('src', embed);
+  } else {
+    // fallback UI if no valid embed available
+    iframe.remove(); // remove broken iframe
+    const p = document.createElement('p');
+    p.textContent = 'Video not available.';
+    wrapper.appendChild(p);
+  }
+})();
+
+/* Event logging + watch progress logic */
+document.addEventListener('visibilitychange', function(){
+  fetch("{% url 'courses:record_event' course.id lesson.id %}", {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'X-CSRFToken': CSRF_TOKEN},
+    body: JSON.stringify({event: document.visibilityState === 'hidden' ? 'blur' : 'focus'})
+  }).catch(()=>{/* ignore network errors here */});
+});
+
+const duration = Number({{ lesson.duration_seconds|default:0 }});
+const start = Date.now();
+let watched = 0;
+let interval = setInterval(() => {
+  watched = Math.floor((Date.now() - start) / 1000);
+
+  // send a periodic heartbeat every 15s
+  if (watched > 0 && watched % 15 === 0) {
+    fetch("{% url 'courses:record_event' course.id lesson.id %}", {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'X-CSRFToken': CSRF_TOKEN},
+      body: JSON.stringify({event: 'watch_progress', seconds: watched})
+    }).catch(()=>{/* ignore */});
+  }
+
+  if (duration > 0 && watched >= duration) {
+    clearInterval(interval);
+    const quiz = document.getElementById('quiz');
+    if (quiz) quiz.style.display = 'block';
+  }
+}, 1000);
+</script>
+
+{% endblock %}

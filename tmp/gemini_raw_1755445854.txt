@@ -1,0 +1,74 @@
+```json
+{
+  "title": "C++ Fundamentals in 30 Days",
+  "description": "A comprehensive introductory course to C++, covering basic syntax, data structures, and object-oriented programming concepts.",
+  "course_duration_days": 30,
+  "lessons": [
+    {
+      "title": "Introduction to C++: Setting up your environment",
+      "recommended_video_title": "C++ Setup and Hello World",
+      "duration_seconds": 1800,
+      "order": 1,
+      "questions": [
+        {
+          "question": "What is the purpose of the #include <iostream> directive?",
+          "choices": ["Includes the standard input/output library", "Defines the main function", "Creates a new variable", "Ends the program"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Variables, Data Types, and Operators",
+      "recommended_video_title": "C++ Data Types and Operators Explained",
+      "duration_seconds": 2700,
+      "order": 2,
+      "questions": [
+        {
+          "question": "Which data type is best suited for storing a true/false value?",
+          "choices": ["int", "float", "bool", "char"],
+          "correct_index": 2
+        }
+      ]
+    },
+    {
+      "title": "Control Structures: If-Else, Loops",
+      "recommended_video_title": "C++ Control Flow: If, Else, For, While",
+      "duration_seconds": 3600,
+      "order": 3,
+      "questions": [
+        {
+          "question": "What is the difference between a 'for' loop and a 'while' loop?",
+          "choices": ["'for' loops are always faster", "'while' loops are for indefinite iteration", "'for' loops are for definite iteration", "There is no difference"],
+          "correct_index": 2
+        }
+      ]
+    },
+    {
+      "title": "Arrays and Functions",
+      "recommended_video_title": "C++ Arrays and Functions Tutorial",
+      "duration_seconds": 3600,
+      "order": 4,
+      "questions": [
+        {
+          "question": "What is the purpose of a function in C++?",
+          "choices": ["To organize code into reusable blocks", "To declare variables", "To end the program", "To define data types"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Introduction to Object-Oriented Programming (OOP) in C++",
+      "recommended_video_title": "C++ OOP Concepts: Classes and Objects",
+      "duration_seconds": 5400,
+      "order": 5,
+      "questions": [
+        {
+          "question": "What are the four fundamental principles of OOP?",
+          "choices": ["Abstraction, Encapsulation, Inheritance, Polymorphism", "Iteration, Recursion, Selection, Sequencing", "Variables, Functions, Loops, Arrays", "Input, Output, Processing, Storage"],
+          "correct_index": 0
+        }
+      ]
+    }
+  ]
+}
+```

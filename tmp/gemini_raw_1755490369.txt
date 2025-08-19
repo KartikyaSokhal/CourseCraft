@@ -1,0 +1,59 @@
+```json
+{
+  "title": "Advanced C++ Techniques",
+  "description": "A 5-day course covering advanced C++ topics.",
+  "course_duration_days": 5,
+  "lessons": [
+    {
+      "title": "Introduction to Modern C++ and Smart Pointers",
+      "video_url": "https://www.youtube.com/embed/vU7s6ePV_e4",
+      "duration_seconds": 900,
+      "order": 1,
+      "questions": [
+        {"question": "What is a smart pointer in C++?", "choices": ["A) A pointer that automatically manages memory", "B) A pointer to a smart object", "C) A pointer that points to a smart phone", "D) A special type of pointer for graphics"], "correct_index": 0},
+        {"question": "Which smart pointer automatically deletes the managed object when it goes out of scope?", "choices": ["A) `unique_ptr`", "B) `shared_ptr`", "C) `weak_ptr`", "D) `auto_ptr`"], "correct_index": 0}
+      ]
+    },
+    {
+      "title": "Advanced C++ Templates and Metaprogramming",
+      "video_url": "https://www.youtube.com/embed/0aWv8hX5e34",
+      "duration_seconds": 1080,
+      "order": 2,
+      "questions": [
+        {"question": "What is template metaprogramming?", "choices": ["A) Writing code that generates other code at compile time", "B) Writing code that uses templates for data structures", "C) Writing code in a different language then compiling it to C++", "D) Writing code that uses metacharacters"], "correct_index": 0},
+        {"question": "What is the difference between a template class and a template function?", "choices": ["A) A template class is more efficient", "B) A template function is more flexible", "C) A template class creates a class; a template function creates a function", "D) Template classes are deprecated."], "correct_index": 2}
+      ]
+    },
+    {
+      "title": "C++ Concurrency with Threads and Mutexes",
+      "video_url": "https://www.youtube.com/embed/z0o-I6H44_o",
+      "duration_seconds": 720,
+      "order": 3,
+      "questions": [
+        {"question": "What is a mutex in C++?", "choices": ["A) A mechanism for synchronizing access to shared resources", "B) A type of data structure", "C) A form of exception handling", "D) A programming language"], "correct_index": 0},
+        {"question": "What is a race condition?", "choices": ["A) When multiple threads access shared data simultaneously without proper synchronization", "B) A type of exception", "C) A design pattern", "D) A type of operating system"], "correct_index": 0}
+      ]
+    },
+    {
+      "title": "Working with the C++ Standard Template Library (STL)",
+      "video_url": "https://www.youtube.com/embed/gV9-wX-m-tU",
+      "duration_seconds": 600,
+      "order": 4,
+      "questions": [
+        {"question": "What is the STL in C++?", "choices": ["A) A set of ready-to-use containers and algorithms", "B) A standard text library", "C) A type of compiler", "D) A debugging tool"], "correct_index": 0},
+        {"question": "Name one example of a container in STL.", "choices": ["A) `vector`", "B) `string`", "C) `int`", "D) `main`"], "correct_index": 0}
+      ]
+    },
+    {
+      "title": "Advanced C++: Move Semantics and Rvalue References",
+      "video_url": "https://www.youtube.com/embed/vL8h-J-Zc0Q",
+      "duration_seconds": 840,
+      "order": 5,
+      "questions": [
+        {"question": "What are rvalue references in C++?", "choices": ["A) References to temporary objects", "B) References to constant objects", "C) References to static objects", "D) A type of pointer"], "correct_index": 0},
+        {"question": "What is the benefit of move semantics?", "choices": ["A) Improved performance by avoiding unnecessary copies", "B) Improved code readability", "C) Better error handling", "D) Increased memory efficiency"], "correct_index": 0}
+      ]
+    }
+  ]
+}
+```

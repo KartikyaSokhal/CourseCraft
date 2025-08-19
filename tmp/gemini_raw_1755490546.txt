@@ -1,0 +1,59 @@
+```json
+{
+  "title": "Advanced C++ Techniques",
+  "description": "Dive deeper into C++ with this 5-day course covering advanced topics.",
+  "course_duration_days": 5,
+  "lessons": [
+    {
+      "title": "Smart Pointers and Memory Management",
+      "video_url": "https://www.youtube.com/embed/t0lVE242-0s",
+      "duration_seconds": 900,
+      "order": 1,
+      "questions": [
+        {"question": "What is the primary advantage of using smart pointers?", "choices": ["A) They require less memory.", "B) They prevent memory leaks.", "C) They are faster than raw pointers.", "D) They simplify pointer arithmetic."], "correct_index": 1},
+        {"question": "Which smart pointer automatically releases memory when its last copy is destroyed?", "choices": ["A) `unique_ptr`", "B) `shared_ptr`", "C) `weak_ptr`", "D) All of the above"], "correct_index": 0}
+      ]
+    },
+    {
+      "title": "Templates and Generic Programming",
+      "video_url": "https://www.youtube.com/embed/6r_f-P_4c-k",
+      "duration_seconds": 1000,
+      "order": 2,
+      "questions": [
+        {"question": "What is the main benefit of using templates?", "choices": ["A) Improved code readability.", "B) Reduced code size.", "C) Increased code reusability.", "D) Faster execution speed."], "correct_index": 2},
+        {"question": "What is a template function?", "choices": ["A) A function that operates only on specific data types.", "B) A function that can operate on different data types.", "C) A function written in a special template language.", "D) A function that generates code at runtime."], "correct_index": 1}
+      ]
+    },
+    {
+      "title": "RAII (Resource Acquisition Is Initialization)",
+      "video_url": "https://www.youtube.com/embed/Z1_uQvL6b9o",
+      "duration_seconds": 800,
+      "order": 3,
+      "questions": [
+        {"question": "How does RAII improve code robustness?", "choices": ["A) By preventing errors during program compilation.", "B) By automatically managing resources during the object lifecycle.", "C) By allowing for faster execution times.", "D) By increasing code complexity."], "correct_index": 1},
+        {"question": "Which C++ feature strongly supports the RAII principle?", "choices": ["A) Inheritance", "B) Polymorphism", "C) Destructors", "D) Templates"], "correct_index": 2}
+      ]
+    },
+    {
+      "title": "Exception Handling",
+      "video_url": "https://www.youtube.com/embed/J_d9k_U6578",
+      "duration_seconds": 720,
+      "order": 4,
+      "questions": [
+        {"question": "What is the purpose of the `try-catch` block?", "choices": ["A) To improve code readability.", "B) To handle potential runtime errors gracefully.", "C) To optimize code performance.", "D) To enable parallel processing."], "correct_index": 1},
+        {"question": "What keyword is used to explicitly throw an exception?", "choices": ["A) `throw`", "B) `catch`", "C) `try`", "D) `finally`"], "correct_index": 0}
+      ]
+    },
+    {
+      "title": "Concurrency and Multithreading",
+      "video_url": "https://www.youtube.com/embed/I_z0l6m6c6c",
+      "duration_seconds": 900,
+      "order": 5,
+      "questions": [
+        {"question": "What is a major advantage of multithreading?", "choices": ["A) Reduced code size.", "B) Improved code readability.", "C) Increased program speed on multi-core systems.", "D) Simplified memory management."], "correct_index": 2},
+        {"question": "What are potential issues when working with multiple threads?", "choices": ["A) Race conditions", "B) Deadlocks", "C) Data inconsistency", "D) All of the above"], "correct_index": 3}
+      ]
+    }
+  ]
+}
+```

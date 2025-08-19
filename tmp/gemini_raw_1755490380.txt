@@ -1,0 +1,59 @@
+```json
+{
+  "title": "Advanced C++ Techniques",
+  "description": "A 5-day course covering advanced C++ topics.",
+  "course_duration_days": 5,
+  "lessons": [
+    {
+      "title": "Smart Pointers in C++",
+      "video_url": "https://www.youtube.com/embed/vU-Uh-s8-0I",
+      "duration_seconds": 900,
+      "order": 1,
+      "questions": [
+        {"question": "What is the primary purpose of smart pointers?", "choices": ["A: To manage dynamically allocated memory", "B: To improve code readability", "C: To speed up program execution", "D: To simplify variable declarations"], "correct_index": 0},
+        {"question": "Which smart pointer automatically releases memory when it goes out of scope?", "choices": ["A: `unique_ptr`", "B: `shared_ptr`", "C: `weak_ptr`", "D: All of the above"], "correct_index": 0}
+      ]
+    },
+    {
+      "title": "Templates and Generics in C++",
+      "video_url": "https://www.youtube.com/embed/e-p-86P50_w",
+      "duration_seconds": 1080,
+      "order": 2,
+      "questions": [
+        {"question": "What is the primary advantage of using templates in C++?", "choices": ["A: Code reusability", "B: Improved performance", "C: Enhanced security", "D: Reduced memory usage"], "correct_index": 0},
+        {"question": "What does the keyword `typename` indicate in a C++ template?", "choices": ["A: It denotes a function", "B: It denotes a class", "C: It denotes a type parameter", "D: It denotes a variable"], "correct_index": 2}
+      ]
+    },
+    {
+      "title": "C++ Lambda Expressions",
+      "video_url": "https://www.youtube.com/embed/CLr9y5T156w",
+      "duration_seconds": 720,
+      "order": 3,
+      "questions": [
+        {"question": "What are lambda expressions primarily used for?", "choices": ["A: Defining anonymous functions", "B: Creating classes", "C: Managing files", "D: Handling exceptions"], "correct_index": 0},
+        {"question": "What are captures in a lambda expression?", "choices": ["A: Variables used outside the lambda expression's scope", "B: Return values of the lambda expression", "C: Parameters passed to the lambda expression", "D: Data types used in the lambda expression"], "correct_index": 0}
+      ]
+    },
+    {
+      "title": "Move Semantics and Rvalue References",
+      "video_url": "https://www.youtube.com/embed/8g6a2V7J-6s",
+      "duration_seconds": 840,
+      "order": 4,
+      "questions": [
+        {"question": "What is the purpose of move semantics?", "choices": ["A: To avoid unnecessary data copying", "B: To improve memory allocation", "C: To enhance code readability", "D: To prevent memory leaks"], "correct_index": 0},
+        {"question": "What does the `&&` symbol represent in C++?", "choices": ["A: A logical AND operator", "B: An rvalue reference", "C: A pointer to a pointer", "D: A bitwise AND operator"], "correct_index": 1}
+      ]
+    },
+    {
+      "title": "Concurrency in C++ with Threads",
+      "video_url": "https://www.youtube.com/embed/P-b989u8y-0",
+      "duration_seconds": 960,
+      "order": 5,
+      "questions": [
+        {"question": "What is a key benefit of using threads in C++?", "choices": ["A: Improved performance through parallel processing", "B: Simplified code structure", "C: Reduced memory usage", "D: Enhanced security"], "correct_index": 0},
+        {"question": "What is a common problem to consider when using threads?", "choices": ["A: Race conditions", "B: Deadlocks", "C: Data synchronization issues", "D: All of the above"], "correct_index": 3}
+      ]
+    }
+  ]
+}
+```

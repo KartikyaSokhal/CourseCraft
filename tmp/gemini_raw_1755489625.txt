@@ -1,0 +1,99 @@
+```json
+{
+  "title": "Node.js Mastery: From Beginner to Pro in 5 Days",
+  "description": "This intensive 5-day course will take you from zero to hero in Node.js.  Each lesson builds upon the previous one, ensuring a solid understanding of core concepts and practical application.  Expect hands-on exercises and challenging questions to solidify your learning.",
+  "course_duration_days": 5,
+  "lessons": [
+    {
+      "title": "Introduction to Node.js and JavaScript Fundamentals",
+      "recommended_video_title": "Node.js: What is it and Why Should You Learn It?",
+      "duration_seconds": 3600,
+      "order": 1,
+      "questions": [
+        {
+          "question": "What is Node.js primarily used for?",
+          "choices": ["Front-end web development", "Back-end web development", "Mobile app development", "Database management"],
+          "correct_index": 1
+        },
+        {
+          "question": "What is the event loop in Node.js?",
+          "choices": ["A type of database", "A mechanism for handling asynchronous operations", "A way to organize files", "A debugging tool"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Setting up your Node.js Environment and First Application",
+      "recommended_video_title": "Setting up Node.js and npm on Windows/Mac/Linux",
+      "duration_seconds": 2700,
+      "order": 2,
+      "questions": [
+        {
+          "question": "What command installs npm packages globally?",
+          "choices": ["npm install", "npm install -g", "npm global install", "npm i -g"],
+          "correct_index": 1
+        },
+        {
+          "question": "What file typically contains project dependencies in Node.js?",
+          "choices": ["package.json", "index.html", "server.js", "app.css"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Modules, NPM, and Package Management",
+      "recommended_video_title": "Understanding npm: Modules and Package Management in Node.js",
+      "duration_seconds": 3600,
+      "order": 3,
+      "questions": [
+        {
+          "question": "What is the purpose of 'npm install'?",
+          "choices": ["To update Node.js", "To install project dependencies", "To create a new project", "To uninstall a package"],
+          "correct_index": 1
+        },
+        {
+          "question": "What is a package.json file and what information does it contain?",
+          "choices": ["List of project files", "Project dependencies and metadata", "Server configuration", "User credentials"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Building a RESTful API with Express.js",
+      "recommended_video_title": "Create a Simple REST API with Express.js",
+      "duration_seconds": 5400,
+      "order": 4,
+      "questions": [
+        {
+          "question": "What HTTP method is typically used to create a new resource?",
+          "choices": ["GET", "POST", "PUT", "DELETE"],
+          "correct_index": 1
+        },
+        {
+          "question": "What is middleware in Express.js?",
+          "choices": ["A type of database", "A way to handle asynchronous operations", "Functions that execute during a request-response cycle", "A type of server"],
+          "correct_index": 2
+        }
+      ]
+    },
+    {
+      "title": "Advanced Topics: Databases and Deployment",
+      "recommended_video_title": "Deploying your Node.js app to Heroku/Netlify",
+      "duration_seconds": 4500,
+      "order": 5,
+      "questions": [
+        {
+          "question": "Name one popular database solution often used with Node.js.",
+          "choices":["MySQL", "MongoDB", "PostgreSQL", "All of the above"],
+          "correct_index":3
+        },
+        {
+          "question": "What are some considerations when deploying a Node.js application?",
+          "choices": ["Scalability", "Security", "Performance", "All of the above"],
+          "correct_index": 3
+        }
+      ]
+    }
+  ]
+}
+```

@@ -1,0 +1,59 @@
+```json
+{
+  "title": "Advanced C++ Programming Techniques",
+  "description": "Master advanced C++ concepts and techniques in this 5-day intensive course.",
+  "course_duration_days": 5,
+  "lessons": [
+    {
+      "title": "Introduction to Modern C++ (Move Semantics and Smart Pointers)",
+      "video_url": "https://www.youtube.com/embed/vU-v_X_4m64",
+      "duration_seconds": 1080,
+      "order": 1,
+      "questions": [
+        {"question": "What is the primary benefit of using move semantics?", "choices": ["Improved code readability", "Reduced memory usage", "Increased execution speed", "Enhanced type safety"], "correct_index": 2},
+        {"question": "Which smart pointer automatically manages the lifetime of a dynamically allocated object?", "choices": ["`unique_ptr`", "`shared_ptr`", "`weak_ptr`", "None of the above"], "correct_index": 1}
+      ]
+    },
+    {
+      "title": "Advanced Template Metaprogramming",
+      "video_url": "https://www.youtube.com/embed/N2e-j-L_5gY",
+      "duration_seconds": 900,
+      "order": 2,
+      "questions": [
+        {"question": "What is template metaprogramming?", "choices": ["Programming with templates at compile time", "Programming with templates at runtime", "Using templates for code reuse", "A type of object-oriented programming"], "correct_index": 0},
+        {"question": "What is a common application of template metaprogramming?", "choices": ["Generating code based on types", "Writing generic algorithms", "Improving runtime performance", "All of the above"], "correct_index": 3}
+      ]
+    },
+    {
+      "title": "Concurrency in C++ with Threads and Futures",
+      "video_url": "https://www.youtube.com/embed/rR3hYxK7f2U",
+      "duration_seconds": 1200,
+      "order": 3,
+      "questions": [
+        {"question": "What is the purpose of a `std::thread`?", "choices": ["To execute code concurrently", "To manage threads' lifecycle", "To synchronize threads", "All of the above"], "correct_index": 3},
+        {"question": "What is the role of a `std::future`?", "choices": ["To retrieve results from asynchronous operations", "To control the execution of threads", "To share data between threads", "To handle exceptions in threads"], "correct_index": 0}
+      ]
+    },
+    {
+      "title": "Working with the C++ Standard Template Library (STL)",
+      "video_url": "https://www.youtube.com/embed/8n1W-1n8C9E",
+      "duration_seconds": 1100,
+      "order": 4,
+      "questions": [
+        {"question": "Which STL container provides fast random access to elements?", "choices": ["`std::vector`", "`std::list`", "`std::deque`", "`std::set`"], "correct_index": 0},
+        {"question": "What is the difference between `std::map` and `std::unordered_map`?", "choices": ["`std::map` is sorted, `std::unordered_map` is not", "Average time complexity for finding elements", "Space complexity differs", "All of the above"], "correct_index": 3}
+      ]
+    },
+    {
+      "title": "Advanced Memory Management in C++",
+      "video_url": "https://www.youtube.com/embed/9a-uY6z2u5U",
+      "duration_seconds": 840,
+      "order": 5,
+      "questions": [
+        {"question": "What is a memory leak?", "choices": ["When memory allocated is never freed", "When memory allocated is freed multiple times", "When memory is not allocated", "When the program tries to access unallocated memory"], "correct_index": 0},
+        {"question": "How can you prevent memory leaks in C++?", "choices": ["Using RAII (Resource Acquisition Is Initialization)", "Using smart pointers", "Carefully managing dynamically allocated memory", "All of the above"], "correct_index": 3}
+      ]
+    }
+  ]
+}
+```

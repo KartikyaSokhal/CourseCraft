@@ -1,0 +1,27 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AI Academy</title>
+  <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+<body>
+  <header>
+    <h1>AI Academy</h1>
+    <nav>
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'courses:list' %}">Courses</a>
+      {% if user.is_authenticated %}
+      <a href="{% url 'accounts:logout' %}">Logout</a>
+      {% else %}
+      <a href="{% url 'accounts:login' %}">Login</a>
+      <a href="{% url 'accounts:register' %}">Register</a>
+      {% endif %}
+    </nav>
+  </header>
+  <main>
+    <p>Welcome to the AI-powered academy. Admins can generate courses with Gemini, students can enroll, attend, and take MCQs.</p>
+  </main>
+</body>
+</html>

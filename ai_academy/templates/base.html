@@ -1,0 +1,28 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AI Academy</title>
+  <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+<body>
+  <header>
+    <a href="{% url 'home' %}"><strong>AI Academy</strong></a>
+    <nav>
+      <a href="{% url 'courses:list' %}">Courses</a>
+      {% if user.is_authenticated %}
+        <span>Hi, {{ user.username }} ({{ user.role }})</span>
+        <a href="{% url 'accounts:logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'accounts:login' %}">Login</a>
+        <a href="{% url 'accounts:register' %}">Register</a>
+      {% endif %}
+    </nav>
+  </header>
+  <main style="padding:16px">
+    {% for m in messages %}<div>{{ m }}</div>{% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

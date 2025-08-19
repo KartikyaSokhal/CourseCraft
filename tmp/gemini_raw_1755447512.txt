@@ -1,0 +1,99 @@
+```json
+{
+  "title": "C++ Fundamentals: From Zero to Hero",
+  "description": "A comprehensive 30-day online course designed to take you from beginner to proficient in C++ programming.  This course emphasizes practical application and problem-solving skills.",
+  "course_duration_days": 30,
+  "lessons": [
+    {
+      "title": "Introduction to C++ and Setting Up Your Environment",
+      "recommended_video_title": "Setting up your C++ Development Environment (Visual Studio, CodeBlocks, etc.)",
+      "duration_seconds": 3600,
+      "order": 1,
+      "questions": [
+        {
+          "question": "What is a compiler, and what role does it play in C++ programming?",
+          "choices": ["A program that translates human-readable code into machine code", "A program that executes C++ code directly", "A program that debugs C++ code", "A type of programming language"],
+          "correct_index": 0
+        },
+        {
+          "question": "Name at least two popular Integrated Development Environments (IDEs) used for C++ development.",
+          "choices": ["Visual Studio, Eclipse", "Notepad++, Sublime Text", "Visual Studio, Code::Blocks", "Atom, VS Code"],
+          "correct_index": 2
+        }
+      ]
+    },
+    {
+      "title": "Basic Syntax, Data Types, and Variables",
+      "recommended_video_title": "Understanding C++ Data Types and Variables",
+      "duration_seconds": 5400,
+      "order": 2,
+      "questions": [
+        {
+          "question": "What is the difference between `int`, `float`, and `double` data types?",
+          "choices": ["They all store integers", "They store numbers with different precisions", "They store characters", "They are all the same"],
+          "correct_index": 1
+        },
+        {
+          "question": "Declare an integer variable named `age` and assign it the value 30.",
+          "choices": ["int age = 30;", "age = 30;", "age 30;", "int 30 age;"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Operators and Control Flow (if-else, loops)",
+      "recommended_video_title": "Mastering Control Flow in C++",
+      "duration_seconds": 7200,
+      "order": 3,
+      "questions": [
+        {
+          "question": "Explain the difference between `if`, `else if`, and `else` statements.",
+          "choices": ["They are all the same", "They control the flow of execution based on conditions", "They are used for loops", "They define data types"],
+          "correct_index": 1
+        },
+        {
+          "question": "Write a `for` loop that prints numbers from 1 to 10.",
+          "choices": ["for (int i = 1; i <= 10; i++){cout << i << endl;}", "for (i = 1; i <=10; i++) {cout << i;}", "while (i <= 10) {cout << i++;}", "for (int i = 10; i >= 1; i--) {cout << i;}"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Functions and Arrays",
+      "recommended_video_title": "Functions and Arrays in C++: A Practical Guide",
+      "duration_seconds": 7200,
+      "order": 4,
+      "questions": [
+        {
+          "question": "What is the purpose of a function in C++?",
+          "choices": ["To organize code into reusable blocks", "To define data types", "To control program flow", "To declare variables"],
+          "correct_index": 0
+        },
+        {
+          "question": "How do you declare an array of 10 integers in C++?",
+          "choices": ["int array[10];", "int array(10);", "int array = [10];", "int array{10};"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Pointers and Memory Management",
+      "recommended_video_title": "Understanding Pointers and Memory Management in C++",
+      "duration_seconds": 10800,
+      "order": 5,
+      "questions": [
+        {
+          "question": "What is a pointer in C++?",
+          "choices": ["A variable that stores the address of another variable", "A variable that stores a number", "A data type", "A function"],
+          "correct_index": 0
+        },
+        {
+          "question": "Explain the concept of dynamic memory allocation using `new` and `delete`.",
+          "choices": ["Used to allocate memory during runtime", "Used to declare variables", "Used for defining functions", "Used for array creation"],
+          "correct_index": 0
+        }
+      ]
+    }
+  ]
+}
+```
