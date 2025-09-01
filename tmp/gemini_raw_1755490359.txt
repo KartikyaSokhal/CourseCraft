@@ -1,0 +1,59 @@
+```json
+{
+  "title": "Advanced C++ Techniques",
+  "description": "Dive deeper into C++ with this 5-day course covering advanced topics.",
+  "course_duration_days": 5,
+  "lessons": [
+    {
+      "title": "Smart Pointers in C++",
+      "video_url": "https://www.youtube.com/embed/x-6-mG2L644",
+      "duration_seconds": 900,
+      "order": 1,
+      "questions": [
+        {"question": "What is the primary purpose of a smart pointer?", "choices": ["A. To manage memory manually", "B. To automatically manage memory", "C. To create faster pointers", "D. To enhance pointer arithmetic"], "correct_index": 1},
+        {"question": "Which smart pointer type provides unique ownership?", "choices": ["A. shared_ptr", "B. weak_ptr", "C. unique_ptr", "D. auto_ptr"], "correct_index": 2}
+      ]
+    },
+    {
+      "title": "Templates and Generic Programming",
+      "video_url": "https://www.youtube.com/embed/M9-6j31j9lQ",
+      "duration_seconds": 1000,
+      "order": 2,
+      "questions": [
+        {"question": "What is the main advantage of using templates in C++?", "choices": ["A. Reduced code size", "B. Faster execution speed", "C. Code reusability", "D. Increased memory efficiency"], "correct_index": 2},
+        {"question": "What is a template function?", "choices": ["A. A function that operates on only one data type", "B. A function that can operate on multiple data types", "C. A function that always returns a boolean value", "D. A function that is always recursive"], "correct_index": 1}
+      ]
+    },
+    {
+      "title": "Advanced STL Usage",
+      "video_url": "https://www.youtube.com/embed/t3d97fN-Y28",
+      "duration_seconds": 800,
+      "order": 3,
+      "questions": [
+        {"question": "What is the STL?", "choices": ["A. Standard Template Library", "B. Standard Type Library", "C. Simple Template Library", "D. Structured Template Library"], "correct_index": 0},
+        {"question": "Which STL container is best for fast random access?", "choices": ["A. list", "B. vector", "C. set", "D. map"], "correct_index": 1}
+      ]
+    },
+    {
+      "title": "Exception Handling in C++",
+      "video_url": "https://www.youtube.com/embed/p1t7_nB-0eY",
+      "duration_seconds": 750,
+      "order": 4,
+      "questions": [
+        {"question": "What is the purpose of exception handling?", "choices": ["A. To prevent errors", "B. To handle errors gracefully", "C. To improve code readability", "D. To optimize code performance"], "correct_index": 1},
+        {"question": "What keywords are used for exception handling in C++?", "choices": ["A. if-else", "B. try-catch", "C. switch-case", "D. for-loop"], "correct_index": 1}
+      ]
+    },
+    {
+      "title": "Concurrency and Multithreading",
+      "video_url": "https://www.youtube.com/embed/mK7f-sQf5-0",
+      "duration_seconds": 950,
+      "order": 5,
+      "questions": [
+        {"question": "What is the purpose of multithreading?", "choices": ["A. To simplify code", "B. To improve code readability", "C. To increase performance in multi-core systems", "D. To reduce memory usage"], "correct_index": 2},
+        {"question": "Which C++ standard library provides tools for multithreading?", "choices": ["A. iostream", "B. fstream", "C. thread", "D. string"], "correct_index": 2}
+      ]
+    }
+  ]
+}
+```

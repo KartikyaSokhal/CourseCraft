@@ -1,0 +1,63 @@
+```json
+{
+  "title": "Django Web Development: Build Your First Web App",
+  "description": "Learn the fundamentals of Django and build a functional web application in 30 days.",
+  "course_duration_days": 30,
+  "lessons": [
+    {
+      "title": "Setting Up Your Development Environment",
+      "recommended_video_title": "Django Setup: Python, Pip, Virtual Environments",
+      "duration_seconds": 3600,
+      "order": 1,
+      "questions": [
+        {
+          "question": "What is a virtual environment and why is it important?",
+          "choices": ["A type of Python interpreter", "An isolated environment for project dependencies", "A way to speed up Python code", "A type of database"],
+          "correct_index": 1
+        },
+        {
+          "question": "What command installs Django?",
+          "choices": ["pip install django", "python install django", "conda install django", "apt-get install django"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Building Your First Django App: Models and Views",
+      "recommended_video_title": "Django Models and Views Tutorial",
+      "duration_seconds": 7200,
+      "order": 2,
+      "questions": [
+        {
+          "question": "What is the purpose of a Django model?",
+          "choices": ["To define the database schema", "To handle user authentication", "To render web pages", "To manage user sessions"],
+          "correct_index": 0
+        },
+        {
+          "question": "What is a Django view?",
+          "choices": ["A visual representation of the database", "A function that handles user requests", "A template for rendering pages", "A type of database query"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Templates and Deployment",
+      "recommended_video_title": "Deploying a Django App to Heroku",
+      "duration_seconds": 5400,
+      "order": 3,
+      "questions": [
+        {
+          "question": "What is the purpose of a Django template?",
+          "choices": ["To define the database schema", "To handle user authentication", "To render web pages using HTML", "To manage user sessions"],
+          "correct_index": 2
+        },
+        {
+          "question": "Name one platform for deploying Django applications.",
+          "choices": ["GitHub", "Google Drive", "Heroku", "Dropbox"],
+          "correct_index": 2
+        }
+      ]
+    }
+  ]
+}
+```

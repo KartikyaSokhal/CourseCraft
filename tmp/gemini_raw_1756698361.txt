@@ -1,0 +1,139 @@
+```json
+{
+  "title": "Complete Django Course for Beginners to Advanced",
+  "description": "A comprehensive Django course covering everything from setup to advanced topics, designed for learners of all levels.",
+  "course_duration_days": 20,
+  "lessons": [
+    {
+      "title": "What is Django and Why Use It?",
+      "youtube_search_query": "introduction to django framework for beginners",
+      "duration_seconds": 900,
+      "order": 1,
+      "questions": [
+        {
+          "question": "What is Django's primary purpose?",
+          "choices": ["Web scraping", "Data analysis", "Web application development", "Desktop application development"],
+          "correct_index": 2
+        }
+      ]
+    },
+    {
+      "title": "Setting up Your Django Development Environment",
+      "youtube_search_query": "setting up django environment python virtualenv",
+      "duration_seconds": 1200,
+      "order": 2,
+      "questions": [
+        {
+          "question": "What is a virtual environment and why is it important?",
+          "choices": ["A type of database", "A way to manage project dependencies", "A type of server", "A code editor"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Creating Your First Django Project and App",
+      "youtube_search_query": "create first django project and app step by step",
+      "duration_seconds": 1000,
+      "order": 3,
+      "questions": [
+        {
+          "question": "What command creates a new Django project?",
+          "choices": ["django createproject", "django startproject", "django newproject", "python django"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Understanding Django Templates",
+      "youtube_search_query": "django template basics tutorial for beginners",
+      "duration_seconds": 1500,
+      "order": 4,
+      "questions": [
+        {
+          "question": "What are Django template tags used for?",
+          "choices": ["Styling web pages", "Defining database models", "Creating reusable HTML snippets", "Handling user authentication"],
+          "correct_index": 2
+        }
+      ]
+    },
+    {
+      "title": "Working with Django URLs",
+      "youtube_search_query": "django url routing and patterns explained",
+      "duration_seconds": 1200,
+      "order": 5,
+      "questions": [
+        {
+          "question": "What is the purpose of urlpatterns in urls.py?",
+          "choices": ["Defining database models", "Handling user authentication", "Mapping URLs to views", "Styling web pages"],
+          "correct_index": 2
+        }
+      ]
+    },
+    {
+      "title": "Django Models and the ORM",
+      "youtube_search_query": "django orm tutorial for beginners database interaction",
+      "duration_seconds": 1800,
+      "order": 6,
+      "questions": [
+        {
+          "question": "What does ORM stand for in the context of Django?",
+          "choices": ["Object Relational Mapper", "Object Request Model", "Oriented Relational Mapping", "Open Request Module"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Building Django Forms and Validation",
+      "youtube_search_query": "django forms and validation tutorial step by step",
+      "duration_seconds": 1500,
+      "order": 7,
+      "questions": [
+        {
+          "question": "What is the purpose of Django's form validation?",
+          "choices": ["To ensure data integrity", "To handle user authentication", "To style web forms", "To map URLs to views"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Django Views: FBVs and CBVs",
+      "youtube_search_query": "django fbv vs cbv explained with examples",
+      "duration_seconds": 1600,
+      "order": 8,
+      "questions": [
+        {
+          "question": "What does CBV stand for in Django?",
+          "choices": ["Class-Based View", "Component-Based View", "Content-Based View", "Client-Based View"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "User Authentication and Permissions in Django",
+      "youtube_search_query": "django user authentication and permissions tutorial",
+      "duration_seconds": 2000,
+      "order": 9,
+      "questions": [
+        {
+          "question": "What is the purpose of Django's authentication system?",
+          "choices": ["To secure web applications", "To handle database interactions", "To manage user profiles", "To style web pages"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Customizing the Django Admin Interface",
+      "youtube_search_query": "customize django admin interface tutorial",
+      "duration_seconds": 1400,
+      "order": 10,
+      "questions": [
+        {
+          "question": "How can you customize the Django admin?",
+          "choices": ["Using template inheritance", "Modifying admin models", "Both A and B", "Neither A nor B"],
+          "correct_index": 2
+        }
+      ]
+    }
+  ]
+}
+```

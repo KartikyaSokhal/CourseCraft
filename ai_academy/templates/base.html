@@ -1,0 +1,293 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body data-theme="dark">
+  <!-- This header will be overridden by the one in home.html, but kept for other pages -->
+  <header>
+    
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu">
+    <ul class="mobile-menu-links">
+      <li><a href="#features-section" class="scroll-link" onclick="toggleMobileMenu()">Features</a></li>
+      <li><a href="#demo" class="scroll-link" onclick="toggleMobileMenu()">Try Demo</a></li>
+      <li><a href="#pricing" onclick="toggleMobileMenu()">Pricing</a></li>
+      <li><a href="#about" onclick="toggleMobileMenu()">About</a></li>
+    </ul>
+    <div class="mobile-menu-buttons">
+      <button class="btn btn-secondary" onclick="openModal('signin'); toggleMobileMenu()">Sign In</button>
+      <button class="btn btn-primary" onclick="openModal('signup'); toggleMobileMenu()">Start Free Trial</button>
+    </div>
+  </div>
+
+  <main id="main-content">
+    <!-- Django Messages -->
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- JavaScript -->
+  <script src="{% static 'script.js' %}">function toggleTheme() {
+    const body = document.body;
+    const currentTheme = body.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    
+    body.setAttribute('data-theme', newTheme);
+    
+    // Save theme preference to localStorage
+    try {
+        localStorage.setItem('theme', newTheme);
+    } catch (e) {
+        // Fallback if localStorage is not available
+        console.log('Theme preference could not be saved');
+    }
+    
+    // Update toggle switch aria-pressed state
+    const toggleSwitch = document.querySelector('.toggle-switch');
+    if (toggleSwitch) {
+        toggleSwitch.setAttribute('aria-pressed', newTheme === 'light');
+    }
+}
+
+// Mobile Menu Toggle
+function toggleMobileMenu() {
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    
+    if (mobileMenu && mobileMenuBtn) {
+        mobileMenu.classList.toggle('active');
+        mobileMenuBtn.classList.toggle('active');
+        
+        // Update aria-expanded for accessibility
+        const isExpanded = mobileMenu.classList.contains('active');
+        mobileMenuBtn.setAttribute('aria-expanded', isExpanded);
+    }
+}
+
+// Smooth Scrolling for Navigation Links
+function initSmoothScrolling() {
+    const scrollLinks = document.querySelectorAll('.scroll-link');
+    
+    scrollLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                const headerHeight = document.querySelector('header').offsetHeight;
+                const targetPosition = targetElement.offsetTop - headerHeight - 20;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+// Modal Functions (placeholders - you can implement these based on your modal system)
+function openModal(modalType) {
+    console.log(`Opening ${modalType} modal`);
+    // Add your modal opening logic here
+    // For example:
+    // const modal = document.querySelector(`#${modalType}-modal`);
+    // if (modal) {
+    //     modal.style.display = 'block';
+    // }
+}
+
+// Demo Form Handler
+function handleDemo(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    const courseTitle = formData.get('courseTitle');
+    const courseDescription = formData.get('courseDescription');
+    const skillLevel = formData.get('skillLevel');
+    
+    // Show loading state
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    submitButton.textContent = 'Generating...';
+    submitButton.classList.add('loading');
+    
+    // Simulate API call (replace with your actual API endpoint)
+    setTimeout(() => {
+        // Reset button state
+        submitButton.textContent = originalText;
+        submitButton.classList.remove('loading');
+        
+        // Show success message or redirect
+        alert(`Demo course "${courseTitle}" generated successfully!\n\nDescription: ${courseDescription}\nLevel: ${skillLevel}`);
+        
+        // You can replace this with actual course generation logic
+        // For example, redirect to the generated course or show a preview
+    }, 2000);
+}
+
+// Header Scroll Effect
+function initHeaderScrollEffect() {
+    const header = document.querySelector('header');
+    if (!header) return;
+    
+    let lastScrollY = window.scrollY;
+    
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY > 100) {
+            header.style.background = 'var(--nav-bg-scroll)';
+        } else {
+            header.style.background = 'var(--nav-bg)';
+        }
+        
+        lastScrollY = currentScrollY;
+    });
+}
+
+// Initialize theme on page load
+function initTheme() {
+    let savedTheme = 'dark'; // default theme
+    
+    try {
+        savedTheme = localStorage.getItem('theme') || 'dark';
+    } catch (e) {
+        // Fallback if localStorage is not available
+        savedTheme = 'dark';
+    }
+    
+    document.body.setAttribute('data-theme', savedTheme);
+    
+    // Update toggle switch state
+    const toggleSwitch = document.querySelector('.toggle-switch');
+    if (toggleSwitch) {
+        toggleSwitch.setAttribute('aria-pressed', savedTheme === 'light');
+    }
+}
+
+// Close mobile menu when clicking outside
+function initClickOutside() {
+    document.addEventListener('click', function(event) {
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        
+        if (mobileMenu && mobileMenuBtn) {
+            const isClickInsideMenu = mobileMenu.contains(event.target);
+            const isClickOnButton = mobileMenuBtn.contains(event.target);
+            
+            if (!isClickInsideMenu && !isClickOnButton && mobileMenu.classList.contains('active')) {
+                toggleMobileMenu();
+            }
+        }
+    });
+}
+
+// Handle escape key to close mobile menu
+function initKeyboardHandlers() {
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            if (mobileMenu && mobileMenu.classList.contains('active')) {
+                toggleMobileMenu();
+            }
+        }
+    });
+}
+
+// Add animation classes on scroll
+function initScrollAnimations() {
+    const animatedElements = document.querySelectorAll('.feature-card, .stat-card, .card');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in-up');
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    animatedElements.forEach(element => {
+        observer.observe(element);
+    });
+}
+
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initTheme();
+    initSmoothScrolling();
+    initHeaderScrollEffect();
+    initClickOutside();
+    initKeyboardHandlers();
+    initScrollAnimations();
+    
+    // Add mobile menu button event listener
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    }
+    
+    // Add theme toggle event listener
+    const themeToggle = document.querySelector('.toggle-switch');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
+    
+    // Add demo form event listener
+    const demoForm = document.querySelector('.demo-form');
+    if (demoForm) {
+        demoForm.addEventListener('submit', handleDemo);
+    }
+});
+
+// Handle window resize
+window.addEventListener('resize', function() {
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    
+    // Close mobile menu on larger screens
+    if (window.innerWidth > 1024) {
+        if (mobileMenu && mobileMenu.classList.contains('active')) {
+            mobileMenu.classList.remove('active');
+            if (mobileMenuBtn) {
+                mobileMenuBtn.classList.remove('active');
+                mobileMenuBtn.setAttribute('aria-expanded', false);
+            }
+        }
+    }
+});
+
+// Export functions for use in Django templates if needed
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        toggleTheme,
+        toggleMobileMenu,
+        openModal,
+        handleDemo
+    };
+}</script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

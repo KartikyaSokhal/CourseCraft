@@ -1,0 +1,137 @@
+{
+  "title": "C++ Programming: From Basics to Advanced",
+  "description": "This comprehensive online course takes you from the fundamentals of C++ programming to advanced concepts, enabling you to develop robust applications and understand complex algorithms.",
+  "course_duration_days": 20,
+  "lessons": [
+    {
+      "title": "Introduction to C++",
+      "youtube_search_query": "C++ programming introduction",
+      "duration_seconds": 1200,
+      "order": 1,
+      "questions": [
+        {
+          "question": "What is the primary purpose of C++?",
+          "choices": ["Web Development", "System Programming", "Game Development", "Database Management"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Setting Up the Development Environment",
+      "youtube_search_query": "C++ setup IDE",
+      "duration_seconds": 900,
+      "order": 2,
+      "questions": [
+        {
+          "question": "Which IDE is commonly used for C++ programming?",
+          "choices": ["Visual Studio Code", "Eclipse", "NetBeans", "All of the above"],
+          "correct_index": 3
+        }
+      ]
+    },
+    {
+      "title": "Basic Syntax and Structure",
+      "youtube_search_query": "C++ basic syntax tutorial",
+      "duration_seconds": 1500,
+      "order": 3,
+      "questions": [
+        {
+          "question": "What is the correct syntax to output 'Hello World' in C++?",
+          "choices": ["cout << 'Hello World';", "print('Hello World');", "System.out.println('Hello World');", "echo 'Hello World';"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Data Types and Variables",
+      "youtube_search_query": "C++ data types variables",
+      "duration_seconds": 1800,
+      "order": 4,
+      "questions": [
+        {
+          "question": "Which of the following is not a basic data type in C++?",
+          "choices": ["int", "float", "string", "array"],
+          "correct_index": 3
+        }
+      ]
+    },
+    {
+      "title": "Control Structures",
+      "youtube_search_query": "C++ control structures tutorial",
+      "duration_seconds": 2100,
+      "order": 5,
+      "questions": [
+        {
+          "question": "Which control structure is used for decision making in C++?",
+          "choices": ["for loop", "if statement", "while loop", "switch statement"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Functions and Scope",
+      "youtube_search_query": "C++ functions and scope",
+      "duration_seconds": 2400,
+      "order": 6,
+      "questions": [
+        {
+          "question": "What is the default return type of a function in C++?",
+          "choices": ["int", "void", "float", "char"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Object-Oriented Programming Concepts",
+      "youtube_search_query": "C++ OOP concepts",
+      "duration_seconds": 2700,
+      "order": 7,
+      "questions": [
+        {
+          "question": "What does 'encapsulation' mean in OOP?",
+          "choices": ["Hiding data", "Inheritance", "Polymorphism", "Abstraction"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Advanced Object-Oriented Programming",
+      "youtube_search_query": "C++ advanced OOP",
+      "duration_seconds": 3000,
+      "order": 8,
+      "questions": [
+        {
+          "question": "Which feature allows a class to inherit properties from another class?",
+          "choices": ["Encapsulation", "Inheritance", "Polymorphism", "Abstraction"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Templates and the Standard Template Library (STL)",
+      "youtube_search_query": "C++ templates STL tutorial",
+      "duration_seconds": 3300,
+      "order": 9,
+      "questions": [
+        {
+          "question": "What is a template in C++?",
+          "choices": ["A function with fixed types", "A class with variable types", "A type of loop", "A data structure"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Exception Handling and File I/O",
+      "youtube_search_query": "C++ exception handling file I/O",
+      "duration_seconds": 3600,
+      "order": 10,
+      "questions": [
+        {
+          "question": "Which keyword is used to handle exceptions in C++?",
+          "choices": ["try", "catch", "throw", "All of the above"],
+          "correct_index": 3
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+```json
+{
+  "title": "Django Web Development Fundamentals",
+  "description": "Learn the essentials of building web applications with Django.",
+  "course_duration_days": 30,
+  "lessons": [
+    {
+      "title": "Setting Up Your Django Environment",
+      "recommended_video_title": "Django Installation & Project Setup",
+      "duration_seconds": 3600,
+      "order": 1,
+      "questions": [
+        {
+          "question": "What command creates a new Django project?",
+          "choices": ["django-admin startproject", "python manage.py startproject", "pip install django", "python setup.py install"],
+          "correct_index": 0
+        },
+        {
+          "question": "What file contains Django's project settings?",
+          "choices": ["settings.py", "urls.py", "wsgi.py", "manage.py"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Building Your First Django App: Models and Views",
+      "recommended_video_title": "Django Models and Database Interactions",
+      "duration_seconds": 7200,
+      "order": 2,
+      "questions": [
+        {
+          "question": "What is the purpose of a Django model?",
+          "choices": ["To define the database schema", "To handle user authentication", "To create templates", "To manage URLs"],
+          "correct_index": 0
+        },
+        {
+          "question": "What is a Django view function?",
+          "choices": ["A function that renders a template", "A function that handles user requests", "A function that interacts with the database", "A function that defines URL patterns"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Templates, URLs, and Deploying Your Django App",
+      "recommended_video_title": "Django Templates and Deployment to Heroku",
+      "duration_seconds": 5400,
+      "order": 3,
+      "questions": [
+        {
+          "question": "What templating engine does Django typically use?",
+          "choices": ["Jinja2", "Handlebars", "Mustache", "Django's template engine"],
+          "correct_index": 3
+        },
+        {
+          "question": "What is the purpose of urls.py?",
+          "choices": ["To define URL patterns and map them to views", "To define database models", "To handle user authentication", "To render templates"],
+          "correct_index": 0
+        }
+      ]
+    }
+  ]
+}
+```

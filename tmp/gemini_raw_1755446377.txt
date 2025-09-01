@@ -1,0 +1,74 @@
+```json
+{
+  "title": "Django Web Development: From Beginner to Pro",
+  "description": "Master Django framework for building robust and scalable web applications. This course covers fundamentals to advanced concepts in 30 days.",
+  "course_duration_days": 30,
+  "lessons": [
+    {
+      "title": "Setting up your Django Development Environment",
+      "recommended_video_title": "Django Installation and Project Setup",
+      "duration_seconds": 3600,
+      "order": 1,
+      "questions": [
+        {
+          "question": "What command creates a new Django project?",
+          "choices": ["django-admin startproject", "python manage.py startproject", "pip install django"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Understanding Django's Model-View-Template Architecture (MTV)",
+      "recommended_video_title": "Django MTV Explained",
+      "duration_seconds": 5400,
+      "order": 2,
+      "questions": [
+        {
+          "question": "What does the 'M' in MTV stand for in Django?",
+          "choices": ["Model", "Middleware", "Method"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Building your first Django app: CRUD Operations",
+      "recommended_video_title": "Django CRUD Tutorial",
+      "duration_seconds": 7200,
+      "order": 3,
+      "questions": [
+        {
+          "question": "Which Django method is used to save data to the database?",
+          "choices": ["save()", "update()", "insert()"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Advanced Django: Templates, Forms and User Authentication",
+      "recommended_video_title": "Django Templates, Forms and Authentication",
+      "duration_seconds": 10800,
+      "order": 4,
+      "questions": [
+        {
+          "question": "What template engine does Django primarily use?",
+          "choices": ["Jinja2", "Django Template Engine", "Handlebars"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Deploying your Django Application to the Cloud",
+      "recommended_video_title": "Deploy Django App to Heroku",
+      "duration_seconds": 5400,
+      "order": 5,
+      "questions": [
+        {
+          "question": "What is a common platform for deploying Django apps?",
+          "choices": ["Heroku", "AWS", "Google Cloud", "All of the above"],
+          "correct_index": 3
+        }
+      ]
+    }
+  ]
+}
+```

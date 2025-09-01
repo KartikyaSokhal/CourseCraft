@@ -1,0 +1,72 @@
+{
+  "title": "Digital Marketing Mastery",
+  "description": "A comprehensive course designed to equip you with essential digital marketing skills over 30 days.",
+  "course_duration_days": 30,
+  "lessons": [
+    {
+      "title": "Introduction to Digital Marketing",
+      "youtube_search_query": "What is digital marketing?",
+      "duration_seconds": 1800,
+      "order": 1,
+      "questions": [
+        {
+          "question": "What is digital marketing?",
+          "choices": ["Marketing using digital tools", "Only social media marketing", "Traditional marketing methods", "None of the above"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Understanding SEO Basics",
+      "youtube_search_query": "SEO basics for beginners",
+      "duration_seconds": 1800,
+      "order": 2,
+      "questions": [
+        {
+          "question": "What does SEO stand for?",
+          "choices": ["Search Engine Optimization", "Social Engagement Online", "Search Engine Operation", "None of the above"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Content Marketing Strategies",
+      "youtube_search_query": "Content marketing tips and strategies",
+      "duration_seconds": 1800,
+      "order": 3,
+      "questions": [
+        {
+          "question": "What is a key component of content marketing?",
+          "choices": ["Creating engaging content", "Using only paid ads", "Ignoring audience needs", "All of the above"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Social Media Marketing Techniques",
+      "youtube_search_query": "Effective social media marketing techniques",
+      "duration_seconds": 1800,
+      "order": 4,
+      "questions": [
+        {
+          "question": "Which platform is best for B2B marketing?",
+          "choices": ["Instagram", "LinkedIn", "Twitter", "Facebook"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Analyzing Marketing Performance",
+      "youtube_search_query": "How to analyze marketing performance",
+      "duration_seconds": 1800,
+      "order": 5,
+      "questions": [
+        {
+          "question": "Which metric is commonly used to measure website traffic?",
+          "choices": ["CTR", "Bounce Rate", "Page Views", "All of the above"],
+          "correct_index": 3
+        }
+      ]
+    }
+  ]
+}

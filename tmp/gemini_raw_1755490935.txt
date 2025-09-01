@@ -1,0 +1,149 @@
+```json
+{
+  "title": "Advanced C++ Programming",
+  "description": "This 5-day course delves into advanced C++ concepts, building upon a foundational understanding of the language.  We'll cover advanced topics with a strong focus on practical application and best practices.",
+  "course_duration_days": 5,
+  "lessons": [
+    {
+      "title": "Modern C++ Features and Smart Pointers",
+      "recommended_video_title": "Mastering Modern C++: Smart Pointers and RAII",
+      "duration_seconds": 3600,
+      "order": 1,
+      "questions": [
+        {
+          "question": "What is the primary advantage of using smart pointers over raw pointers in C++?",
+          "choices": [
+            "Automatic memory management preventing memory leaks",
+            "Increased execution speed",
+            "Simplified code syntax",
+            "Improved compatibility with older C++ standards"
+          ],
+          "correct_index": 0
+        },
+        {
+          "question": "Explain the difference between `unique_ptr`, `shared_ptr`, and `weak_ptr`.",
+          "choices": [
+            "They are all the same, just different names.",
+            "Each manages memory differently; `unique_ptr` has exclusive ownership, `shared_ptr` allows shared ownership, and `weak_ptr` provides a non-owning reference.",
+            "`unique_ptr` is for arrays, `shared_ptr` for single objects, `weak_ptr` for cyclical references.",
+            "Their differences are only relevant in multi-threaded environments."
+          ],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Templates and Generic Programming",
+      "recommended_video_title": "C++ Templates: Unleashing the Power of Generics",
+      "duration_seconds": 3600,
+      "order": 2,
+      "questions": [
+        {
+          "question": "What is the purpose of template metaprogramming in C++?",
+          "choices": [
+            "To write code that can operate on multiple data types without modification",
+            "To increase the execution speed of the code",
+            "To reduce the size of the compiled executable",
+            "To improve code readability"
+          ],
+          "correct_index": 0
+        },
+        {
+          "question": "Explain the difference between a function template and a class template.",
+          "choices": [
+            "There is no difference; they are interchangeable.",
+            "Function templates generate functions, while class templates generate classes.",
+            "Function templates are used for algorithms, class templates are used for data structures.",
+            "Function templates are more efficient than class templates."
+          ],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Object-Oriented Programming (OOP) Advanced Techniques",
+      "recommended_video_title": "Advanced OOP in C++: Polymorphism and Design Patterns",
+      "duration_seconds": 3600,
+      "order": 3,
+      "questions": [
+        {
+          "question": "Explain the concept of polymorphism in C++ and provide an example.",
+          "choices": [
+            "Using the same function name for different purposes.",
+            "The ability of an object to take on many forms.",
+            "The use of inheritance to create specialized classes.",
+            "The encapsulation of data within a class."
+          ],
+          "correct_index": 1
+        },
+        {
+          "question": "Name three common design patterns in C++.",
+          "choices": [
+            "Singleton, Observer, Factory",
+            "Loop, Conditional, Switch",
+            "While, For, Do-While",
+            "Inheritance, Polymorphism, Encapsulation"
+          ],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Concurrency and Multithreading",
+      "recommended_video_title": "Concurrent Programming in C++: Threads, Mutexes, and Atomics",
+      "duration_seconds": 3600,
+      "order": 4,
+      "questions": [
+        {
+          "question": "What are the challenges involved in multithreaded programming?",
+          "choices": [
+            "Increased code complexity and race conditions.",
+            "Reduced performance due to context switching.",
+            "Increased memory consumption.",
+            "All of the above."
+          ],
+          "correct_index": 3
+        },
+        {
+          "question": "What is a mutex and how is it used to prevent race conditions?",
+          "choices":[
+            "A mutex is a type of lock that ensures only one thread can access a shared resource at a time.",
+            "A mutex is a data type used for synchronization.",
+            "A mutex is a function used for multithreading.",
+            "A mutex is a type of thread."
+          ],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Advanced Memory Management and STL",
+      "recommended_video_title": "Deep Dive into STL and Advanced Memory Management in C++",
+      "duration_seconds": 3600,
+      "order": 5,
+      "questions": [
+        {
+          "question": "Explain the importance of using the Standard Template Library (STL) in C++.",
+          "choices": [
+            "It provides pre-built data structures and algorithms, improving code efficiency and readability.",
+            "It is required for using modern C++ features.",
+            "It makes the code easier to debug.",
+            "It improves the performance of the code by a significant margin."
+          ],
+          "correct_index": 0
+        },
+        {
+          "question": "Describe different techniques for allocating and deallocating memory in C++ beyond `new` and `delete`.",
+          "choices": [
+            "Using smart pointers, memory pools, and custom allocators.",
+            "Using `malloc` and `free` exclusively.",
+            "There are no other efficient ways beyond `new` and `delete`.",
+            "Using `memcpy` for fast memory copying."
+          ],
+          "correct_index": 0
+        }
+      ]
+    }
+  ]
+}
+```

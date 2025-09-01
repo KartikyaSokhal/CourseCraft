@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ course.title }}</h2>
+<p>{{ course.description }}</p>
+{% if enrollment %}
+  <p>Progress: {% if enrollment.passed %}Completed{% else %}On lesson {{ enrollment.current_lesson.order }}{% endif %}</p>
+  <ul>
+    {% for l in course.lessons.all %}
+      <li>
+        Lesson {{ l.order }}: <a href="{% url 'courses:lesson' course.id l.id %}">{{ l.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <form method="post" action="{% url 'courses:enroll' course.id %}">{% csrf_token %}
+    <button type="submit">Enroll</button>
+  </form>
+{% endif %}
+
+<h3>Reviews</h3>
+<ul>
+{% for r in course.reviews.all %}
+  <li>{{ r.user.username }}: {{ r.rating }}/5 — {{ r.comment }}</li>
+{% empty %}
+  <li>No reviews yet.</li>
+{% endfor %}
+</ul>
+{% if user.is_authenticated %}
+<form method="post" action="{% url 'reviews:add' course.id %}">{% csrf_token %}
+  {{ review_form.as_p }}
+  <button type="submit">Add Review</button>
+</form>
+{% endif %}
+{% endblock %}

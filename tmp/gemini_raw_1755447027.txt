@@ -1,0 +1,74 @@
+```json
+{
+  "title": "C++ Fundamentals for Beginners",
+  "description": "A comprehensive 30-day course covering the essentials of C++ programming.",
+  "course_duration_days": 30,
+  "lessons": [
+    {
+      "title": "Introduction to C++ and Setting up Your Environment",
+      "recommended_video_title": "C++ Tutorial for Beginners - Introduction",
+      "duration_seconds": 3600,
+      "order": 1,
+      "questions": [
+        {
+          "question": "What is the purpose of the #include <iostream> directive?",
+          "choices": ["Includes the standard input/output library", "Includes the math library", "Includes the string library", "Includes the file library"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Variables, Data Types, and Operators",
+      "recommended_video_title": "C++ Data Types and Variables Explained",
+      "duration_seconds": 4200,
+      "order": 2,
+      "questions": [
+        {
+          "question": "Which data type is best suited for storing a whole number?",
+          "choices": ["float", "double", "int", "char"],
+          "correct_index": 2
+        }
+      ]
+    },
+    {
+      "title": "Control Flow: if, else, and Loops",
+      "recommended_video_title": "C++ If/Else Statements and Loops",
+      "duration_seconds": 5400,
+      "order": 3,
+      "questions": [
+        {
+          "question": "What is the purpose of a 'for' loop?",
+          "choices": ["To iterate a set number of times", "To iterate until a condition is false", "To execute a block of code conditionally", "To exit a program"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Functions and Modular Programming",
+      "recommended_video_title": "Understanding Functions in C++",
+      "duration_seconds": 4800,
+      "order": 4,
+      "questions": [
+        {
+          "question": "What is the advantage of using functions in C++?",
+          "choices": ["Code reusability", "Improved readability", "Better organization", "All of the above"],
+          "correct_index": 3
+        }
+      ]
+    },
+    {
+      "title": "Introduction to Classes and Objects",
+      "recommended_video_title": "C++ OOP: Classes and Objects",
+      "duration_seconds": 7200,
+      "order": 5,
+      "questions": [
+        {
+          "question": "What is an object in C++?",
+          "choices": ["A blueprint for creating variables", "An instance of a class", "A data type", "A function"],
+          "correct_index": 1
+        }
+      ]
+    }
+  ]
+}
+```

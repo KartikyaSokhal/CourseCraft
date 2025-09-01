@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Analytics – {{ course.title }}</h2>
+<p>Total students: {{ stats.total_students }} | Completed: {{ stats.completed }} | Avg score: {{ stats.avg_score }} | Focus issues: {{ stats.focus_issues }}</p>
+<table border="1" cellpadding="6">
+  <tr><th>Student</th><th>Current lesson</th><th>Score</th><th>Completed</th></tr>
+  {% for e in enrollments %}
+  <tr>
+    <td>{{ e.student.username }}</td>
+    <td>{% if e.current_lesson %}#{{ e.current_lesson.order }} {{ e.current_lesson.title }}{% else %}-{% endif %}</td>
+    <td>{{ e.score }}</td>
+    <td>{{ e.passed }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

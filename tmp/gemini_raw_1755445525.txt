@@ -1,0 +1,72 @@
+{
+  "title": "Django Web Development: From Beginner to Advanced",
+  "description": "Master Django framework in 30 days.  Build real-world applications.",
+  "course_duration_days": 30,
+  "lessons": [
+    {
+      "title": "Introduction to Django and Setting up your Environment",
+      "recommended_video_title": "Django Setup and First Project",
+      "duration_seconds": 3600,
+      "order": 1,
+      "questions": [
+        {
+          "question": "What is the primary purpose of the 'manage.py' command in Django?",
+          "choices": ["To run the web server", "To manage database migrations", "To create user accounts", "All of the above"],
+          "correct_index": 3
+        }
+      ]
+    },
+    {
+      "title": "Django Models and Database Interactions",
+      "recommended_video_title": "Django ORM Tutorial",
+      "duration_seconds": 5400,
+      "order": 2,
+      "questions": [
+        {
+          "question": "What does ORM stand for in the context of Django?",
+          "choices": ["Object Relational Mapping", "Oriented Request Method", "Open-source Relational Model", "Object-Referenced Management"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Creating Views and Templates: Building Dynamic Pages",
+      "recommended_video_title": "Django Templates and Views Explained",
+      "duration_seconds": 7200,
+      "order": 3,
+      "questions": [
+        {
+          "question": "What is the role of a Django template?",
+          "choices": ["Handles user authentication", "Defines database models", "Presents data to the user", "Manages server-side logic"],
+          "correct_index": 2
+        }
+      ]
+    },
+    {
+      "title": "Working with Forms and User Input",
+      "recommended_video_title": "Django Forms: Handling User Input",
+      "duration_seconds": 6000,
+      "order": 4,
+      "questions": [
+        {
+          "question": "What is the purpose of Django's form validation?",
+          "choices": ["To ensure data integrity", "To enhance user experience", "To prevent malicious input", "All of the above"],
+          "correct_index": 3
+        }
+      ]
+    },
+    {
+      "title": "Deploying Your Django Application",
+      "recommended_video_title": "Deploy Django on Heroku",
+      "duration_seconds": 3600,
+      "order": 5,
+      "questions": [
+        {
+          "question": "What is a crucial consideration when deploying a Django application?",
+          "choices": ["Security", "Scalability", "Performance", "All of the above"],
+          "correct_index": 3
+        }
+      ]
+    }
+  ]
+}

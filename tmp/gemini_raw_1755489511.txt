@@ -1,0 +1,119 @@
+```json
+{
+  "title": "C++ Fundamentals: From Zero to Hero in 10 Days",
+  "description": "A fast-paced, intensive course designed to take you from knowing nothing about C++ to building basic programs in just 10 days.  This course emphasizes practical application and hands-on coding.",
+  "course_duration_days": 10,
+  "lessons": [
+    {
+      "title": "Introduction to C++ and Setting up Your Environment",
+      "recommended_video_title": "C++ Installation and Setup (Visual Studio, Code::Blocks, etc.)",
+      "duration_seconds": 3600,
+      "order": 1,
+      "questions": [
+        {
+          "question": "What is a compiler, and why is it necessary for C++ programming?",
+          "choices": [
+            "A compiler translates human-readable code into machine-readable instructions.",
+            "A compiler is an optional tool used for debugging.",
+            "A compiler is a type of programming language.",
+            "A compiler helps write documentation."
+          ],
+          "correct_index": 0
+        },
+        {
+          "question": "Name at least two popular Integrated Development Environments (IDEs) for C++ development.",
+          "choices": [
+            ["Visual Studio, Code::Blocks"],
+            ["Notepad++, Sublime Text"],
+            ["Eclipse, NetBeans"],
+            ["All of the above"]
+          ],
+          "correct_index": 3
+        }
+      ]
+    },
+    {
+      "title": "Basic Syntax, Data Types, and Variables",
+      "recommended_video_title": "C++ Variables and Data Types Explained",
+      "duration_seconds": 2700,
+      "order": 2,
+      "questions": [
+        {
+          "question": "What is the difference between `int`, `float`, and `double` data types?",
+          "choices": [
+            "They store different sizes of numbers.",
+            "They store different types of characters.",
+            "They store different types of boolean values.",
+            "There is no difference."
+          ],
+          "correct_index": 0
+        },
+        {
+          "question": "Declare an integer variable named `age` and assign it the value 25.",
+          "choices": [
+            ["int age = 25;"],
+            ["age = 25;"],
+            ["int 25 = age;"],
+            ["age = \"25\";"]
+          ],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Operators and Control Flow (if, else, loops)",
+      "recommended_video_title": "Mastering C++ Control Flow",
+      "duration_seconds": 3600,
+      "order": 3,
+      "questions": [
+        {
+          "question": "Explain the difference between `while` and `for` loops.",
+          "choices": [
+            "Their loop conditions are different.",
+            "They have different syntax.",
+            "They are used for different programming tasks; while loops are indeterminate and for loops are determinate.",
+            "All of the above"
+          ],
+          "correct_index": 3
+        }
+      ]
+    },
+    {
+      "title": "Functions and Modular Programming",
+      "recommended_video_title": "Writing Reusable Functions in C++",
+      "duration_seconds": 2700,
+      "order": 4,
+      "questions": [
+        {
+          "question": "Why is it important to use functions in programming?",
+          "choices": [
+            "To improve code readability and maintainability.",
+            "To reduce code duplication.",
+            "To make the code more organized and efficient.",
+            "All of the above"
+          ],
+          "correct_index": 3
+        }
+      ]
+    },
+    {
+      "title": "Arrays, Strings, and Introduction to Pointers",
+      "recommended_video_title": "Working with Arrays and Strings in C++",
+      "duration_seconds": 3600,
+      "order": 5,
+      "questions": [
+        {
+          "question": "What is a pointer in C++?",
+          "choices": [
+            "A variable that stores the memory address of another variable.",
+            "A variable that stores a string value.",
+            "A variable that stores a large number.",
+            "A variable that stores a boolean value."
+          ],
+          "correct_index": 0
+        }
+      ]
+    }
+  ]
+}
+```

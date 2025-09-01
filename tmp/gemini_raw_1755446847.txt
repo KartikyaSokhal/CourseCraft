@@ -1,0 +1,74 @@
+```json
+{
+  "title": "Django Mastery: From Beginner to Expert",
+  "description": "Become a Django expert in 30 days. This course covers advanced concepts and best practices, transforming your Django skills to a god-level.",
+  "course_duration_days": 30,
+  "lessons": [
+    {
+      "title": "Setting up your Django Development Environment",
+      "recommended_video_title": "Ultimate Django Setup Guide",
+      "duration_seconds": 3600,
+      "order": 1,
+      "questions": [
+        {
+          "question": "What is a virtual environment and why is it important?",
+          "choices": ["A type of Python interpreter", "An isolated space for project dependencies", "A debugging tool", "A type of database"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Advanced Django Models & Database Relationships",
+      "recommended_video_title": "Mastering Django ORM: Advanced Techniques",
+      "duration_seconds": 5400,
+      "order": 2,
+      "questions": [
+        {
+          "question": "Explain the difference between OneToOneField, ForeignKey, and ManyToManyField.",
+          "choices": ["They are all the same", "They represent different types of database relationships", "Only ForeignKey is used for relationships", "They are used for different data types"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Building REST APIs with Django REST Framework",
+      "recommended_video_title": "Django REST Framework: Build Powerful APIs",
+      "duration_seconds": 7200,
+      "order": 3,
+      "questions": [
+        {
+          "question": "What is a serializer in Django REST framework?",
+          "choices": ["A database model", "A view function", "A tool for converting data to different formats", "A type of authentication"],
+          "correct_index": 2
+        }
+      ]
+    },
+    {
+      "title": "Optimizing Django Performance & Security",
+      "recommended_video_title": "Django Performance Tuning: Best Practices",
+      "duration_seconds": 7200,
+      "order": 4,
+      "questions": [
+        {
+          "question": "How can you optimize database queries in Django?",
+          "choices": ["Use raw SQL queries only", "Use caching mechanisms", "Avoid database interactions", "Use inefficient ORM methods"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Deploying Django Applications to Production",
+      "recommended_video_title": "Deploy Django Apps: AWS, Heroku, Docker",
+      "duration_seconds": 5400,
+      "order": 5,
+      "questions": [
+        {
+          "question": "What are some common platforms for deploying Django applications?",
+          "choices": ["Only your own server", "AWS, Heroku, Google Cloud", "Only local machine", "Only virtual private servers"],
+          "correct_index": 1
+        }
+      ]
+    }
+  ]
+}
+```

@@ -1,0 +1,139 @@
+```json
+{
+  "title": "C++ Programming Fundamentals",
+  "description": "A 10-day intensive course covering the core concepts of C++ programming. Each lesson includes a short video tutorial and engaging quiz questions to reinforce learning.",
+  "course_duration_days": 10,
+  "lessons": [
+    {
+      "title": "Introduction to C++ and Setting up Your Environment",
+      "youtube_search_query": "C++ installation and setup Visual Studio Code",
+      "duration_seconds": 900,
+      "order": 1,
+      "questions": [
+        {
+          "question": "What is the role of the preprocessor in C++?",
+          "choices": ["Handles memory allocation", "Compiles the code into machine instructions", "Processes directives before compilation", "Links object files together"],
+          "correct_index": 2
+        }
+      ]
+    },
+    {
+      "title": "Basic Syntax and Data Types",
+      "youtube_search_query": "C++ basic syntax data types variables tutorial beginners",
+      "duration_seconds": 600,
+      "order": 2,
+      "questions": [
+        {
+          "question": "Which data type is best suited for storing whole numbers?",
+          "choices": ["float", "double", "int", "char"],
+          "correct_index": 2
+        }
+      ]
+    },
+    {
+      "title": "Operators and Expressions",
+      "youtube_search_query": "C++ operators precedence and associativity explained",
+      "duration_seconds": 720,
+      "order": 3,
+      "questions": [
+        {
+          "question": "What is the order of operations in C++?",
+          "choices": ["PEMDAS", "BODMAS", "Both PEMDAS and BODMAS are correct", "There's no fixed order"],
+          "correct_index": 2
+        }
+      ]
+    },
+    {
+      "title": "Control Flow Statements (if, else, switch)",
+      "youtube_search_query": "C++ if else switch statements tutorial explained with examples",
+      "duration_seconds": 840,
+      "order": 4,
+      "questions": [
+        {
+          "question": "What is the purpose of a 'switch' statement?",
+          "choices": ["To execute a block of code based on multiple conditions", "To loop through a block of code", "To define a function", "To declare a variable"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Loops (for, while, do-while)",
+      "youtube_search_query": "C++ for while do while loops tutorial beginners explained",
+      "duration_seconds": 900,
+      "order": 5,
+      "questions": [
+        {
+          "question": "What is the difference between a 'while' and a 'do-while' loop?",
+          "choices": ["'while' loops always execute at least once", "'do-while' loops always execute at least once", "'while' loops are for integers, 'do-while' for floating-point", "There is no difference"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "title": "Arrays and Strings",
+      "youtube_search_query": "C++ arrays and strings tutorial beginners explained",
+      "duration_seconds": 720,
+      "order": 6,
+      "questions": [
+        {
+          "question": "How do you access the third element of an array named 'myArray'?",
+          "choices": ["myArray[2]", "myArray[3]", "myArray(2)", "myArray(3)"],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "title": "Functions",
+      "youtube_search_query": "C++ functions parameters return values tutorial beginners",
+      "duration_seconds": 1000,
+      "order": 7,
+      "questions": [
+        {
+          "question": "What is the purpose of a function prototype?",
+          "choices": ["To define a function", "To declare a variable", "To provide a summary of the function's functionality", "To inform the compiler about the function's signature before its definition"],
+          "correct_index": 3
+        }
+      ]
+    },
+    {
+      "title": "Pointers",
+      "youtube_search_query": "C++ pointers memory addresses tutorial beginners explained",
+      "duration_seconds": 1200,
+      "order": 8,
+      "questions": [
+        {
+          "question": "What does a pointer variable store?",
+          "choices": ["An integer value", "A floating-point value", "A memory address", "A character value"],
+          "correct_index": 2
+        }
+      ]
+    },
+    {
+      "title": "Structures and Classes",
+      "youtube_search_query": "C++ structures classes objects tutorial beginners",
+      "duration_seconds": 1080,
+      "order": 9,
+      "questions": [
+        {
+          "question": "What is the difference between a structure and a class in C++?",
+          "choices": ["Structures are used for data, classes for functions", "Classes have private members, structures don't", "There is no difference", "Structures are used for simple data, classes for more complex data structures"],
+          "correct_index": 3
+        }
+      ]
+    },
+    {
+      "title": "Introduction to Object-Oriented Programming (OOP) Concepts",
+      "youtube_search_query": "C++ OOP concepts encapsulation inheritance polymorphism beginners",
+      "duration_seconds": 900,
+      "order": 10,
+      "questions": [
+        {
+          "question": "What is polymorphism?",
+          "choices": ["The ability to use the same code for different data types", "The process of creating reusable code", "The ability to hide internal details", "The ability to create classes that inherit from other classes"],
+          "correct_index": 0
+        }
+      ]
+    }
+  ]
+}
+```
