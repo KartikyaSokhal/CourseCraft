@@ -1035,7 +1035,74 @@ nav {
   color: var(--text-primary);
 }
 
+.footer {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  padding: 4rem 2rem;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Intro */
+.footer-left h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footer-intro {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.7;
+  font-size: 1.1rem;
+}
+
+/* Points inside footer */
+.footer-points {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.footer-points .point {
+  background: var(--bg-secondary);
+  padding: 1.2rem;
+  border-radius: 12px;
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.footer-points .point:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.footer-points h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.6rem;
+  color: var(--text-primary);
+}
+
+.footer-points p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
 /* Socials */
+.footer-socials {
+  margin-top: 1rem;
+}
 .footer-socials a {
   margin-right: 1rem;
   color: var(--text-primary);
@@ -1046,7 +1113,7 @@ nav {
   color: var(--accent-color);
 }
 
-/* Right side links */
+/* Right links */
 .footer-right {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1079,18 +1146,22 @@ nav {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .footer-container {
     grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .footer-points {
+    grid-template-columns: 1fr;
+  }
+  .footer-points .point {
     text-align: center;
   }
   .footer-right {
     grid-template-columns: 1fr;
   }
-  .footer-socials {
-    justify-content: center;
-  }
 }
+
 
 /* Desktop toggle visible by default */
 .theme-toggle-desktop {
