@@ -1,121 +1,79 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CourseCraft - Create AI-Powered Courses in Minutes</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="latest.css" />
-  </head>
-  <body data-theme="dark">
-    <div id="top"></div>
-    <header>
-      <nav>
-        <div class="nav-container container">
-          <a href="#top" class="logo scroll-link" aria-label="CourseCraft Home">
-            <div class="logo-box">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44a2.5 2.5 0 0 1-2.96-3.08a3 3 0 0 1-.34-5.58a2.5 2.5 0 0 1 1.32-4.24a2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Zm5 0A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44a2.5 2.5 0 0 0 2.96-3.08a3 3 0 0 0 .34-5.58a2.5 2.5 0 0 0-1.32-4.24a2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"
-                />
-              </svg>
-            </div>
-            <span>CourseCraft</span>
-          </a>
+<head>
+  <!-- Character encoding and viewport setup -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Page title and SEO -->
+  <title>CourseCraft - Create AI-Powered Courses in Minutes</title>
+  
+  <!-- Preconnect to font servers for better performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+  <!-- External fonts and stylesheets -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <link rel="stylesheet" href="latest.css" />
+</head>
 
-          <div class="nav-center">
-            <ul class="nav-links">
-              <li>
-                <a href="#features-section" class="scroll-link">Features</a>
-              </li>
-              <li><a href="#demo" class="scroll-link">Generate</a></li>
-              <!-- <li><a href="#pricing">Pricing</a></li> -->
-              <li><a href="#about" class="scroll-link">About</a></li>
-            </ul>
+<body data-theme="dark">
+  <!-- Top anchor for scroll-to-top functionality -->
+  <div id="top"></div>
+  
+  <!-- Header with navigation -->
+  <header>
+    <nav>
+      <div class="nav-container container">
+        <!-- Logo and brand -->
+        <a href="#top" class="logo scroll-link" aria-label="CourseCraft Home">
+          <div class="logo-box">
+            <!-- Brand icon SVG -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44a2.5 2.5 0 0 1-2.96-3.08a3 3 0 0 1-.34-5.58a2.5 2.5 0 0 1 1.32-4.24a2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Zm5 0A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44a2.5 2.5 0 0 0 2.96-3.08a3 3 0 0 0 .34-5.58a2.5 2.5 0 0 0-1.32-4.24a2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"
+              />
+            </svg>
           </div>
-
-          <div class="nav-items">
-            <div class="theme-toggle theme-toggle-desktop">
-              <span class="theme-icon">🌙</span>
-              <button
-                class="toggle-switch"
-                type="button"
-                onclick="toggleTheme()"
-                aria-pressed="false"
-              >
-                <span class="toggle-slider"></span>
-              </button>
-              <span class="theme-icon">☀️</span>
-            </div>
-
-            <div class="nav-actions">
-              <a href="#" class="btn-link" onclick="openModal('signin')"
-                >Sign In</a
-              >
-              <a href="#" class="btn btn-primary" onclick="openModal('signup')"
-                >Sign Up</a
-              >
-            </div>
-          </div>
-
-          <button
-            class="mobile-menu-btn"
-            type="button"
-            aria-label="Toggle mobile menu"
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
+          <span>CourseCraft</span>
+        </a>
+        
+        <!-- Desktop navigation links -->
+        <div class="nav-center">
+          <ul class="nav-links">
+            <li>
+              <a href="#features-section" class="scroll-link">Features</a>
+            </li>
+            <li>
+              <a href="#demo" class="scroll-link">Generate</a>
+            </li>
+            <li>
+              <a href="#about" class="scroll-link">About</a>
+            </li>
+          </ul>
         </div>
-      </nav>
-    </header>
-
-    <div class="mobile-menu">
-      <ul class="mobile-menu-links">
-        <li>
-          <a
-            href="#features-section"
-            class="scroll-link"
-            onclick="toggleMobileMenu()"
-            >Features</a
-          >
-        </li>
-        <li>
-          <a href="#demo" class="scroll-link" onclick="toggleMobileMenu()"
-            >Generate</a
-          >
-        </li>
-        <!-- <li><a href="#pricing" onclick="toggleMobileMenu()">Pricing</a></li> -->
-        <li>
-          <a href="#about" class="scroll-link" onclick="toggleMobileMenu()"
-            >About</a
-          >
-        </li>
-
-        <!-- ✅ Theme toggle About ke niche -->
-        <li class="theme-toggle-mobile">
-          <div class="theme-toggle">
-            <h2>Theme</h2>
+        
+        <!-- Theme toggle and action buttons (desktop) -->
+        <div class="nav-items">
+          <!-- Desktop theme toggle -->
+          <div class="theme-toggle theme-toggle-desktop">
             <span class="theme-icon">🌙</span>
             <button
               class="toggle-switch"
@@ -127,327 +85,451 @@
             </button>
             <span class="theme-icon">☀️</span>
           </div>
-        </li>
-      </ul>
-
-      <div class="mobile-menu-buttons">
+          
+          <!-- Desktop action buttons -->
+          <div class="nav-actions">
+            <a href="#" class="btn-link" onclick="openModal('signin')">
+              Sign In
+            </a>
+            <a href="#" class="btn btn-primary" onclick="openModal('signup')">
+              Sign Up
+            </a>
+          </div>
+        </div>
+        
+        <!-- Mobile hamburger menu button -->
         <button
-          class="btn btn-secondary"
-          onclick="openModal('signin'); toggleMobileMenu()"
+          class="mobile-menu-btn"
+          type="button"
+          aria-label="Toggle mobile menu"
         >
-          Sign In
-        </button>
-        <button
-          class="btn btn-primary"
-          onclick="openModal('signup'); toggleMobileMenu()"
-        >
-          Sign Up
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
       </div>
-    </div>
-
-    <main id="main-content">
-      <section class="hero">
-        <div class="container">
-          <div class="hero-content">
-            <div class="powered-by">POWERED BY AI</div>
-            <h1 class="hero-title">
-              Create <span class="highlight">AI-Powered</span><br />
-              Courses in Minutes
-            </h1>
-            <p class="hero-subtitle">
-              Transform your knowledge into engaging courses with our
-              intelligent course generator. From concept to completion in record
-              time.
-            </p>
-            <div class="hero-actions">
-              <button
-                class="btn btn-primary pulse-animation"
-                onclick="openModal('signup')"
-              >
-                Start Creating →
-              </button>
-              <a href="#demo" class="btn btn-secondary scroll-link"
-                >📺 View Demo</a
-              >
-            </div>
-            <div class="stats">
-              <div class="stat-card">
-                <div class="stat-number">10K+</div>
-                <div class="stat-label">Courses Created</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-number">50K+</div>
-                <div class="stat-label">Students Engaged</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-number">95%</div>
-                <div class="stat-label">Satisfaction Rate</div>
-              </div>
-            </div>
-          </div>
+    </nav>
+  </header>
+  
+  <!-- Mobile menu overlay -->
+  <div class="mobile-menu">
+    <!-- Mobile navigation links -->
+    <ul class="mobile-menu-links">
+      <li>
+        <a
+          href="#features-section"
+          class="scroll-link"
+          onclick="toggleMobileMenu()"
+        >
+          Features
+        </a>
+      </li>
+      <li>
+        <a href="#demo" class="scroll-link" onclick="toggleMobileMenu()">
+          Generate
+        </a>
+      </li>
+      <li>
+        <a href="#about" class="scroll-link" onclick="toggleMobileMenu()">
+          About
+        </a>
+      </li>
+      
+      <!-- Mobile theme toggle -->
+      <li class="theme-toggle-mobile">
+        <div class="theme-toggle">
+          <h2>Theme</h2>
+          <span class="theme-icon">🌙</span>
+          <button
+            class="toggle-switch"
+            type="button"
+            onclick="toggleTheme()"
+            aria-pressed="false"
+          >
+            <span class="toggle-slider"></span>
+          </button>
+          <span class="theme-icon">☀️</span>
         </div>
-      </section>
-
-      <section class="features-section" id="features-section">
-        <div class="container">
-          <h2>How It Works</h2>
-          <div class="feature-grid">
-            <div class="feature-card">
-              <div class="feature-icon">🎯</div>
-              <h3>Describe Your Goals</h3>
-              <p>
-                Tell our AI what you want to learn and your specific topics of
-                interest. Be as detailed or general as you like.
-              </p>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">🤖</div>
-              <h3>AI Generates Content</h3>
-              <p>
-                Our advanced AI creates comprehensive course materials, finds
-                relevant resources, and designs interactive quizzes.
-              </p>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">📚</div>
-              <h3>Start Learning</h3>
-              <p>
-                Access your personalized course immediately. Track progress,
-                take quizzes, and update your learning path anytime.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="demo-section" id="demo">
-        <div class="container">
-          <div class="demo-container">
-            <h2>Make your own Course</h2>
-            <p>
-              Experience the power of AI-generated learning. Describe your ideal
-              course below:
-            </p>
-            <form class="demo-form" onsubmit="handleDemo(event)">
-              <div class="input-group">
-                <label for="courseTitle">Course Title</label>
-                <input
-                  type="text"
-                  id="courseTitle"
-                  placeholder="e.g., Introduction to Machine Learning"
-                  required
-                />
-              </div>
-              <div class="input-group">
-                <label for="courseDescription"
-                  >What do you want to learn?</label
-                >
-                <textarea
-                  id="courseDescription"
-                  placeholder="Describe the topics, skills, and subtopics you want to cover. Be specific about your learning goals and current level."
-                  required
-                ></textarea>
-              </div>
-              <div class="input-group">
-                <label for="skillLevel">Skill Level</label>
-                <select id="skillLevel">
-                  <option value="beginner">Beginner</option>
-                  <option value="intermediate">Intermediate</option>
-                  <option value="advanced">Advanced</option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary btn-large">
-                Generate Course Preview
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
-    </main>
-    <footer class="footer" id="about">
-  <div class="footer-container">
-    <!-- Left side -->
-    <div class="footer-left">
-      <h2>About CourseCraft</h2>
-      <p class="footer-intro">
-        CourseCraft is an AI-powered platform that helps you transform your knowledge 
-        into engaging courses. Whether you want to create your own course or explore 
-        others’ work, CourseCraft makes learning simple and powerful.
-      </p>
-
-      <!-- About points inside footer -->
-      <div class="footer-points">
-        <div class="point">
-          <h3>🎓 Create Courses</h3>
-          <p>
-            Build your own courses easily with AI — add lessons, quizzes, and multimedia
-            in just a few clicks.
-          </p>
-        </div>
-
-        <div class="point">
-          <h3>📚 Explore Courses</h3>
-          <p>
-            Browse and learn from a variety of courses already created by other educators 
-            and professionals.
-          </p>
-        </div>
-
-        <div class="point">
-          <h3>⚡ Save Time</h3>
-          <p>
-            Automate structuring and focus on teaching — we handle the heavy lifting.
-          </p>
-        </div>
-
-        <div class="point">
-          <h3>🌍 Share & Collaborate</h3>
-          <p>
-            Publish your courses, collaborate with learners, and grow your reach worldwide.
-          </p>
-        </div>
-      </div>
-
-      <!-- Social icons -->
-      <div class="footer-socials">
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-      </div>
-    </div>
-
-    <!-- Right side -->
-    <div class="footer-right">
-      <ul>
-        <li><a href="#">FAQ</a></li>
-        <li><a href="#">Terms of Use</a></li>
-        <li><a href="#">Privacy Policy</a></li>
-      </ul>
-      <ul>
-        <li><a href="#">Cookie Policy</a></li>
-        <li><a href="#">Merch</a></li>
-        <li><a href="#">Support</a></li>
-        <li><a href="#">Community</a></li>
-      </ul>
+      </li>
+    </ul>
+    
+    <!-- Mobile action buttons -->
+    <div class="mobile-menu-buttons">
+      <button
+        class="btn btn-secondary"
+        onclick="openModal('signin'); toggleMobileMenu()"
+      >
+        Sign In
+      </button>
+      <button
+        class="btn btn-primary"
+        onclick="openModal('signup'); toggleMobileMenu()"
+      >
+        Sign Up
+      </button>
     </div>
   </div>
-
-  <div class="footer-bottom">
-    <p>© 2025 CourseCraft. All Rights Reserved.</p>
-  </div>
-</footer>
-
-
-    <div
-      id="signin-modal"
-      class="modal"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="signin-title"
-    >
-      <div class="modal-content">
-        <button
-          class="close-btn"
-          onclick="closeModal('signin')"
-          aria-label="Close sign in modal"
-        >
-          &times;
-        </button>
-        <h2 id="signin-title" class="modal-title">Welcome Back</h2>
-        <div id="signin-success" class="success-message">
-          Welcome back! You've been signed in successfully.
-        </div>
-        <form id="signin-form" onsubmit="handleAuth(event, 'signin')">
-          <div class="form-group">
-            <label for="signin-email">Email</label>
-            <input
-              type="email"
-              id="signin-email"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="signin-password">Password</label>
-            <input
-              type="password"
-              id="signin-password"
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-          <div class="modal-actions">
-            <button type="submit" class="btn btn-primary">Sign In</button>
-          </div>
-        </form>
-        <div class="switch-modal">
-          Don't have an account?
-          <a href="#" onclick="switchModal('signin', 'signup')">Sign up</a>
-        </div>
-      </div>
-    </div>
-
-    <div
-      id="signup-modal"
-      class="modal"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="signup-title"
-    >
-      <div class="modal-content">
-        <button
-          class="close-btn"
-          onclick="closeModal('signup')"
-          aria-label="Close sign up modal"
-        >
-          &times;
-        </button>
-        <h2 id="signup-title" class="modal-title">Start Your Journey</h2>
-        <div id="signup-success" class="success-message">
-          Account created successfully! Welcome to CourseCraft.
-        </div>
-        <form id="signup-form" onsubmit="handleAuth(event, 'signup')">
-          <div class="form-group">
-            <label for="signup-name">Full Name</label>
-            <input
-              type="text"
-              id="signup-name"
-              placeholder="Enter your full name"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="signup-email">Email</label>
-            <input
-              type="email"
-              id="signup-email"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="signup-password">Password</label>
-            <input
-              type="password"
-              id="signup-password"
-              placeholder="Create a password"
-              required
-            />
-          </div>
-          <div class="modal-actions">
-            <button type="submit" class="btn btn-primary">
-              Create Account
+  
+  <!-- Main content area -->
+  <main id="main-content">
+    <!-- Hero section with main value proposition -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <!-- Powered by AI badge -->
+          <div class="powered-by">POWERED BY AI</div>
+          
+          <!-- Main headline -->
+          <h1 class="hero-title">
+            Create <span class="highlight">AI-Powered</span><br />
+            Courses in Minutes
+          </h1>
+          
+          <!-- Value proposition subtitle -->
+          <p class="hero-subtitle">
+            Transform your knowledge into engaging courses with our
+            intelligent course generator. From concept to completion in record
+            time.
+          </p>
+          
+          <!-- Hero call-to-action buttons -->
+          <div class="hero-actions">
+            <button
+              class="btn btn-primary pulse-animation"
+              onclick="openModal('signup')"
+            >
+              Start Creating →
             </button>
+            <a href="#demo" class="btn btn-secondary scroll-link">
+              📺 View Demo
+            </a>
           </div>
-        </form>
-        <div class="switch-modal">
-          Already have an account?
-          <a href="#" onclick="switchModal('signup', 'signin')">Sign in</a>
+          
+          <!-- Social proof statistics -->
+          <div class="stats">
+            <div class="stat-card">
+              <div class="stat-number">10K+</div>
+              <div class="stat-label">Courses Created</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">50K+</div>
+              <div class="stat-label">Students Engaged</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">95%</div>
+              <div class="stat-label">Satisfaction Rate</div>
+            </div>
+          </div>
         </div>
       </div>
+    </section>
+    
+    <!-- Features section explaining how the platform works -->
+    <section class="features-section" id="features-section">
+      <div class="container">
+        <h2>How It Works</h2>
+        
+        <!-- Three-step process explanation -->
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Describe Your Goals</h3>
+            <p>
+              Tell our AI what you want to learn and your specific topics of
+              interest. Be as detailed or general as you like.
+            </p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3>AI Generates Content</h3>
+            <p>
+              Our advanced AI creates comprehensive course materials, finds
+              relevant resources, and designs interactive quizzes.
+            </p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">📚</div>
+            <h3>Start Learning</h3>
+            <p>
+              Access your personalized course immediately. Track progress,
+              take quizzes, and update your learning path anytime.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Interactive demo section -->
+    <section class="demo-section" id="demo">
+      <div class="container">
+        <div class="demo-container">
+          <h2>Make your own Course</h2>
+          <p>
+            Experience the power of AI-generated learning. Describe your ideal
+            course below:
+          </p>
+          
+          <!-- Course generation form -->
+          <form class="demo-form" onsubmit="handleDemo(event)">
+            <!-- Course title input -->
+            <div class="input-group">
+              <label for="courseTitle">Course Title</label>
+              <input
+                type="text"
+                id="courseTitle"
+                placeholder="e.g., Introduction to Machine Learning"
+                required
+              />
+            </div>
+            
+            <!-- Course description textarea -->
+            <div class="input-group">
+              <label for="courseDescription">
+                What do you want to learn?
+              </label>
+              <textarea
+                id="courseDescription"
+                placeholder="Describe the topics, skills, and subtopics you want to cover. Be specific about your learning goals and current level."
+                required
+              ></textarea>
+            </div>
+            
+            <!-- Skill level dropdown -->
+            <div class="input-group">
+              <label for="skillLevel">Skill Level</label>
+              <select id="skillLevel">
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+            </div>
+            
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-large">
+              Generate Course Preview
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <!-- Footer with company information and links -->
+  <footer class="footer" id="about">
+    <div class="footer-container">
+      <!-- Left side with company info and features -->
+      <div class="footer-left">
+        <h2>About CourseCraft</h2>
+        
+        <!-- Company description -->
+        <p class="footer-intro">
+          CourseCraft is an AI-powered platform that helps you transform your knowledge
+          into engaging courses. Whether you want to create your own course or explore
+          others' work, CourseCraft makes learning simple and powerful.
+        </p>
+        
+        <!-- Key features grid -->
+        <div class="footer-points">
+          <div class="point">
+            <h3>🎓 Create Courses</h3>
+            <p>
+              Build your own courses easily with AI — add lessons, quizzes, and multimedia
+              in just a few clicks.
+            </p>
+          </div>
+          
+          <div class="point">
+            <h3>📚 Explore Courses</h3>
+            <p>
+              Browse and learn from a variety of courses already created by other educators
+              and professionals.
+            </p>
+          </div>
+          
+          <div class="point">
+            <h3>⚡ Save Time</h3>
+            <p>
+              Automate structuring and focus on teaching — we handle the heavy lifting.
+            </p>
+          </div>
+          
+          <div class="point">
+            <h3>🌍 Share & Collaborate</h3>
+            <p>
+              Publish your courses, collaborate with learners, and grow your reach worldwide.
+            </p>
+          </div>
+        </div>
+        
+        <!-- Social media links -->
+        <div class="footer-socials">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      
+      <!-- Right side with legal and support links -->
+      <div class="footer-right">
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+        
+        <ul>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">Merch</a></li>
+          <li><a href="#">Support</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
+      </div>
     </div>
-    <script src="latest.js"></script>
-  </body>
+    
+    <!-- Copyright notice -->
+    <div class="footer-bottom">
+      <p>© 2025 CourseCraft. All Rights Reserved.</p>
+    </div>
+  </footer>
+  
+  <!-- Sign In Modal -->
+  <div
+    id="signin-modal"
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="signin-title"
+  >
+    <div class="modal-content">
+      <!-- Close button -->
+      <button
+        class="close-btn"
+        onclick="closeModal('signin')"
+        aria-label="Close sign in modal"
+      >
+        &times;
+      </button>
+      
+      <!-- Modal header -->
+      <h2 id="signin-title" class="modal-title">Welcome Back</h2>
+      
+      <!-- Success message (hidden by default) -->
+      <div id="signin-success" class="success-message">
+        Welcome back! You've been signed in successfully.
+      </div>
+      
+      <!-- Sign in form -->
+      <form id="signin-form" onsubmit="handleAuth(event, 'signin')">
+        <div class="form-group">
+          <label for="signin-email">Email</label>
+          <input
+            type="email"
+            id="signin-email"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="signin-password">Password</label>
+          <input
+            type="password"
+            id="signin-password"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary">Sign In</button>
+        </div>
+      </form>
+      
+      <!-- Switch to sign up link -->
+      <div class="switch-modal">
+        Don't have an account?
+        <a href="#" onclick="switchModal('signin', 'signup')">Sign up</a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Sign Up Modal -->
+  <div
+    id="signup-modal"
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="signup-title"
+  >
+    <div class="modal-content">
+      <!-- Close button -->
+      <button
+        class="close-btn"
+        onclick="closeModal('signup')"
+        aria-label="Close sign up modal"
+      >
+        &times;
+      </button>
+      
+      <!-- Modal header -->
+      <h2 id="signup-title" class="modal-title">Start Your Journey</h2>
+      
+      <!-- Success message (hidden by default) -->
+      <div id="signup-success" class="success-message">
+        Account created successfully! Welcome to CourseCraft.
+      </div>
+      
+      <!-- Sign up form -->
+      <form id="signup-form" onsubmit="handleAuth(event, 'signup')">
+        <div class="form-group">
+          <label for="signup-name">Full Name</label>
+          <input
+            type="text"
+            id="signup-name"
+            placeholder="Enter your full name"
+            required
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="signup-email">Email</label>
+          <input
+            type="email"
+            id="signup-email"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input
+            type="password"
+            id="signup-password"
+            placeholder="Create a password"
+            required
+          />
+        </div>
+        
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary">
+            Create Account
+          </button>
+        </div>
+      </form>
+      
+      <!-- Switch to sign in link -->
+      <div class="switch-modal">
+        Already have an account?
+        <a href="#" onclick="switchModal('signup', 'signin')">Sign in</a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- JavaScript file -->
+  <script src="latest.js"></script>
+</body>
 </html>

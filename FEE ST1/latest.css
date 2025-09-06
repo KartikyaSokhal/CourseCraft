@@ -1,3 +1,8 @@
+/* ========================================
+   CSS VARIABLES & THEME SETUP
+   ======================================== */
+
+/* Default dark theme variables */
 :root {
   --bg-primary: #02021e;
   --bg-secondary: rgba(29, 29, 52, 0.95);
@@ -15,6 +20,7 @@
   --logo-col: black;
 }
 
+/* Light theme overrides - activated when data-theme="light" */
 [data-theme="light"] {
   --bg-primary: #ffffff;
   --bg-secondary: rgba(255, 255, 255, 0.95);
@@ -32,10 +38,16 @@
   --logo-col: white;
 }
 
+/* Special light theme styling for hero title */
 [data-theme="light"] .hero-title {
   color: #030043;
 }
 
+/* ========================================
+   GLOBAL RESET & BASE STYLES
+   ======================================== */
+
+/* Universal box-sizing reset for all elements */
 *,
 *::before,
 *::after {
@@ -44,6 +56,7 @@
   box-sizing: border-box;
 }
 
+/* Body base styles - sets up font family, background, and transitions */
 body {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg-primary);
@@ -54,13 +67,19 @@ body {
   line-height: 1.6;
 }
 
+/* Container utility class for max-width and centering */
 .container {
   max-width: 100%;
   margin: 0 auto;
   padding: 0 20px;
 }
 
-/* Navigation */
+/* ========================================
+   HEADER & NAVIGATION STYLES
+   HTML: <header><nav> with .nav-container
+   ======================================== */
+
+/* Main navigation bar - fixed at top with blur background */
 nav {
   position: fixed;
   top: 0;
@@ -72,6 +91,7 @@ nav {
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
+/* Navigation container - flexbox layout for nav items */
 .nav-container {
   display: flex;
   align-items: center;
@@ -79,13 +99,127 @@ nav {
   padding: 1rem 2rem;
 }
 
+/* Navigation items wrapper */
 .nav-items {
   display: flex;
   align-items: center;
   gap: 2rem;
 }
 
-/* Mobile menu btn styling */
+/* ========================================
+   LOGO & BRAND STYLING
+   HTML: <a class="logo"> with .logo-box
+   ======================================== */
+
+/* Main logo link styling with gradient text */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Logo icon container with gradient background */
+.logo-box {
+  background: linear-gradient(135deg, #9d00ff, #6200ff, #0033ff);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 4px;
+  color: var(--logo-col);
+}
+
+/* SVG icon styling inside logo */
+.logo-svg {
+  color: currentColor;
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+/* Logo hover effect - slight scale up */
+.logo:hover {
+  transform: scale(1.02);
+}
+
+/* Generic logo icon styling */
+.logo-icon {
+  font-size: 1.8rem;
+  color: var(--text-primary);
+}
+
+/* ========================================
+   DESKTOP NAVIGATION LINKS
+   HTML: .nav-center > .nav-links > li > a
+   ======================================== */
+
+/* Center navigation container */
+.nav-center {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+/* Navigation links list */
+.nav-links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 1.5rem;
+}
+
+/* Individual navigation link styling with underline effect */
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.2rem 0;
+  border-radius: 0;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 0;
+}
+
+/* Animated underline effect for nav links */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent-gradient);
+  transition: width 0.3s ease-out;
+}
+
+/* Nav link hover states */
+.nav-links a:hover {
+  color: var(--text-primary);
+  background: none;
+  border: none;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* ========================================
+   MOBILE MENU SYSTEM
+   HTML: .mobile-menu-btn and .mobile-menu
+   ======================================== */
+
+/* Hamburger menu button for mobile - hidden by default */
 .mobile-menu-btn {
   display: none;
   flex-direction: column;
@@ -97,6 +231,7 @@ nav {
   padding: 5px;
 }
 
+/* Hamburger menu lines */
 .mobile-menu-btn span {
   width: 25px;
   height: 3px;
@@ -105,6 +240,7 @@ nav {
   border-radius: 3px;
 }
 
+/* Animated hamburger to X transformation */
 .mobile-menu-btn.active span:nth-child(1) {
   transform: rotate(-45deg) translate(-5px, 6px);
 }
@@ -117,6 +253,7 @@ nav {
   transform: rotate(45deg) translate(-5px, -6px);
 }
 
+/* Mobile menu overlay - full screen sliding menu */
 .mobile-menu {
   display: none;
   position: fixed;
@@ -136,11 +273,13 @@ nav {
   transition: transform 0.4s ease-in-out;
 }
 
+/* Active state shows the mobile menu */
 .mobile-menu.active {
   display: flex;
   transform: translateX(0);
 }
 
+/* Mobile menu navigation links */
 .mobile-menu-links {
   list-style: none;
   text-align: center;
@@ -160,6 +299,7 @@ nav {
   padding: 0.5rem 1rem;
 }
 
+/* Mobile menu buttons container */
 .mobile-menu-buttons {
   display: flex;
   flex-direction: column;
@@ -169,100 +309,19 @@ nav {
   max-width: 300px;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.5rem;
-  font-weight: 800;
-  text-decoration: none;
-  transition: transform 0.3s ease;
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+/* ========================================
+   THEME TOGGLE COMPONENTS
+   HTML: .theme-toggle with .toggle-switch
+   ======================================== */
 
-.logo-box {
-  background: linear-gradient(135deg, #9d00ff, #6200ff, #0033ff);
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  padding: 4px;
-  color: var(--logo-col);
-}
-
-.logo-svg {
-  color: currentColor;
-  fill: currentColor;
-  stroke: currentColor;
-}
-
-.logo:hover {
-  transform: scale(1.02);
-}
-
-.logo-icon {
-  font-size: 1.8rem;
-  color: var(--text-primary);
-}
-
-.nav-center {
-  display: flex;
-  align-items: center;
-  gap: 3rem;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  list-style: none;
-  gap: 1.5rem;
-}
-
-.nav-links a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.2rem 0;
-  border-radius: 0;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  border: 0;
-}
-
-.nav-links a::after {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--accent-gradient);
-  transition: width 0.3s ease-out;
-}
-
-.nav-links a:hover {
-  color: var(--text-primary);
-  background: none;
-  border: none;
-}
-
-.nav-links a:hover::after {
-  width: 100%;
-}
-
+/* Theme toggle container */
 .theme-toggle {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
+/* Theme toggle switch background */
 .toggle-switch {
   position: relative;
   width: 50px;
@@ -274,6 +333,7 @@ nav {
   transition: all 0.3s ease;
 }
 
+/* Theme toggle slider (the moving circle) */
 .toggle-slider {
   position: absolute;
   top: 2px;
@@ -286,16 +346,33 @@ nav {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+/* Light theme - slider moves to right */
 [data-theme="light"] .toggle-slider {
   transform: translateX(25px);
 }
 
+/* Desktop vs mobile theme toggle visibility */
+.theme-toggle-desktop {
+  display: flex;
+}
+
+.theme-toggle-mobile {
+  display: none;
+}
+
+/* ========================================
+   BUTTON STYLES & NAVIGATION ACTIONS
+   HTML: .nav-actions, .btn, .btn-primary, etc.
+   ======================================== */
+
+/* Navigation actions container */
 .nav-actions {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
+/* Button-styled links in navigation */
 .btn-link {
   color: var(--text-secondary);
   text-decoration: none;
@@ -310,6 +387,7 @@ nav {
   background: var(--bg-card-hover);
 }
 
+/* Base button styles - used throughout the site */
 .btn {
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
@@ -327,6 +405,7 @@ nav {
   white-space: nowrap;
 }
 
+/* Primary button variant - gradient background */
 .btn-primary {
   background: var(--accent-gradient);
   color: white;
@@ -338,6 +417,7 @@ nav {
   box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
 }
 
+/* Secondary button variant - outline style */
 .btn-secondary {
   background: var(--bg-card);
   color: var(--text-primary);
@@ -349,6 +429,7 @@ nav {
   border-color: var(--border-hover);
 }
 
+/* Button ripple effect animation */
 .btn .ripple {
   position: absolute;
   background: rgba(255, 255, 255, 0.3);
@@ -359,7 +440,12 @@ nav {
   opacity: 0;
 }
 
-/* Hero Section */
+/* ========================================
+   HERO SECTION STYLES
+   HTML: .hero > .hero-content > .hero-title, etc.
+   ======================================== */
+
+/* Main hero section - full viewport height */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -369,6 +455,7 @@ nav {
   background: var(--bg-primary);
 }
 
+/* Hero content wrapper - centered and animated */
 .hero-content {
   text-align: center;
   max-width: 800px;
@@ -376,6 +463,7 @@ nav {
   animation: fadeInUp 1s ease-out;
 }
 
+/* "Powered by AI" badge above the title */
 .powered-by {
   display: flex;
   align-items: center;
@@ -391,6 +479,7 @@ nav {
   content: "✨";
 }
 
+/* Main hero headline with responsive sizing */
 .hero-title {
   font-size: clamp(3rem, 8vw, 5rem);
   font-weight: 800;
@@ -399,6 +488,7 @@ nav {
   color: white;
 }
 
+/* Highlighted text in hero title with gradient */
 .hero-title .highlight {
   background: linear-gradient(
     130deg,
@@ -413,6 +503,7 @@ nav {
   background-clip: text;
 }
 
+/* Hero subtitle/description text */
 .hero-subtitle {
   font-size: 1.25rem;
   color: var(--text-secondary);
@@ -423,6 +514,7 @@ nav {
   margin-right: auto;
 }
 
+/* Hero call-to-action buttons container */
 .hero-actions {
   display: flex;
   gap: 1rem;
@@ -431,7 +523,12 @@ nav {
   flex-wrap: wrap;
 }
 
-/* Stats Section */
+/* ========================================
+   STATISTICS SECTION
+   HTML: .stats > .stat-card
+   ======================================== */
+
+/* Statistics grid container */
 .stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -440,6 +537,7 @@ nav {
   margin: 0 auto;
 }
 
+/* Individual statistic card */
 .stat-card {
   text-align: center;
   padding: 2rem;
@@ -457,6 +555,7 @@ nav {
   border-color: var(--border-hover);
 }
 
+/* Large number display in stat cards */
 .stat-number {
   font-size: 2.5rem;
   font-weight: 800;
@@ -467,12 +566,18 @@ nav {
   margin-bottom: 0.5rem;
 }
 
+/* Stat description label */
 .stat-label {
   color: var(--text-secondary);
   font-weight: 500;
 }
 
-/* Features & Demo Sections - Consolidated */
+/* ========================================
+   FEATURES & DEMO SECTIONS
+   HTML: .features-section, .demo-section
+   ======================================== */
+
+/* Main content sections - features and demo */
 .features-section,
 .demo-section {
   background: var(--bg-card);
@@ -483,16 +588,19 @@ nav {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Demo section has different padding */
 .demo-section {
   padding: 4rem 0;
 }
 
+/* Dark theme specific styling for sections */
 [data-theme="dark"] .features-section,
 [data-theme="dark"] .demo-section {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Section headings with gradient text */
 .features-section h2,
 .demo-section h2 {
   text-align: center;
@@ -504,6 +612,12 @@ nav {
   background-clip: text;
 }
 
+/* ========================================
+   FEATURES GRID LAYOUT
+   HTML: .feature-grid > .feature-card
+   ======================================== */
+
+/* Features grid container */
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -511,6 +625,7 @@ nav {
   margin-top: 3rem;
 }
 
+/* Individual feature card */
 .feature-card {
   text-align: center;
   padding: 2rem;
@@ -526,6 +641,7 @@ nav {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* Dark theme specific feature card styling */
 [data-theme="dark"] .feature-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -535,6 +651,7 @@ nav {
   background: var(--bg-card-hover);
 }
 
+/* Feature icon with gradient background */
 .feature-icon {
   width: 80px;
   height: 80px;
@@ -548,6 +665,7 @@ nav {
   box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
 }
 
+/* Feature card headings and descriptions */
 .feature-card h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
@@ -558,12 +676,311 @@ nav {
   color: var(--text-secondary);
 }
 
+/* ========================================
+   ANIMATION KEYFRAMES
+   Used throughout the site for various effects
+   ======================================== */
+
+/* Button ripple effect animation */
+@keyframes ripple-effect {
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Loading dots animation for button states */
+@keyframes loadingDots {
+  0%, 20% {
+    content: ".";
+  }
+  40% {
+    content: "..";
+  }
+  60%, 100% {
+    content: "...";
+  }
+}
+
+/* Fade in animation for modals and overlays */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Fade in from bottom animation for content */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide up animation for modal content */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Pulse animation for call-to-action elements */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Utility class for pulse animation */
+.pulse-animation {
+  animation: pulse 2s infinite;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN - TABLET & DESKTOP
+   Breakpoint: 1199px and below
+   ======================================== */
+
+@media (max-width: 1199px) {
+  /* Reduce navigation link spacing on smaller screens */
+  .nav-links {
+    gap: 1rem;
+  }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN - TABLET
+   Breakpoint: 991px and below
+   ======================================== */
+
+@media (max-width: 991px) {
+  /* Hide desktop navigation, show mobile menu */
+  .nav-center,
+  .nav-actions {
+    display: none;
+  }
+  
+  .mobile-menu-btn {
+    display: flex;
+  }
+  
+  .nav-container {
+    padding: 1rem;
+  }
+  
+  /* Adjust hero section spacing */
+  .hero {
+    padding: 120px 0 60px;
+  }
+  
+  /* Reduce section spacing and border radius */
+  .features-section,
+  .demo-section {
+    padding: 3rem 0;
+    margin: 2rem 0;
+    border-radius: 20px;
+  }
+  
+  .feature-grid {
+    gap: 2rem;
+  }
+  
+  .demo-form {
+    padding: 2rem;
+  }
+  
+  /* Switch theme toggle visibility */
+  .theme-toggle-desktop {
+    display: none;
+  }
+  
+  .theme-toggle-mobile {
+    display: block;
+    margin-top: 1rem;
+    text-align: center;
+  }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN - TABLET PORTRAIT
+   Breakpoint: 900px and below
+   ======================================== */
+
+@media (max-width: 900px) {
+  /* Footer becomes single column layout */
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .footer-points {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer-points .point {
+    text-align: center;
+  }
+  
+  .footer-right {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN - MOBILE LANDSCAPE
+   Breakpoint: 768px and below
+   ======================================== */
+
+@media (max-width: 768px) {
+  /* Stack hero buttons vertically */
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Full width buttons on mobile */
+  .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  /* Single column stats layout */
+  .stats {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  /* Single column features layout */
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .feature-card {
+    padding: 1.5rem;
+  }
+  
+  /* Reduce modal padding */
+  .modal-content {
+    padding: 2rem;
+  }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN - MOBILE PORTRAIT
+   Breakpoint: 575px and below
+   ======================================== */
+
+@media (max-width: 575px) {
+  /* Reduce hero text sizes */
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  /* Smaller section headings */
+  .features-section h2,
+  .demo-section h2 {
+    font-size: 2rem;
+  }
+  
+  .powered-by {
+    font-size: 0.8rem;
+  }
+  
+  /* Reduce stat card sizes */
+  .stat-card {
+    padding: 1.5rem;
+  }
+  
+  .stat-number {
+    font-size: 2rem;
+  }
+  
+  /* Smaller demo form */
+  .demo-form {
+    padding: 1.5rem;
+  }
+  
+  /* Adjust mobile menu link sizes */
+  .mobile-menu-links a {
+    font-size: 1.25rem;
+  }
+  
+  /* Smaller navigation elements */
+  .nav-container {
+    padding: 0.75rem;
+  }
+  
+  .logo {
+    font-size: 1.25rem;
+  }
+  
+  .logo-icon {
+    font-size: 1.5rem;
+  }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN - SMALL MOBILE
+   Breakpoint: 400px and below
+   ======================================== */
+
+@media (max-width: 400px) {
+  /* Further reduce text sizes for very small screens */
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .features-section h2,
+  .demo-section h2 {
+    font-size: 1.75rem;
+  }
+  
+  /* Minimal padding for small screens */
+  .feature-card {
+    padding: 1rem;
+  }
+  
+  .modal-content {
+    padding: 1.5rem;
+  }
+}
+
+/* ========================================
+   DEMO SECTION & COURSE GENERATOR
+   HTML: .demo-container > .demo-form
+   ======================================== */
+
+/* Demo section content container */
 .demo-container {
   max-width: 800px;
   margin: 0 auto;
   text-align: center;
 }
 
+/* Demo form styling with enhanced background */
 .demo-form {
   background: var(--bg-card-hover);
   padding: 3rem;
@@ -574,12 +991,18 @@ nav {
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
+/* Dark theme demo form styling */
 [data-theme="dark"] .demo-form {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Form Groups - Consolidated */
+/* ========================================
+   FORM INPUT STYLING
+   HTML: .input-group, .form-group with inputs
+   ======================================== */
+
+/* Form input groups - consolidated styling */
 .input-group,
 .form-group {
   margin-bottom: 2rem;
@@ -590,6 +1013,7 @@ nav {
   margin-bottom: 1.5rem;
 }
 
+/* Form labels */
 .input-group label,
 .form-group label {
   display: block;
@@ -598,6 +1022,7 @@ nav {
   color: var(--text-primary);
 }
 
+/* All form inputs - text, textarea, select */
 .input-group input,
 .input-group textarea,
 .input-group select,
@@ -612,10 +1037,12 @@ nav {
   transition: all 0.3s ease;
 }
 
+/* Smaller padding for form group inputs */
 .form-group input {
   padding: 12px 15px;
 }
 
+/* Input focus states with blue border and glow */
 .input-group input:focus,
 .input-group textarea:focus,
 .input-group select:focus,
@@ -625,12 +1052,18 @@ nav {
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
+/* Textarea specific styling */
 .input-group textarea {
   resize: vertical;
   min-height: 120px;
 }
 
-/* Modal Styles */
+/* ========================================
+   MODAL SYSTEM STYLES
+   HTML: .modal > .modal-content
+   ======================================== */
+
+/* Modal overlay - full screen background */
 .modal {
   display: none;
   position: fixed;
@@ -644,12 +1077,14 @@ nav {
   animation: fadeIn 0.3s ease-out;
 }
 
+/* Active modal state */
 .modal.active {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/* Modal content box */
 .modal-content {
   background: var(--bg-secondary);
   border-radius: 20px;
@@ -662,6 +1097,7 @@ nav {
   position: relative;
 }
 
+/* Modal close button */
 .close-btn {
   position: absolute;
   top: 1rem;
@@ -678,6 +1114,7 @@ nav {
   color: var(--text-primary);
 }
 
+/* Modal titles */
 .modal-title {
   font-size: 1.5rem;
   font-weight: 700;
@@ -686,11 +1123,13 @@ nav {
   color: var(--text-primary);
 }
 
+/* Modal action buttons container */
 .modal-actions {
   margin-top: 2rem;
   text-align: center;
 }
 
+/* Switch between modals link */
 .switch-modal {
   margin-top: 1.5rem;
   text-align: center;
@@ -707,6 +1146,7 @@ nav {
   text-decoration: underline;
 }
 
+/* Form toggle between signin/signup */
 .form-toggle {
   display: flex;
   background: var(--bg-card);
@@ -738,7 +1178,11 @@ nav {
   color: var(--text-primary);
 }
 
-/* Loading state for button */
+/* ========================================
+   LOADING STATES & SUCCESS MESSAGES
+   ======================================== */
+
+/* Button loading state */
 .btn-loading {
   opacity: 0.8;
   cursor: not-allowed;
@@ -750,7 +1194,7 @@ nav {
   animation: loadingDots 1.5s infinite steps(1, end);
 }
 
-/* Success message */
+/* Success message styling */
 .success-message {
   background: rgba(34, 197, 94, 0.2);
   border: 1px solid rgba(34, 197, 94, 0.3);
@@ -767,13 +1211,19 @@ nav {
   animation: fadeInUp 0.3s ease-out;
 }
 
-/* Footer */
+/* ========================================
+   FOOTER SECTION STYLES
+   HTML: .footer > .footer-container
+   ======================================== */
+
+/* Main footer section */
 .footer {
   background: var(--bg-card);
   color: var(--text-primary);
   padding: 4rem 2rem;
 }
 
+/* Footer content grid layout */
 .footer-container {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -782,6 +1232,7 @@ nav {
   margin: auto;
 }
 
+/* Footer left side - company info */
 .footer-left h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -791,6 +1242,7 @@ nav {
   background-clip: text;
 }
 
+/* Company description text */
 .footer-intro {
   color: var(--text-secondary);
   margin-bottom: 2rem;
@@ -798,6 +1250,7 @@ nav {
   font-size: 1.1rem;
 }
 
+/* Footer feature points grid */
 .footer-points {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -830,6 +1283,7 @@ nav {
   line-height: 1.6;
 }
 
+/* Social media icons */
 .footer-socials {
   margin-top: 1rem;
 }
@@ -845,6 +1299,7 @@ nav {
   color: var(--accent-color);
 }
 
+/* Footer right side - legal links */
 .footer-right {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -870,253 +1325,53 @@ nav {
   color: var(--text-primary);
 }
 
+/* Footer bottom copyright */
 .footer-bottom {
   text-align: center;
   margin-top: 2rem;
   border-top: 1px solid var(--border-color);
   padding-top: 1rem;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
+  font-size: 0.9rem;  
+  color: var(--text-muted);
 }
 
-/* Theme Toggle */
-.theme-toggle-desktop {
-  display: flex;
-}
+/* ========================= */
+/* RESPONSIVE STYLES */
+/* ========================= */
 
-.theme-toggle-mobile {
-  display: none;
-}
-
-/* Animations */
-@keyframes ripple-effect {
-  to {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
-
-@keyframes loadingDots {
-  0%, 20% {
-    content: ".";
-  }
-  40% {
-    content: "..";
-  }
-  60%, 100% {
-    content: "...";
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(50px) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-}
-
-.pulse-animation {
-  animation: pulse 2s infinite;
-}
-
-/* Responsive Design */
-@media (max-width: 1199px) {
-  .nav-links {
-    gap: 1rem;
-  }
-}
-
-@media (max-width: 991px) {
-  .nav-center,
-  .nav-actions {
-    display: none;
-  }
-  
-  .mobile-menu-btn {
-    display: flex;
-  }
-  
-  .nav-container {
-    padding: 1rem;
-  }
-  
-  .hero {
-    padding: 120px 0 60px;
-  }
-  
-  .features-section,
-  .demo-section {
-    padding: 3rem 0;
-    margin: 2rem 0;
-    border-radius: 20px;
-  }
-  
-  .feature-grid {
-    gap: 2rem;
-  }
-  
-  .demo-form {
-    padding: 2rem;
-  }
-  
-  .theme-toggle-desktop {
-    display: none;
-  }
-  
-  .theme-toggle-mobile {
-    display: block;
-    margin-top: 1rem;
-    text-align: center;
-  }
-}
-
+/* Tablets (<= 900px) */
 @media (max-width: 900px) {
   .footer-container {
-    grid-template-columns: 1fr;
-    text-align: center;
+    grid-template-columns: 1fr; /* stack left & right */
+    gap: 2rem;
   }
-  
-  .footer-points {
-    grid-template-columns: 1fr;
-  }
-  
-  .footer-points .point {
-    text-align: center;
-  }
-  
+
   .footer-right {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr; /* keep 2 columns for links */
+    justify-content: center;
   }
 }
 
-@media (max-width: 768px) {
-  .hero-actions {
-    flex-direction: column;
-    align-items: center;
+/* Mobile (<= 600px) */
+@media (max-width: 600px) {
+  .footer-points {
+    grid-template-columns: 1fr; /* stack feature points */
   }
-  
-  .btn {
-    width: 100%;
-    max-width: 300px;
-  }
-  
-  .stats {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .feature-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .feature-card {
-    padding: 1.5rem;
-  }
-  
-  .modal-content {
-    padding: 2rem;
-  }
-}
 
-@media (max-width: 575px) {
-  .hero-title {
-    font-size: 2.5rem;
+  .footer-right {
+    grid-template-columns: 1fr; /* single column for links */
+    text-align: center;
   }
-  
-  .hero-subtitle {
+
+  .footer-socials {
+    text-align: center;
+  }
+
+  .footer-left h2 {
+    font-size: 1.6rem;
+  }
+
+  .footer-intro {
     font-size: 1rem;
-  }
-  
-  .features-section h2,
-  .demo-section h2 {
-    font-size: 2rem;
-  }
-  
-  .powered-by {
-    font-size: 0.8rem;
-  }
-  
-  .stat-card {
-    padding: 1.5rem;
-  }
-  
-  .stat-number {
-    font-size: 2rem;
-  }
-  
-  .demo-form {
-    padding: 1.5rem;
-  }
-  
-  .mobile-menu-links a {
-    font-size: 1.25rem;
-  }
-  
-  .nav-container {
-    padding: 0.75rem;
-  }
-  
-  .logo {
-    font-size: 1.25rem;
-  }
-  
-  .logo-icon {
-    font-size: 1.5rem;
-  }
-}
-
-@media (max-width: 400px) {
-  .hero-title {
-    font-size: 2rem;
-  }
-  
-  .hero-subtitle {
-    font-size: 0.9rem;
-  }
-  
-  .features-section h2,
-  .demo-section h2 {
-    font-size: 1.75rem;
-  }
-  
-  .feature-card {
-    padding: 1rem;
-  }
-  
-  .modal-content {
-    padding: 1.5rem;
   }
 }
