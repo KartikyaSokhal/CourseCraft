@@ -2,14 +2,24 @@
 
 CourseCraft is an AI-powered course generation and adaptive learning platform built with Django REST Framework, React, and Google Gemini AI.
 
-## Architecture Stack
+## Project Structure
 
-- **Backend**: Python 3.12+ / Django 5.x / Django REST Framework
-- **Frontend**: React (Vite) Single Page Application
-- **Database**: SQLite (local development) / PostgreSQL (production)
-- **Authentication**: JWT (JSON Web Tokens via `rest_framework_simplejwt`) with role-based access control (`ADMIN` vs `STUDENT`)
-- **AI Engine**: Google Gemini API (`gemini-3.6-flash`) with Feynman technique evaluation
-- **Security**: Server-enforced content locking, HTML DOMPurify sanitization, environment secret isolation, and strict role permissions
+```text
+CourseCraft/
+├── README.md
+├── docs/
+│   ├── project-audit-summary.md
+│   └── implementation-notes.md
+└── ai-academy/
+    ├── backend/
+    ├── core/
+    ├── ai-academy-react/
+    ├── manage.py
+    ├── requirements.txt
+    ├── build.sh
+    ├── .env.example
+    └── .gitignore
+```
 
 ---
 
@@ -17,14 +27,14 @@ CourseCraft is an AI-powered course generation and adaptive learning platform bu
 
 ### 1. Environment Configuration
 
-Clone the repository and set up environment variables:
+Copy the example environment configuration to `.env`:
 
 ```bash
 cd ai-academy
 cp .env.example .env
 ```
 
-Open `ai-academy/.env` and configure your local settings:
+Configure environment variables in `ai-academy/.env`:
 
 ```env
 SECRET_KEY=your_local_development_secret_key
@@ -38,13 +48,11 @@ YOUTUBE_API_KEY=your_youtube_api_key
 Create and activate a virtual environment, install backend dependencies, and run database migrations:
 
 ```bash
-cd ai-academy
-
-# Create virtual environment
+# Create virtual environment inside ai-academy
 python3 -m venv venv
 source venv/bin/activate
 
-# Install dependencies
+# Install requirements
 pip install -r requirements.txt
 
 # Run database migrations
@@ -53,11 +61,13 @@ python manage.py migrate
 
 ### 3. Create / Promote Admin User (`promote_admin`)
 
-To bootstrap an admin user safely (idempotent, never prints secrets):
+To bootstrap an admin user safely (securely prompts for password via `getpass`; never prints secrets):
 
 ```bash
-python manage.py promote_admin --username admin --password "YourAdminPassword123!" --is-superuser
+python manage.py promote_admin --username admin --is-superuser
 ```
+
+> **Automation Note**: Non-interactive flag `--password <pass>` is supported for automated CI environments only. Avoid using `--password` manually to keep credentials out of shell history.
 
 ### 4. Start Backend Server
 
@@ -85,7 +95,14 @@ The React SPA frontend will run at `http://localhost:5173`.
 
 ## Verification & Testing
 
-### Backend Unit Tests (26 Tests)
+### Django System Check
+
+```bash
+cd ai-academy
+python manage.py check
+```
+
+### Backend Unit Tests (28 Tests)
 
 ```bash
 cd ai-academy
@@ -98,18 +115,3 @@ python manage.py test core -v2
 cd ai-academy/ai-academy-react
 npm run build
 ```
-
----
-
-## End-to-End Student Progression Flow
-
-1. **Admin Workflow**:
-   - Log in as an `ADMIN` user.
-   - Generate or create a multi-module course (`CONTENT` and `ASSESSMENT` types).
-   - Set status to `PUBLISHED`.
-2. **Student Workflow**:
-   - Log in as a `STUDENT` user.
-   - Module 1 (`order = 1`) is unlocked (`is_locked = False`); lesson content is viewable.
-   - Module 2 (`order = 2`) is locked (`is_locked = True`); lesson content and quiz data are hidden server-side.
-   - Complete Module 1 assessment / Feynman challenge.
-   - Student view refetches course payload; Module 2 automatically unlocks (`is_locked = False`).

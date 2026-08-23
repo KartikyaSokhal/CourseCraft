@@ -1,3 +1,4 @@
+import getpass
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User
 from core.models import Profile
@@ -18,7 +19,7 @@ class Command(BaseCommand):
             type=str,
             required=False,
             default=None,
-            help='Password for new user creation (optional; never printed).'
+            help='Non-interactive password for automated environments/testing only. Never recommended for manual use.'
         )
         parser.add_argument(
             '--email',
@@ -42,23 +43,33 @@ class Command(BaseCommand):
         if not username:
             raise CommandError('Username cannot be empty.')
 
-        user, created = User.objects.get_or_create(
-            username=username,
-            defaults={'email': email}
-        )
+        user_exists = User.objects.filter(username=username).exists()
 
-        if created:
-            if password:
-                user.set_password(password)
-            else:
-                user.set_unusable_password()
+        if not user_exists:
+            if not password:
+                p1 = getpass.getpass('Enter password for new admin user: ')
+                if not p1 or not p1.strip():
+                    raise CommandError('Password cannot be empty.')
+                p2 = getpass.getpass('Confirm password: ')
+                if p1 != p2:
+                    raise CommandError('Passwords do not match.')
+                password = p1
+            elif not password.strip():
+                raise CommandError('Password cannot be empty.')
+
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+            )
             if make_superuser:
                 user.is_staff = True
                 user.is_superuser = True
-            user.save()
+                user.save()
             self.stdout.write(self.style.SUCCESS(f"Created new Django user '{username}'."))
         else:
-            if make_superuser:
+            user = User.objects.get(username=username)
+            if make_superuser and not (user.is_staff and user.is_superuser):
                 user.is_staff = True
                 user.is_superuser = True
                 user.save()

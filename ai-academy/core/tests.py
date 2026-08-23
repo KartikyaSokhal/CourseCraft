@@ -422,37 +422,66 @@ class StudentProgressionAndLockingTests(BaseTestCase):
         )
 
 
-from django.core.management import call_command
+from django.core.management import call_command, CommandError
 from io import StringIO
 
 class PromoteAdminCommandTests(TestCase):
     """Tests for the promote_admin management command."""
 
-    def test_promote_admin_creates_new_admin_user(self):
-        """Command creates a new user and grants ADMIN profile role idempotently."""
+    @patch('getpass.getpass', side_effect=['SecurePass123!', 'SecurePass123!'])
+    def test_promote_admin_interactive_creates_new_admin_user(self, mock_getpass):
+        """Interactive new user creation prompts for password twice via getpass."""
         out = StringIO()
-        call_command('promote_admin', username='cmd_admin_new', password='PassSecret123!', stdout=out)
+        call_command('promote_admin', username='cmd_interactive_admin', stdout=out)
         output = out.getvalue()
 
-        user = User.objects.get(username='cmd_admin_new')
-        self.assertTrue(user.check_password('PassSecret123!'))
+        user = User.objects.get(username='cmd_interactive_admin')
+        self.assertTrue(user.check_password('SecurePass123!'))
         self.assertEqual(user.profile.role, Profile.Role.ADMIN)
-        self.assertIn("Created new Django user 'cmd_admin_new'", output)
-        self.assertNotIn("PassSecret123!", output)
+        self.assertEqual(mock_getpass.call_count, 2)
+        self.assertIn("Created new Django user 'cmd_interactive_admin'", output)
+        self.assertNotIn("SecurePass123!", output)
 
-    def test_promote_admin_promotes_existing_student_user(self):
-        """Command promotes an existing student user profile to ADMIN role."""
-        student = User.objects.create_user(username='cmd_student_exist', password='StudentPass123!')
+    @patch('getpass.getpass', side_effect=['PassOne123!', 'PassTwoMismatch!'])
+    def test_promote_admin_rejects_password_mismatch(self, mock_getpass):
+        """Command raises CommandError if interactive passwords do not match."""
+        with self.assertRaises(CommandError) as cm:
+            call_command('promote_admin', username='cmd_mismatch_user')
+        self.assertIn('Passwords do not match', str(cm.exception))
+
+    @patch('getpass.getpass', side_effect=['', ''])
+    def test_promote_admin_rejects_empty_password(self, mock_getpass):
+        """Command raises CommandError if password is empty."""
+        with self.assertRaises(CommandError) as cm:
+            call_command('promote_admin', username='cmd_empty_pass_user')
+        self.assertIn('Password cannot be empty', str(cm.exception))
+
+    @patch('getpass.getpass')
+    def test_promote_admin_existing_user_no_password_prompt(self, mock_getpass):
+        """Existing user promotion does not prompt for password or alter existing credentials."""
+        student = User.objects.create_user(username='cmd_existing_student', password='OriginalPassword123!')
         Profile.objects.create(user=student, role=Profile.Role.STUDENT)
 
         out = StringIO()
-        call_command('promote_admin', username='cmd_student_exist', stdout=out)
+        call_command('promote_admin', username='cmd_existing_student', stdout=out)
         output = out.getvalue()
 
+        mock_getpass.assert_not_called()
         student.profile.refresh_from_db()
         self.assertEqual(student.profile.role, Profile.Role.ADMIN)
-        self.assertIn("Promoted user 'cmd_student_exist' to ADMIN role", output)
-        self.assertNotIn("StudentPass123!", output)
+        self.assertTrue(student.check_password('OriginalPassword123!'))
+        self.assertIn("User 'cmd_existing_student' already exists", output)
+
+    def test_promote_admin_non_interactive_flag(self):
+        """Automation mode using --password creates admin non-interactively without printing secrets."""
+        out = StringIO()
+        call_command('promote_admin', username='cmd_automation_admin', password='AutomatedPass123!', stdout=out)
+        output = out.getvalue()
+
+        user = User.objects.get(username='cmd_automation_admin')
+        self.assertTrue(user.check_password('AutomatedPass123!'))
+        self.assertEqual(user.profile.role, Profile.Role.ADMIN)
+        self.assertNotIn("AutomatedPass123!", output)
 
 
 class RoleBasedGenerationAccessTests(BaseTestCase):
