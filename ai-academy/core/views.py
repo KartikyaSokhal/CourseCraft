@@ -830,7 +830,7 @@ class QuizSubmissionAPIView(APIView):
         if passed:
             UserProgress.objects.update_or_create(
                 user=request.user, module=module,
-                defaults={'is_completed': True, 'completed_at': timezone.now()}
+                defaults={'course': module.course, 'is_completed': True, 'completed_at': timezone.now()}
             )
 
         return Response({

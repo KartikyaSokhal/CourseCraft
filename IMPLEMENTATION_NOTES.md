@@ -1,4 +1,10 @@
-# Implementation Notes — Pre-Deployment Fixes & Environment Hardening
+# Implementation Notes — Content Locking & Student Progression Enforcement
+
+## Overview of Changes
+
+This update enforces API-level content locking for student course navigation, verifies student progress progression, and synchronizes the frontend learning viewer when assessments/challenges are completed.
+
+---
 
 ## Changed Files
 
@@ -6,67 +12,82 @@
 
 | File | Changes |
 |---|---|
-| `backend/settings.py` | Loaded `ai-academy/.env` via `python-dotenv` (`load_dotenv`) before reading `SECRET_KEY` and environment configuration. `SECRET_KEY` required in all environments (raises `ImproperlyConfigured` if missing). Updated `CORS_ALLOWED_ORIGINS` to parse comma-separated env values cleanly (trimming whitespace and filtering empty strings) while preserving local dev origins (`localhost:5173`, `127.0.0.1:5173`). Removed `"null"` origin. |
-| `core/serializers.py` | Added `StudentQuestionSerializer` (excludes `correct_answer`), `StudentQuizSerializer`, `StudentModuleSerializer`, `StudentCourseDetailSerializer`. Existing admin serializers unchanged. |
-| `core/views.py` | `CourseGenerateAPIView`: permission restricted to `[IsAuthenticated, IsAdminUser]`. `CourseDetailAPIView` and `ModuleDetailAPIView`: permissions restricted to `[IsAuthenticated, IsAdminOrReadOnly]`. Added `get_serializer_class()` to `CourseDetailAPIView` and `CourseListAPIView` for role-based serializer selection. Added `context={'request': request}` to `generate_single_module` serializer response. |
-| `core/tests.py` | Added `BaseTestCase` (creates admin/student users with `Profile` roles and JWT auth), `AuthorizationTests` (8 tests), `QuizAnswerProtectionTests` (4 tests), and `SettingsHardeningTests` (2 tests: comma-separated CORS parsing and `.env` `load_dotenv` verification). All AI calls mocked. |
-| `.env.example` | Template file with placeholder variable names only (no real secrets). |
+| `core/serializers.py` | Updated `StudentModuleSerializer`: when a module is locked (`is_locked=True`), returns sidebar metadata (`id`, `title`, `order`, `module_type`, `is_locked`, `is_completed`) but suppresses `lessons` (`[]`) and `quiz` (`None`). Unlocked modules return full student-safe lessons and quiz questions (without `correct_answer`). Admin serializers (`CourseDetailSerializer` / `ModuleSerializer`) remain unchanged and return full editable content. |
+| `core/views.py` | Fixed `QuizSubmissionAPIView`: added `course=module.course` to `UserProgress.objects.update_or_create` defaults to prevent `IntegrityError` on non-null `course_id`. |
+| `core/tests.py` | Added `StudentProgressionAndLockingTests` (5 tests): verifies first module access, locked content suppression in course detail API, module unlocking upon quiz/progress completion, direct module detail 403 locking behavior, and quiz grading progress recording. Total 19 tests in suite. All AI/external services mocked. |
+| `backend/settings.py` | Loaded `ai-academy/.env` via `python-dotenv` (`load_dotenv`) before reading `SECRET_KEY`. Enforced `SECRET_KEY` presence (`ImproperlyConfigured`). Parsed comma-separated `CORS_ALLOWED_ORIGINS`. |
+| `.env.example` | Environment template file with placeholder names. |
 
 ### Frontend (`ai-academy/ai-academy-react/`)
 
 | File | Changes |
 |---|---|
-| `src/services/api.jsx` | Added `submitQuiz(moduleId, answers)` and `submitExplanation(lessonId, transcript)` exported functions using centralized `apiFetch` with correct `accessToken`. |
-| `src/components/student/StudentQuizView.jsx` | Replaced hardcoded `http://127.0.0.1:8000/api/` fetch and `localStorage.getItem('access_token')` with imported `submitQuiz` from `api.jsx`. |
-| `src/components/student/LessonContent.jsx` | Replaced hardcoded localhost fetch and wrong token key with imported `submitExplanation` from `api.jsx`. Added `DOMPurify` import. `createMarkup()` sanitizes HTML with strict educational allowlist. Renamed local function to `handleSubmitExplanation`. |
-| `package.json` | Added `dompurify` dependency. |
-| `package-lock.json` | Updated with dompurify lockfile entries. |
+| `src/pages/StudentDashboard.jsx` | Passed `onRefreshCourse={() => handleViewCourse(selectedCourse.id)}` prop to `<CourseViewer />` so course state is refetched from backend upon assessment completion. |
+| `src/components/student/CourseViewer.jsx` | Updated `allItems` calculation to generate `{ type: 'locked', module: module }` items for locked modules. Rendered clear student lock message card when a locked module item is selected. Passed `onRefreshCourse` as `onComplete` to `StudentQuizView` (with `moduleId`) and `LessonContent`. |
+| `src/components/student/CourseSidebar.jsx` | Added clear lock indicator message under locked module headers and enabled selecting locked modules to view the student lock explanation card. |
+| `src/components/student/LessonContent.jsx` | Triggered `onComplete()` when Feynman explanation challenge passes (`is_passed=True`) to trigger course refetch. |
+| `src/components/student/StudentQuizView.jsx` | Standardized API call using `submitQuiz` helper from `api.jsx` with `onComplete()` trigger on pass. |
 
-## Security Fixes & Environment Hardening Applied
+---
 
-1. **Environment Loading & Secret Hardening**: `load_dotenv(dotenv_path=BASE_DIR / '.env')` loads `.env` variables before reading settings. `SECRET_KEY` fails hard (`ImproperlyConfigured`) if missing in any environment. No secrets are logged or committed.
+## Content Locking & Progression Mechanics
 
-2. **CORS Parsing**: Comma-separated `CORS_ALLOWED_ORIGINS` environment variables are split, stripped of whitespace, filtered for empty values, and merged with local dev origins (`http://localhost:5173`, `http://127.0.0.1:5173`). `"null"` and wildcard origins are disallowed.
+1. **API Content Protection (Server-Enforced)**:
+   - Module `order=1` is unlocked by default for authenticated students.
+   - Subsequent modules (`order > 1`) check if the preceding module has a `UserProgress(is_completed=True)` entry for the requesting student.
+   - For locked modules, `StudentModuleSerializer` returns `is_locked=True`, `lessons=[]`, and `quiz=null`, preventing locked lesson text, video IDs, or quiz questions from leaking in the `GET /api/courses/<id>/` response payload.
 
-3. **Authorization Hardening**: Students blocked server-side from `POST /api/courses/generate/`, `PUT/PATCH/DELETE` on `/api/courses/<id>/`, and `PUT/PATCH/DELETE` on `/api/modules/<id>/`.
+2. **Progression Flow & State Refresh**:
+   - Submitting a passing quiz (`POST /api/modules/<id>/submit-quiz/`) or passing a Feynman explanation (`POST /api/lessons/<id>/explain/`) creates/updates `UserProgress(is_completed=True)`.
+   - On pass, the component triggers `onComplete()` which invokes `handleViewCourse(courseId)`.
+   - The newly fetched course response dynamically evaluates module lock status; the next module returns `is_locked=False` along with its lessons/quiz data.
 
-4. **Quiz Answer Protection**: Student API responses use `StudentCourseDetailSerializer` → `StudentModuleSerializer` → `StudentQuizSerializer` → `StudentQuestionSerializer` chain omitting `correct_answer`. Admin responses retain editing access with `correct_answer`.
+3. **Student Lock UI Message**:
+   - Selecting a locked module in the viewer or sidebar displays a non-technical notification card:
+     > 🔒 **[Module Title] is Locked**  
+     > Complete the previous module's assessment or Feynman challenge to unlock this content and continue your learning path.
 
-5. **Frontend API Consistency**: Standardized on `accessToken` localStorage key. All API calls route through `api.jsx` with `VITE_API_URL` support.
-
-6. **XSS Protection**: AI-generated lesson HTML sanitized via DOMPurify before `dangerouslySetInnerHTML` rendering. Allowlist limited to text and table formatting tags (no `img`, `script`, `style`, `iframe`, `form`, `input`, `embed`, or event handlers).
+---
 
 ## Verification Commands Run
 
 ```bash
-# Backend tests (14/14 passed)
+# Backend test suite (19/19 tests passed)
 SECRET_KEY="test-secret-key-for-ci-only" ./venv/bin/python manage.py test core -v2
 
-# Frontend reproducible install + build (succeeded)
+# Frontend clean install + production build (succeeded)
 cd ai-academy/ai-academy-react && npm ci && npm run build
 ```
+
+---
 
 ## Test Results
 
 ```
-test_admin_can_access_generate_endpoint (core.tests.AuthorizationTests.test_admin_can_access_generate_endpoint) ... ok
-test_admin_can_delete_course (core.tests.AuthorizationTests.test_admin_can_delete_course) ... ok
-test_admin_can_update_course (core.tests.AuthorizationTests.test_admin_can_update_course) ... ok
-test_student_cannot_delete_course (core.tests.AuthorizationTests.test_student_cannot_delete_course) ... ok
-test_student_cannot_delete_module (core.tests.AuthorizationTests.test_student_cannot_delete_module) ... ok
-test_student_cannot_generate_course (core.tests.AuthorizationTests.test_student_cannot_generate_course) ... ok
-test_student_cannot_update_course (core.tests.AuthorizationTests.test_student_cannot_update_course) ... ok
-test_student_cannot_update_module (core.tests.AuthorizationTests.test_student_cannot_update_module) ... ok
-test_admin_course_detail_shows_correct_answer (core.tests.QuizAnswerProtectionTests.test_admin_course_detail_shows_correct_answer) ... ok
-test_student_can_read_published_course (core.tests.QuizAnswerProtectionTests.test_student_can_read_published_course) ... ok
-test_student_course_detail_hides_correct_answer (core.tests.QuizAnswerProtectionTests.test_student_course_detail_hides_correct_answer) ... ok
-test_student_course_list_hides_correct_answer (core.tests.QuizAnswerProtectionTests.test_student_course_list_hides_correct_answer) ... ok
-test_cors_allowed_origins_parsing (core.tests.SettingsHardeningTests.test_cors_allowed_origins_parsing) ... ok
-test_load_dotenv_from_file (core.tests.SettingsHardeningTests.test_load_dotenv_from_file) ... ok
+test_admin_can_access_generate_endpoint (core.tests.AuthorizationTests) ... ok
+test_admin_can_delete_course (core.tests.AuthorizationTests) ... ok
+test_admin_can_update_course (core.tests.AuthorizationTests) ... ok
+test_student_cannot_delete_course (core.tests.AuthorizationTests) ... ok
+test_student_cannot_delete_module (core.tests.AuthorizationTests) ... ok
+test_student_cannot_generate_course (core.tests.AuthorizationTests) ... ok
+test_student_cannot_update_course (core.tests.AuthorizationTests) ... ok
+test_student_cannot_update_module (core.tests.AuthorizationTests) ... ok
+test_admin_course_detail_shows_correct_answer (core.tests.QuizAnswerProtectionTests) ... ok
+test_student_can_read_published_course (core.tests.QuizAnswerProtectionTests) ... ok
+test_student_course_detail_hides_correct_answer (core.tests.QuizAnswerProtectionTests) ... ok
+test_student_course_list_hides_correct_answer (core.tests.QuizAnswerProtectionTests) ... ok
+test_cors_allowed_origins_parsing (core.tests.SettingsHardeningTests) ... ok
+test_load_dotenv_from_file (core.tests.SettingsHardeningTests) ... ok
+test_direct_module_detail_locking_behavior_preserved (core.tests.StudentProgressionAndLockingTests) ... ok
+test_quiz_submission_grades_and_records_progress (core.tests.StudentProgressionAndLockingTests) ... ok
+test_student_can_access_first_module_content (core.tests.StudentProgressionAndLockingTests) ... ok
+test_student_cannot_obtain_locked_module_content_via_course_detail (core.tests.StudentProgressionAndLockingTests) ... ok
+test_submitting_passing_quiz_unlocks_next_module (core.tests.StudentProgressionAndLockingTests) ... ok
 
-Ran 14 tests in 3.958s — OK
+----------------------------------------------------------------------
+Ran 19 tests in 5.463s — OK
 ```
 
 ## Failed Verification
 
-None. All 14 backend tests pass. React Vite build succeeds cleanly.
+None. All 19 backend tests pass. React Vite production build succeeds cleanly.

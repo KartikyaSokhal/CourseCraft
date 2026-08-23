@@ -4,7 +4,7 @@ import DOMPurify from 'dompurify';
 import { submitExplanation } from '../../services/api.jsx';
 import MCQForm from './MCQForm';
 
-function LessonContent({ lesson, courseId, onNextLesson, isLastLesson }) {
+function LessonContent({ lesson, courseId, onNextLesson, isLastLesson, onComplete }) {
   const [activeStep, setActiveStep] = useState(0);
 
   // --- Speech-to-Text State ---
@@ -107,6 +107,9 @@ function LessonContent({ lesson, courseId, onNextLesson, isLastLesson }) {
     try {
       const data = await submitExplanation(lesson.id, transcriptText);
       setAiResult(data.data);
+      if (data.data && data.data.is_passed && onComplete) {
+        onComplete();
+      }
     } catch (error) {
       if (error.message && error.message.includes('429')) {
         alert("❄️ AI is cooling down. Please wait 30 seconds.");

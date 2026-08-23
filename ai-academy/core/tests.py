@@ -277,3 +277,86 @@ class SettingsHardeningTests(TestCase):
                 if orig_secret is not None:
                     os.environ['SECRET_KEY'] = orig_secret
 
+
+class StudentProgressionAndLockingTests(BaseTestCase):
+    """Tests for student course content locking, progress enforcement, and unlocking flow."""
+
+    def test_student_can_access_first_module_content(self):
+        """Student can access lessons and content in module order = 1."""
+        resp = self.student_client.get(f'/api/courses/{self.course.id}/')
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+
+        modules = resp.data.get('modules', [])
+        self.assertGreaterEqual(len(modules), 2)
+        
+        first_mod = modules[0]
+        self.assertEqual(first_mod['order'], 1)
+        self.assertFalse(first_mod['is_locked'])
+        self.assertGreater(len(first_mod['lessons']), 0)
+        self.assertEqual(first_mod['lessons'][0]['title'], 'Lesson 1')
+
+    def test_student_cannot_obtain_locked_module_content_via_course_detail(self):
+        """Locked module (order = 2) returns metadata but lessons=[] and quiz=None."""
+        resp = self.student_client.get(f'/api/courses/{self.course.id}/')
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+
+        modules = resp.data.get('modules', [])
+        second_mod = modules[1]
+        self.assertEqual(second_mod['order'], 2)
+        self.assertTrue(second_mod['is_locked'])
+
+        # Metadata MUST be returned for sidebar
+        self.assertIn('id', second_mod)
+        self.assertIn('title', second_mod)
+        self.assertIn('order', second_mod)
+        self.assertIn('module_type', second_mod)
+
+        # Content MUST NOT be exposed
+        self.assertEqual(second_mod['lessons'], [])
+        self.assertIsNone(second_mod['quiz'])
+
+    def test_submitting_passing_quiz_unlocks_next_module(self):
+        """Submitting passing quiz on module 2 (or completing module 1 via quiz) unlocks next module."""
+        # 1. Verify module 2 is locked before completion
+        resp_before = self.student_client.get(f'/api/courses/{self.course.id}/')
+        self.assertTrue(resp_before.data['modules'][1]['is_locked'])
+
+        # 2. Mark module 1 as completed via UserProgress
+        UserProgress.objects.create(
+            user=self.student_user,
+            course=self.course,
+            module=self.content_module,
+            is_completed=True
+        )
+
+        # 3. Newly fetched course response shows module 2 as UNLOCKED with quiz content
+        resp_after = self.student_client.get(f'/api/courses/{self.course.id}/')
+        self.assertEqual(resp_after.status_code, status.HTTP_200_OK)
+        second_mod = resp_after.data['modules'][1]
+        self.assertFalse(second_mod['is_locked'])
+        self.assertIsNotNone(second_mod['quiz'])
+        self.assertGreater(len(second_mod['quiz']['questions']), 0)
+
+    def test_direct_module_detail_locking_behavior_preserved(self):
+        """Direct GET /api/modules/<locked_id>/ as student returns 403 Forbidden."""
+        resp = self.student_client.get(f'/api/modules/{self.assess_module.id}/')
+        self.assertEqual(resp.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(resp.data.get('error'), 'LOCKED')
+
+    def test_quiz_submission_grades_and_records_progress(self):
+        """Submitting correct answers to POST /api/modules/<id>/submit-quiz/ passes and marks progress."""
+        resp = self.student_client.post(
+            f'/api/modules/{self.assess_module.id}/submit-quiz/',
+            {'answers': {str(self.question.id): '2'}},
+            format='json'
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        self.assertTrue(resp.data['passed'])
+        self.assertEqual(resp.data['score'], 100.0)
+        self.assertTrue(
+            UserProgress.objects.filter(
+                user=self.student_user, module=self.assess_module, is_completed=True
+            ).exists()
+        )
+
+

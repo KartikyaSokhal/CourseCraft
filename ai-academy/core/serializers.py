@@ -154,9 +154,13 @@ class ModuleSerializer(serializers.ModelSerializer):
         return not is_prev_done
 
 class StudentModuleSerializer(serializers.ModelSerializer):
-    """Student module serializer — uses StudentQuizSerializer (no correct_answer)."""
-    lessons = LessonSerializer(many=True, read_only=True)
-    quiz = StudentQuizSerializer(read_only=True)
+    """
+    Student module serializer.
+    If locked, returns metadata only (lessons=[], quiz=None).
+    If unlocked, returns lessons and quiz without correct_answer.
+    """
+    lessons = serializers.SerializerMethodField()
+    quiz = serializers.SerializerMethodField()
     is_locked = serializers.SerializerMethodField()
     is_completed = serializers.SerializerMethodField()
 
@@ -165,13 +169,15 @@ class StudentModuleSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'order', 'module_type', 'lessons', 'quiz', 'is_locked', 'is_completed']
 
     def get_is_completed(self, obj):
-        user = self.context.get('request').user
+        request = self.context.get('request')
+        user = request.user if request else None
         if not user or not user.is_authenticated:
             return False
         return UserProgress.objects.filter(user=user, module=obj, is_completed=True).exists()
 
     def get_is_locked(self, obj):
-        user = self.context.get('request').user
+        request = self.context.get('request')
+        user = request.user if request else None
         if not user or not user.is_authenticated:
             return True
         if hasattr(user, 'profile') and user.profile.role == 'ADMIN':
@@ -179,17 +185,29 @@ class StudentModuleSerializer(serializers.ModelSerializer):
         if obj.order == 1:
             return False
         prev_module = Module.objects.filter(
-            course=obj.course,
+            course=obj.course, 
             order__lt=obj.order
         ).order_by('-order').first()
         if not prev_module:
             return False
         is_prev_done = UserProgress.objects.filter(
-            user=user,
-            module=prev_module,
+            user=user, 
+            module=prev_module, 
             is_completed=True
         ).exists()
         return not is_prev_done
+
+    def get_lessons(self, obj):
+        if self.get_is_locked(obj):
+            return []
+        return LessonSerializer(obj.lessons.all(), many=True, context=self.context).data
+
+    def get_quiz(self, obj):
+        if self.get_is_locked(obj):
+            return None
+        if hasattr(obj, 'quiz') and obj.quiz:
+            return StudentQuizSerializer(obj.quiz, context=self.context).data
+        return None
 
 class CourseDetailSerializer(serializers.ModelSerializer):
     """

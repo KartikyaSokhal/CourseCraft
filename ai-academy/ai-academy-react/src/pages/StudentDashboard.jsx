@@ -260,6 +260,7 @@ function StudentDashboard() {
         <CourseViewer
           course={selectedCourse}
           onBack={handleBackToList}
+          onRefreshCourse={() => handleViewCourse(selectedCourse.id)}
         />
       )}
     </main>

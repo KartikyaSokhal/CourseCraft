@@ -10,20 +10,25 @@ function Module({ module, currentItem, onSelectItem, allItems }) {
   // Visual styles for locked state
   const containerStyle = {
     marginBottom: '0.5rem',
-    opacity: module.is_locked ? 0.5 : 1,
-    pointerEvents: module.is_locked ? 'none' : 'auto', // Disable clicks if locked
-    userSelect: module.is_locked ? 'none' : 'auto'
+    opacity: module.is_locked ? 0.75 : 1,
   };
 
   return (
     <div className={`module ${isOpen ? 'active' : ''}`} style={containerStyle}>
       <div 
         className="module-header" 
-        onClick={() => !module.is_locked && setIsOpen(!isOpen)}
+        onClick={() => {
+          if (module.is_locked) {
+            const globalIndex = allItems.findIndex(item => item.type === 'locked' && item.moduleId === module.id);
+            if (globalIndex !== -1) onSelectItem(globalIndex);
+          } else {
+            setIsOpen(!isOpen);
+          }
+        }}
         style={{ 
           padding: '0.75rem', 
           background: isActiveModule ? 'rgba(255,255,255,0.05)' : 'transparent',
-          cursor: module.is_locked ? 'not-allowed' : 'pointer',
+          cursor: 'pointer',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -56,6 +61,20 @@ function Module({ module, currentItem, onSelectItem, allItems }) {
           }}></i>
         )}
       </div>
+
+      {/* Locked message indicator under module header */}
+      {module.is_locked && (
+        <div 
+          onClick={() => {
+            const globalIndex = allItems.findIndex(item => item.type === 'locked' && item.moduleId === module.id);
+            if (globalIndex !== -1) onSelectItem(globalIndex);
+          }}
+          style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem', color: 'var(--text-secondary)', fontStyle: 'italic', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+        >
+          <i className="fas fa-lock" style={{ fontSize: '0.75rem', color: '#9ca3af' }}></i>
+          <span>Complete previous module to unlock</span>
+        </div>
+      )}
 
       {/* Content List - Only show if Open and Not Locked */}
       {isOpen && !module.is_locked && (
