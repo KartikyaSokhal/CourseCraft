@@ -13,7 +13,7 @@ const LogoIcon = () => (
 function Header({ theme, toggleTheme }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { auth, logout } = useAuth();
-  const location = useLocation(); 
+  const location = useLocation();
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
   const handleLogout = () => { closeMobileMenu(); logout(); };
@@ -56,11 +56,11 @@ function Header({ theme, toggleTheme }) {
                   <>
                     <li><Link to="/admin-dashboard">Admin Dashboard</Link></li>
                     <li>
-                      <Link 
+                      <Link
                         to="/student-dashboard?tab=my-courses"
                         className={isActive('/student-dashboard?tab=my-courses') ? 'active-nav' : ''}
                       >
-                        👤 My Paths
+                        My Courses
                       </Link>
                     </li>
                   </>
@@ -70,19 +70,19 @@ function Header({ theme, toggleTheme }) {
                 {auth && auth.user.role === 'STUDENT' && (
                   <>
                     <li>
-                      <Link 
-                        to="/student-dashboard?tab=my-courses" 
+                      <Link
+                        to="/student-dashboard?tab=my-courses"
                         className={isActive('/student-dashboard?tab=my-courses') ? 'active-nav' : ''}
                       >
-                        👤 My Paths
+                        My Courses
                       </Link>
                     </li>
                     <li>
-                      <Link 
+                      <Link
                         to="/student-dashboard?tab=public"
                         className={isActive('/student-dashboard?tab=public') ? 'active-nav' : ''}
                       >
-                        🌐 Catalog
+                        All Courses
                       </Link>
                     </li>
                   </>
@@ -98,7 +98,7 @@ function Header({ theme, toggleTheme }) {
                 </button>
                 <span className="theme-icon">☀️</span>
               </div>
-              
+
               <div className="nav-actions">
                 {auth ? (
                   <button onClick={handleLogout} className="btn btn-secondary">Logout</button>
@@ -131,16 +131,15 @@ function Header({ theme, toggleTheme }) {
               <li><HashLink to="/#about" onClick={closeMobileMenu}>About</HashLink></li>
             </>
           )}
-          
+
           {auth && auth.user.role === 'ADMIN' && (
             <li><Link to="/admin-dashboard" onClick={closeMobileMenu}>Admin Dashboard</Link></li>
           )}
 
           {auth && auth.user.role === 'STUDENT' && (
             <>
-              <li><Link to="/student-dashboard?tab=my-courses" onClick={closeMobileMenu}>👤 My Paths</Link></li>
-              <li><Link to="/student-dashboard?tab=create" onClick={closeMobileMenu}>✨ AI Generator</Link></li>
-              <li><Link to="/student-dashboard?tab=public" onClick={closeMobileMenu}>🌐 Public Catalog</Link></li>
+              <li><Link to="/student-dashboard?tab=my-courses" onClick={closeMobileMenu}>My Courses</Link></li>
+              <li><Link to="/student-dashboard?tab=public" onClick={closeMobileMenu}>All Courses</Link></li>
             </>
           )}
 
@@ -155,7 +154,7 @@ function Header({ theme, toggleTheme }) {
             </div>
           </li>
         </ul>
-        
+
         <div className="mobile-menu-buttons">
           {auth ? (
             <button onClick={handleLogout} className="btn btn-secondary">Logout</button>
