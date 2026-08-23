@@ -1,8 +1,9 @@
-/* src/pages/AdminCourseEditPage.css */
+/* src/pages/AdminCourseEditPage.css — Bright Studio Theme */
 
 .admin-modules-list h2 {
   color: var(--text-primary);
   margin-bottom: 1rem;
+  font-weight: 700;
 }
 
 .edit-divider {
@@ -10,6 +11,7 @@
   border-top: 1px solid var(--border-color);
   margin: 2rem 0;
 }
+
 .edit-divider-inner {
   border: none;
   border-top: 1px solid var(--border-color);
@@ -18,26 +20,30 @@
 
 .edit-module {
   margin-bottom: 1.5rem;
-  padding: 0; /* Remove padding to let header span full width */
-  background: var(--bg-card);
+  padding: 0;
+  background: #FFFFFF;
   border: 1px solid var(--border-color);
-  border-radius: 20px;
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
 }
 
 .edit-module-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 2rem;
+  padding: 1.25rem 1.75rem;
   cursor: pointer;
+  background: #FFFFFF;
 }
+
 .edit-module-header:hover {
-  background: var(--bg-card-hover);
+  background: var(--bg-secondary);
 }
 
 .module-title-input {
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 700;
   color: var(--text-primary);
   background: transparent;
   border: none;
@@ -45,22 +51,25 @@
   flex-grow: 1;
   margin-left: 0.5rem;
 }
+
 .module-title-input:focus {
   outline: none;
-  border-bottom: 2px solid var(--border-hover);
-  background: var(--bg-primary);
+  border-bottom: 2px solid var(--primary-color);
+  background: #FFFFFF;
 }
 
 .module-header-actions {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.25rem;
   color: var(--text-secondary);
   padding-left: 1rem;
 }
+
 .module-header-actions .fa-chevron-down {
-  transition: transform 0.3s ease;
+  transition: transform 0.25s ease;
 }
+
 .module-header-actions .fa-chevron-down.expanded {
   transform: rotate(180deg);
 }
@@ -72,83 +81,101 @@
   color: var(--text-secondary);
   font-size: 1rem;
 }
+
 .btn-icon.delete:hover {
-  color: #ef4444; /* Red */
+  color: var(--error-color);
 }
 
 .edit-module-content {
-  padding: 0 2rem 2rem 2rem;
+  padding: 1.5rem 1.75rem 1.75rem 1.75rem;
   border-top: 1px solid var(--border-color);
+  background: #FFFFFF;
 }
+
 .edit-module-content h3 {
   color: var(--text-primary);
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--border-color);
+  font-size: 1.1rem;
+  font-weight: 700;
 }
 
 /* Lesson/Question Form */
 .edit-lesson-item {
   border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-radius: 12px;
   margin-bottom: 1rem;
-  background: var(--bg-primary); /* Slightly different bg */
+  background: var(--bg-secondary);
+  overflow: hidden;
 }
 
 .edit-lesson-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
+  padding: 0.85rem 1.25rem;
   cursor: pointer;
+  background: var(--bg-secondary);
 }
+
 .edit-lesson-header span {
   font-weight: 600;
-  color: var(--text-secondary);
-  /* Truncate long text */
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   padding-right: 1rem;
+  font-size: 0.95rem;
 }
+
 .lesson-header-actions {
   display: flex;
   align-items: center;
   gap: 1rem;
-  flex-shrink: 0; /* Prevent actions from wrapping */
+  flex-shrink: 0;
 }
+
 .lesson-header-actions .fa-chevron-down {
-  transition: transform 0.3s ease;
+  transition: transform 0.25s ease;
 }
+
 .lesson-header-actions .fa-chevron-down.expanded {
   transform: rotate(180deg);
 }
 
 .edit-lesson-form {
-  padding: 0 1.5rem 1.5rem 1.5rem;
+  padding: 1rem 1.25rem 1.25rem 1.25rem;
+  border-top: 1px solid var(--border-color);
+  background: #FFFFFF;
 }
+
 .edit-lesson-form .form-group {
   margin-bottom: 1rem;
 }
+
 .edit-lesson-form label {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
 }
+
 .edit-lesson-form input,
 .edit-lesson-form textarea {
   width: 100%;
-  padding: 10px 12px;
+  padding: 0.65rem 0.85rem;
   border: 1px solid var(--border-color);
-  background: var(--bg-card);
+  background: #FFFFFF;
   color: var(--text-primary);
   border-radius: 8px;
   font-size: 0.95rem;
   margin-top: 0.25rem;
 }
+
 .edit-lesson-form input:focus,
 .edit-lesson-form textarea:focus {
   outline: none;
-  border-color: var(--border-hover);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }

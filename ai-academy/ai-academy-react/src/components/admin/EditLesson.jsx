@@ -5,7 +5,7 @@ import { updateLesson, deleteLesson } from '../../services/api';
 // Helper function to extract YouTube ID
 function extractYouTubeID(url) {
   if (!url) return '';
-  const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+  const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube.com\/(?:[^/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
   const match = url.match(regex);
   // If it's a match, return the ID. If not (or if it's already just an ID), return the original string.
   return match ? match[1] : url;
@@ -19,11 +19,11 @@ function EditLesson({ lesson, onUpdate }) {
   });
   const [isSaving, setIsSaving] = useState(false);
   // Set to 'false' so it's collapsible as you requested
-  const [isExpanded, setIsExpanded] = useState(false); 
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     if (name === 'video_id') {
       const extractedID = extractYouTubeID(value);
       setFormData(prev => ({ ...prev, [name]: extractedID }));
@@ -36,7 +36,7 @@ function EditLesson({ lesson, onUpdate }) {
     e.preventDefault();
     e.stopPropagation();
     setIsSaving(true);
-    
+
     try {
       await updateLesson(lesson.id, formData);
       // Optional: show a success message
@@ -82,14 +82,14 @@ function EditLesson({ lesson, onUpdate }) {
           </div>
           <div className="form-group">
             <label>YouTube Video Link or ID</label>
-            <input 
-              name="video_id" 
-              value={formData.video_id} 
-              onChange={handleChange} 
-              placeholder="Paste full YouTube link or just the ID" 
+            <input
+              name="video_id"
+              value={formData.video_id}
+              onChange={handleChange}
+              placeholder="Paste full YouTube link or just the ID"
             />
           </div>
-          
+
           <button type="submit" className="btn btn-secondary" disabled={isSaving}>
             {isSaving ? 'Saving...' : 'Save Lesson'}
           </button>

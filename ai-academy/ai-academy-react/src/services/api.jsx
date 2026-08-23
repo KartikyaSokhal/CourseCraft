@@ -4,7 +4,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api'
 // Helper function to handle fetch requests
 async function apiFetch(endpoint, options = {}) {
   const token = localStorage.getItem('accessToken');
-  
+
   const defaultHeaders = {
     'Content-Type': 'application/json',
   };
@@ -24,6 +24,10 @@ async function apiFetch(endpoint, options = {}) {
   const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
 
   if (!response.ok) {
+    if (response.status === 401 && token) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('user');
+    }
     const errorData = await response.json().catch(() => ({}));
     const message = errorData.detail || errorData.error || response.statusText || 'An API error occurred';
     throw new Error(message);
@@ -32,7 +36,7 @@ async function apiFetch(endpoint, options = {}) {
   if (response.status === 204) {
     return null;
   }
-  
+
   return response.json();
 }
 
@@ -76,8 +80,8 @@ export const deleteCourse = (id) => {
 export const generateCourse = (prompt, num_content_modules, num_lessons_per_module, num_test_modules) => {
   return apiFetch('/courses/generate/', {
     method: 'POST',
-    body: JSON.stringify({ 
-      prompt, 
+    body: JSON.stringify({
+      prompt,
       num_content_modules,
       num_lessons_per_module,
       num_test_modules
@@ -89,9 +93,9 @@ export const generateCourse = (prompt, num_content_modules, num_lessons_per_modu
 export const generateModuleForCourse = (courseId, prompt, moduleType = 'CONTENT') => {
   return apiFetch(`/courses/${courseId}/generate-module/`, {
     method: 'POST',
-    body: JSON.stringify({ 
-      prompt, 
-      module_type: moduleType 
+    body: JSON.stringify({
+      prompt,
+      module_type: moduleType
     }),
   });
 };
@@ -124,14 +128,14 @@ export const deleteModule = (moduleId) => {
 export const createLesson = (moduleId, title, order) => {
   return apiFetch('/lessons/', {
     method: 'POST',
-    body: JSON.stringify({ 
-      module: moduleId, 
-      title, 
-      order, 
-      content: '<p>Start writing your lesson content here...</p>' 
+    body: JSON.stringify({
+      module: moduleId,
+      title,
+      order,
+      content: '<p>Start writing your lesson content here...</p>'
     }),
   });
-}; 
+};
 
 export const updateLesson = (lessonId, lessonData) => {
   return apiFetch(`/lessons/${lessonId}/`, {
@@ -146,14 +150,14 @@ export const deleteLesson = (lessonId) => {
 
 // --- Quiz Functions ---
 export const createQuiz = (moduleId, title) => {
-  return apiFetch('/quizzes/', { 
+  return apiFetch('/quizzes/', {
     method: 'POST',
     body: JSON.stringify({ module: moduleId, title }),
   });
 };
 
 export const updateQuiz = (quizId, quizData) => {
-  return apiFetch(`/quizzes/${quizId}/`, { 
+  return apiFetch(`/quizzes/${quizId}/`, {
     method: 'PATCH',
     body: JSON.stringify(quizData),
   });
@@ -161,20 +165,20 @@ export const updateQuiz = (quizId, quizData) => {
 
 // --- Question Functions ---
 export const createQuestion = (quizId, question_text, order, options, correct_answer) => {
-  return apiFetch('/questions/', { 
+  return apiFetch('/questions/', {
     method: 'POST',
-    body: JSON.stringify({ 
-      quiz: quizId, 
-      question_text, 
-      order, 
-      options, 
-      correct_answer 
+    body: JSON.stringify({
+      quiz: quizId,
+      question_text,
+      order,
+      options,
+      correct_answer
     }),
   });
 };
 
 export const updateQuestion = (questionId, questionData) => {
-  return apiFetch(`/questions/${questionId}/`, { 
+  return apiFetch(`/questions/${questionId}/`, {
     method: 'PATCH',
     body: JSON.stringify(questionData),
   });
