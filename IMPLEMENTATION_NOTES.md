@@ -1,8 +1,8 @@
-# Implementation Notes — Content Locking & Student Progression Enforcement
+# Implementation Notes — Server-Side Locked Assessment Protection & Progression Fixes
 
-## Overview of Changes
+## Overview of Correction
 
-This update enforces API-level content locking for student course navigation, verifies student progress progression, and synchronizes the frontend learning viewer when assessments/challenges are completed.
+Extracted a unified, reusable server-side `is_module_locked` progression helper in `core/permissions.py` and enforced strict pre-execution locking checks on quiz submissions and lesson explanations. Locked assessment/challenge requests now return HTTP 403 Forbidden with `{"error": "LOCKED"}` before grading, before invoking Gemini, and before creating progress or attempt database rows.
 
 ---
 
@@ -12,50 +12,47 @@ This update enforces API-level content locking for student course navigation, ve
 
 | File | Changes |
 |---|---|
-| `core/serializers.py` | Updated `StudentModuleSerializer`: when a module is locked (`is_locked=True`), returns sidebar metadata (`id`, `title`, `order`, `module_type`, `is_locked`, `is_completed`) but suppresses `lessons` (`[]`) and `quiz` (`None`). Unlocked modules return full student-safe lessons and quiz questions (without `correct_answer`). Admin serializers (`CourseDetailSerializer` / `ModuleSerializer`) remain unchanged and return full editable content. |
-| `core/views.py` | Fixed `QuizSubmissionAPIView`: added `course=module.course` to `UserProgress.objects.update_or_create` defaults to prevent `IntegrityError` on non-null `course_id`. |
-| `core/tests.py` | Added `StudentProgressionAndLockingTests` (5 tests): verifies first module access, locked content suppression in course detail API, module unlocking upon quiz/progress completion, direct module detail 403 locking behavior, and quiz grading progress recording. Total 19 tests in suite. All AI/external services mocked. |
-| `backend/settings.py` | Loaded `ai-academy/.env` via `python-dotenv` (`load_dotenv`) before reading `SECRET_KEY`. Enforced `SECRET_KEY` presence (`ImproperlyConfigured`). Parsed comma-separated `CORS_ALLOWED_ORIGINS`. |
-| `.env.example` | Environment template file with placeholder names. |
+| `core/permissions.py` | Added reusable `is_module_locked(user, module)` helper function. Returns `True` if user is unauthenticated or if the module (`order > 1`) lacks a preceding completed `UserProgress` entry. Returns `False` for `order == 1` or `ADMIN` users. |
+| `core/views.py` | 1. `QuizSubmissionAPIView`: Enforced `is_module_locked(request.user, module)` check before quiz grading. Returns 403 `{"error": "LOCKED"}` without creating/updating `UserProgress`.<br>2. `ExplainOrFailAPIView`: Enforced `is_module_locked(request.user, lesson.module)` check before processing transcript. Returns 403 `{"error": "LOCKED"}` without calling Gemini or creating `ExplanationAttempt`.<br>3. `ModuleDetailAPIView`: Replaced ad-hoc locking code with `is_module_locked` helper. |
+| `core/serializers.py` | Updated `StudentModuleSerializer.get_is_locked` to use the shared `is_module_locked(user, obj)` helper for consistency across serializers and API endpoints. |
+| `core/tests.py` | Updated `StudentProgressionAndLockingTests` (7 tests): verifies student locked quiz 403 + no progress created, student locked explanation 403 + no Gemini call + no attempt created, unlocked quiz grading & progress recording, first module access, locked module course-detail suppression, module unlocking upon previous completion, and preserved direct module-detail 403 locking. Total 21 tests in suite. |
+| `backend/settings.py` | Environment configuration & `SECRET_KEY` presence enforcement via `load_dotenv`. |
+| `.env.example` | Safe template with environment variable placeholders. |
 
 ### Frontend (`ai-academy/ai-academy-react/`)
 
 | File | Changes |
 |---|---|
-| `src/pages/StudentDashboard.jsx` | Passed `onRefreshCourse={() => handleViewCourse(selectedCourse.id)}` prop to `<CourseViewer />` so course state is refetched from backend upon assessment completion. |
-| `src/components/student/CourseViewer.jsx` | Updated `allItems` calculation to generate `{ type: 'locked', module: module }` items for locked modules. Rendered clear student lock message card when a locked module item is selected. Passed `onRefreshCourse` as `onComplete` to `StudentQuizView` (with `moduleId`) and `LessonContent`. |
-| `src/components/student/CourseSidebar.jsx` | Added clear lock indicator message under locked module headers and enabled selecting locked modules to view the student lock explanation card. |
-| `src/components/student/LessonContent.jsx` | Triggered `onComplete()` when Feynman explanation challenge passes (`is_passed=True`) to trigger course refetch. |
-| `src/components/student/StudentQuizView.jsx` | Standardized API call using `submitQuiz` helper from `api.jsx` with `onComplete()` trigger on pass. |
+| `src/pages/StudentDashboard.jsx` | Passes `onRefreshCourse` callback to `<CourseViewer />` to refetch course state from backend upon assessment completion. |
+| `src/components/student/CourseViewer.jsx` | Generates `{ type: 'locked', module: module }` items for locked modules. Displays non-technical student lock notification card when a locked module is selected. Passes `onRefreshCourse` as `onComplete` to `StudentQuizView` (with `moduleId`) and `LessonContent`. |
+| `src/components/student/CourseSidebar.jsx` | Renders lock indicator message under locked module headers and enables selecting locked items to view the lock card. |
+| `src/components/student/LessonContent.jsx` | Triggers `onComplete()` when Feynman challenge is passed (`is_passed=True`). |
+| `src/components/student/StudentQuizView.jsx` | Standardized API call using `submitQuiz` helper with `onComplete()` trigger on pass. |
 
 ---
 
-## Content Locking & Progression Mechanics
+## Server-Side Locking & Security Rules
 
-1. **API Content Protection (Server-Enforced)**:
-   - Module `order=1` is unlocked by default for authenticated students.
-   - Subsequent modules (`order > 1`) check if the preceding module has a `UserProgress(is_completed=True)` entry for the requesting student.
-   - For locked modules, `StudentModuleSerializer` returns `is_locked=True`, `lessons=[]`, and `quiz=null`, preventing locked lesson text, video IDs, or quiz questions from leaking in the `GET /api/courses/<id>/` response payload.
+1. **Unified Lock Evaluation (`is_module_locked`)**:
+   - `ADMIN` role: Always unlocked (`is_locked = False`).
+   - Module `order = 1`: Always unlocked (`is_locked = False`).
+   - Module `order > 1`: Locked (`is_locked = True`) unless a `UserProgress(is_completed=True)` row exists for the immediately preceding module (`order - 1` or preceding order in course).
 
-2. **Progression Flow & State Refresh**:
-   - Submitting a passing quiz (`POST /api/modules/<id>/submit-quiz/`) or passing a Feynman explanation (`POST /api/lessons/<id>/explain/`) creates/updates `UserProgress(is_completed=True)`.
-   - On pass, the component triggers `onComplete()` which invokes `handleViewCourse(courseId)`.
-   - The newly fetched course response dynamically evaluates module lock status; the next module returns `is_locked=False` along with its lessons/quiz data.
-
-3. **Student Lock UI Message**:
-   - Selecting a locked module in the viewer or sidebar displays a non-technical notification card:
-     > 🔒 **[Module Title] is Locked**  
-     > Complete the previous module's assessment or Feynman challenge to unlock this content and continue your learning path.
+2. **Endpoint Protection Guarantees**:
+   - `POST /api/modules/<locked_id>/submit-quiz/` → HTTP 403 `{"error": "LOCKED"}`. No answers graded; no `UserProgress` row created.
+   - `POST /api/lessons/<locked_id>/explain/` → HTTP 403 `{"error": "LOCKED"}`. Gemini API NOT invoked; no `ExplanationAttempt` row created.
+   - `GET /api/modules/<locked_id>/` → HTTP 403 `{"error": "LOCKED"}`.
+   - `GET /api/courses/<id>/` (Student Payload) → Locked module metadata returned (`id`, `title`, `order`, `module_type`, `is_locked`, `is_completed`), but `lessons = []` and `quiz = null`.
 
 ---
 
 ## Verification Commands Run
 
 ```bash
-# Backend test suite (19/19 tests passed)
+# Backend test suite (21/21 tests passed)
 SECRET_KEY="test-secret-key-for-ci-only" ./venv/bin/python manage.py test core -v2
 
-# Frontend clean install + production build (succeeded)
+# Frontend clean install + Vite production build (succeeded)
 cd ai-academy/ai-academy-react && npm ci && npm run build
 ```
 
@@ -79,15 +76,17 @@ test_student_course_list_hides_correct_answer (core.tests.QuizAnswerProtectionTe
 test_cors_allowed_origins_parsing (core.tests.SettingsHardeningTests) ... ok
 test_load_dotenv_from_file (core.tests.SettingsHardeningTests) ... ok
 test_direct_module_detail_locking_behavior_preserved (core.tests.StudentProgressionAndLockingTests) ... ok
-test_quiz_submission_grades_and_records_progress (core.tests.StudentProgressionAndLockingTests) ... ok
+test_quiz_submission_unlocked_module_grades_and_records_progress (core.tests.StudentProgressionAndLockingTests) ... ok
 test_student_can_access_first_module_content (core.tests.StudentProgressionAndLockingTests) ... ok
 test_student_cannot_obtain_locked_module_content_via_course_detail (core.tests.StudentProgressionAndLockingTests) ... ok
+test_student_cannot_submit_explanation_for_locked_module (core.tests.StudentProgressionAndLockingTests) ... ok
+test_student_cannot_submit_quiz_for_locked_module (core.tests.StudentProgressionAndLockingTests) ... ok
 test_submitting_passing_quiz_unlocks_next_module (core.tests.StudentProgressionAndLockingTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 19 tests in 5.463s — OK
+Ran 21 tests in 6.215s — OK
 ```
 
 ## Failed Verification
 
-None. All 19 backend tests pass. React Vite production build succeeds cleanly.
+None. All 21 backend tests pass. React Vite production build succeeds cleanly.

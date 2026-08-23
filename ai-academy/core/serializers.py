@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.db.models import Avg
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from .permissions import is_module_locked
+
 # Ensure these are imported from your models.py
 from .models import (
     Course, Module, Lesson, Profile, Quiz, Question, Review, 
@@ -178,24 +180,7 @@ class StudentModuleSerializer(serializers.ModelSerializer):
     def get_is_locked(self, obj):
         request = self.context.get('request')
         user = request.user if request else None
-        if not user or not user.is_authenticated:
-            return True
-        if hasattr(user, 'profile') and user.profile.role == 'ADMIN':
-            return False
-        if obj.order == 1:
-            return False
-        prev_module = Module.objects.filter(
-            course=obj.course, 
-            order__lt=obj.order
-        ).order_by('-order').first()
-        if not prev_module:
-            return False
-        is_prev_done = UserProgress.objects.filter(
-            user=user, 
-            module=prev_module, 
-            is_completed=True
-        ).exists()
-        return not is_prev_done
+        return is_module_locked(user, obj)
 
     def get_lessons(self, obj):
         if self.get_is_locked(obj):

@@ -6,7 +6,7 @@ from rest_framework.test import APIClient
 from rest_framework import status
 
 from core.models import (
-    Profile, Course, Module, Lesson, Quiz, Question, UserProgress
+    Profile, Course, Module, Lesson, Quiz, Question, UserProgress, ExplanationAttempt
 )
 
 
@@ -281,13 +281,40 @@ class SettingsHardeningTests(TestCase):
 class StudentProgressionAndLockingTests(BaseTestCase):
     """Tests for student course content locking, progress enforcement, and unlocking flow."""
 
+    def setUp(self):
+        super().setUp()
+        # Delete assess_module from BaseTestCase to avoid order collision
+        self.assess_module.delete()
+
+        # Build clean sequential module order for course:
+        # Module 1 (order = 1, CONTENT): self.content_module (has Lesson 1)
+        # Module 2 (order = 2, CONTENT): self.locked_content_module (has Lesson 2)
+        # Module 3 (order = 3, ASSESSMENT): self.locked_quiz_module (has Quiz & Question)
+        self.locked_content_module = Module.objects.create(
+            course=self.course, title='Module 2 (Content)', order=2, module_type='CONTENT'
+        )
+        self.locked_lesson = Lesson.objects.create(
+            module=self.locked_content_module, title='Lesson 2',
+            content='<p>Module 2 content</p>', order=1
+        )
+        self.locked_quiz_module = Module.objects.create(
+            course=self.course, title='Module 3 (Assessment)', order=3, module_type='ASSESSMENT'
+        )
+        self.locked_quiz = Quiz.objects.create(
+            module=self.locked_quiz_module, title='Test Quiz 3'
+        )
+        self.locked_question = Question.objects.create(
+            quiz=self.locked_quiz, question_text='What is 2+2?',
+            options=['2', '3', '4', '5'], correct_answer='4', order=1
+        )
+
     def test_student_can_access_first_module_content(self):
         """Student can access lessons and content in module order = 1."""
         resp = self.student_client.get(f'/api/courses/{self.course.id}/')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
         modules = resp.data.get('modules', [])
-        self.assertGreaterEqual(len(modules), 2)
+        self.assertEqual(len(modules), 3)
         
         first_mod = modules[0]
         self.assertEqual(first_mod['order'], 1)
@@ -315,8 +342,40 @@ class StudentProgressionAndLockingTests(BaseTestCase):
         self.assertEqual(second_mod['lessons'], [])
         self.assertIsNone(second_mod['quiz'])
 
+    def test_student_cannot_submit_quiz_for_locked_module(self):
+        """POST /api/modules/<locked_id>/submit-quiz/ returns 403 LOCKED and creates no progress row."""
+        resp = self.student_client.post(
+            f'/api/modules/{self.locked_quiz_module.id}/submit-quiz/',
+            {'answers': {str(self.locked_question.id): '4'}},
+            format='json'
+        )
+        self.assertEqual(resp.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(resp.data.get('error'), 'LOCKED')
+        self.assertFalse(
+            UserProgress.objects.filter(
+                user=self.student_user, module=self.locked_quiz_module
+            ).exists()
+        )
+
+    @patch('core.views.gemini_safe_generate')
+    def test_student_cannot_submit_explanation_for_locked_module(self, mock_gemini):
+        """POST /api/lessons/<locked_id>/explain/ returns 403 LOCKED, no Gemini call, no attempt created."""
+        resp = self.student_client.post(
+            f'/api/lessons/{self.locked_lesson.id}/explain/',
+            {'transcript': 'I explain the locked lesson concept.'},
+            format='json'
+        )
+        self.assertEqual(resp.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(resp.data.get('error'), 'LOCKED')
+        mock_gemini.assert_not_called()
+        self.assertFalse(
+            ExplanationAttempt.objects.filter(
+                user=self.student_user, lesson=self.locked_lesson
+            ).exists()
+        )
+
     def test_submitting_passing_quiz_unlocks_next_module(self):
-        """Submitting passing quiz on module 2 (or completing module 1 via quiz) unlocks next module."""
+        """Completing previous module unlocks the next module's content in a newly fetched course response."""
         # 1. Verify module 2 is locked before completion
         resp_before = self.student_client.get(f'/api/courses/{self.course.id}/')
         self.assertTrue(resp_before.data['modules'][1]['is_locked'])
@@ -329,25 +388,28 @@ class StudentProgressionAndLockingTests(BaseTestCase):
             is_completed=True
         )
 
-        # 3. Newly fetched course response shows module 2 as UNLOCKED with quiz content
+        # 3. Newly fetched course response shows module 2 as UNLOCKED with content
         resp_after = self.student_client.get(f'/api/courses/{self.course.id}/')
         self.assertEqual(resp_after.status_code, status.HTTP_200_OK)
         second_mod = resp_after.data['modules'][1]
         self.assertFalse(second_mod['is_locked'])
-        self.assertIsNotNone(second_mod['quiz'])
-        self.assertGreater(len(second_mod['quiz']['questions']), 0)
+        self.assertGreater(len(second_mod['lessons']), 0)
 
     def test_direct_module_detail_locking_behavior_preserved(self):
         """Direct GET /api/modules/<locked_id>/ as student returns 403 Forbidden."""
-        resp = self.student_client.get(f'/api/modules/{self.assess_module.id}/')
+        resp = self.student_client.get(f'/api/modules/{self.locked_content_module.id}/')
         self.assertEqual(resp.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(resp.data.get('error'), 'LOCKED')
 
-    def test_quiz_submission_grades_and_records_progress(self):
-        """Submitting correct answers to POST /api/modules/<id>/submit-quiz/ passes and marks progress."""
+    def test_quiz_submission_unlocked_module_grades_and_records_progress(self):
+        """Submitting correct answers for an UNLOCKED quiz module passes and marks progress."""
+        # Mark module 1 & 2 as completed so locked_quiz_module (order = 3) is unlocked
+        UserProgress.objects.create(user=self.student_user, course=self.course, module=self.content_module, is_completed=True)
+        UserProgress.objects.create(user=self.student_user, course=self.course, module=self.locked_content_module, is_completed=True)
+
         resp = self.student_client.post(
-            f'/api/modules/{self.assess_module.id}/submit-quiz/',
-            {'answers': {str(self.question.id): '2'}},
+            f'/api/modules/{self.locked_quiz_module.id}/submit-quiz/',
+            {'answers': {str(self.locked_question.id): '4'}},
             format='json'
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
@@ -355,8 +417,9 @@ class StudentProgressionAndLockingTests(BaseTestCase):
         self.assertEqual(resp.data['score'], 100.0)
         self.assertTrue(
             UserProgress.objects.filter(
-                user=self.student_user, module=self.assess_module, is_completed=True
+                user=self.student_user, module=self.locked_quiz_module, is_completed=True
             ).exists()
         )
+
 
 

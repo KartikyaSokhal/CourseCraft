@@ -32,7 +32,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
 # Local imports
-from .permissions import IsAdminUser, IsAdminOrReadOnly
+from .permissions import IsAdminUser, IsAdminOrReadOnly, is_module_locked
 from .models import (
     Course, Module, Lesson, Profile, Quiz, Question, Review, 
     ExplanationAttempt, UserProgress
@@ -624,16 +624,8 @@ class ModuleDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated, IsAdminOrReadOnly]
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        user = request.user
-        if hasattr(user, 'profile') and user.profile.role == 'ADMIN':
-            return super().retrieve(request, *args, **kwargs)
-        if instance.order == 1:
-            return super().retrieve(request, *args, **kwargs)
-        previous_module = Module.objects.filter(course=instance.course, order__lt=instance.order).order_by('-order').first()
-        if previous_module:
-            has_completed_prev = UserProgress.objects.filter(user=user, module=previous_module, is_completed=True).exists()
-            if not has_completed_prev:
-                return Response({"error": "LOCKED", "message": f"Complete '{previous_module.title}' first."}, status=status.HTTP_403_FORBIDDEN)
+        if is_module_locked(request.user, instance):
+            return Response({"error": "LOCKED", "message": f"Complete '{instance.title}' first."}, status=status.HTTP_403_FORBIDDEN)
         return super().retrieve(request, *args, **kwargs)
 
 class LessonCreateAPIView(generics.CreateAPIView):
@@ -676,6 +668,10 @@ class ExplainOrFailAPIView(APIView):
             lesson = Lesson.objects.get(pk=lesson_id)
         except Lesson.DoesNotExist:
             return Response({"error": "Lesson not found"}, status=404)
+
+        # 1b. Check if lesson's module is locked
+        if is_module_locked(request.user, lesson.module):
+            return Response({"error": "LOCKED", "message": "Complete the previous module first."}, status=status.HTTP_403_FORBIDDEN)
 
         transcript = request.data.get("transcript", "").strip()
         if not transcript:
@@ -805,10 +801,14 @@ class QuizSubmissionAPIView(APIView):
     def post(self, request, module_id):
         try:
             module = Module.objects.get(pk=module_id)
-            quiz = Quiz.objects.filter(module=module).first()
-            if not quiz: return Response({"error": "No quiz found"}, status=404)
         except Module.DoesNotExist:
             return Response({"error": "Module not found"}, status=404)
+
+        if is_module_locked(request.user, module):
+            return Response({"error": "LOCKED", "message": "Complete the previous module first."}, status=status.HTTP_403_FORBIDDEN)
+
+        quiz = Quiz.objects.filter(module=module).first()
+        if not quiz: return Response({"error": "No quiz found"}, status=404)
 
         user_answers = request.data.get("answers", {})
         questions = quiz.questions.all()
