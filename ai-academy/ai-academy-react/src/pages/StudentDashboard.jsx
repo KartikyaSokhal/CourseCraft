@@ -150,61 +150,81 @@ function StudentDashboard() {
           {activeTab === 'create' && (
             <section className="tab-content fade-in">
               <div className="admin-card" style={{ maxWidth: '700px', margin: '0 auto' }}>
-                <div style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem', marginBottom: '1.5rem' }}>
-                  <h2 style={{ fontSize: '1.5rem', margin: 0 }}>What do you want to learn today?</h2>
-                  <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>Enter a topic, and our AI will build a curriculum for you.</p>
-                </div>
-                
-                <form onSubmit={handleGenerateSubmit}>
-                  <div className="form-group">
-                    <label>Topic / Subject</label>
-                    <input 
-                      type="text" 
-                      value={prompt}
-                      onChange={(e) => setPrompt(e.target.value)}
-                      placeholder="e.g., Advanced React Patterns, History of Rome, Quantum Physics 101..."
-                      required
-                      style={{ fontSize: '1.1rem', padding: '1rem' }}
-                    />
-                  </div>
-                  
-                  <div className="form-group">
-                    <label>Number of Modules (1-5)</label>
-                    <input 
-                      type="number" 
-                      value={numModules}
-                      onChange={(e) => setNumModules(Number(e.target.value))}
-                      min="1" max="5"
-                      required
-                      style={{ padding: '0.8rem' }}
-                    />
-                  </div>
-
-                  <div style={{ marginTop: '2rem' }}>
-                    <button 
-                      type="submit" 
-                      className="btn btn-primary" 
-                      disabled={isGenerating} 
-                      style={{ width: '100%', padding: '1rem', fontSize: '1.1rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}
-                    >
-                      {isGenerating ? (
-                        <>
-                          <i className="fas fa-spinner fa-spin"></i> Generating Course...
-                        </>
-                      ) : (
-                        <>
-                          <i className="fas fa-magic"></i> Generate My Course
-                        </>
-                      )}
-                    </button>
-                  </div>
-                  
-                  {isGenerating && (
-                    <p style={{ textAlign: 'center', marginTop: '1rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                      This usually takes about 30-60 seconds. We are curating videos and writing quizzes.
+                {auth.user?.role !== 'ADMIN' ? (
+                  <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
+                    <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔒</div>
+                    <h2 style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>Admin Access Required</h2>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', lineHeight: '1.6' }}>
+                      AI Course Generation is restricted to authenticated Admin accounts. As a Student, you can enroll in published courses from the Catalog or promote your account using the <code>promote_admin</code> command.
                     </p>
-                  )}
-                </form>
+                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                      <button className="btn btn-primary" onClick={() => setActiveTab('public')}>
+                        🌐 Explore Catalog
+                      </button>
+                      <button className="btn btn-secondary" onClick={() => setActiveTab('my-courses')}>
+                        👤 My Paths
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem', marginBottom: '1.5rem' }}>
+                      <h2 style={{ fontSize: '1.5rem', margin: 0 }}>What do you want to learn today?</h2>
+                      <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>Enter a topic, and our AI will build a curriculum for you.</p>
+                    </div>
+                    
+                    <form onSubmit={handleGenerateSubmit}>
+                      <div className="form-group">
+                        <label>Topic / Subject</label>
+                        <input 
+                          type="text" 
+                          value={prompt}
+                          onChange={(e) => setPrompt(e.target.value)}
+                          placeholder="e.g., Advanced React Patterns, History of Rome, Quantum Physics 101..."
+                          required
+                          style={{ fontSize: '1.1rem', padding: '1rem' }}
+                        />
+                      </div>
+                      
+                      <div className="form-group">
+                        <label>Number of Modules (1-5)</label>
+                        <input 
+                          type="number" 
+                          value={numModules}
+                          onChange={(e) => setNumModules(Number(e.target.value))}
+                          min="1" max="5"
+                          required
+                          style={{ padding: '0.8rem' }}
+                        />
+                      </div>
+
+                      <div style={{ marginTop: '2rem' }}>
+                        <button 
+                          type="submit" 
+                          className="btn btn-primary" 
+                          disabled={isGenerating} 
+                          style={{ width: '100%', padding: '1rem', fontSize: '1.1rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}
+                        >
+                          {isGenerating ? (
+                            <>
+                              <i className="fas fa-spinner fa-spin"></i> Generating Course...
+                            </>
+                          ) : (
+                            <>
+                              <i className="fas fa-magic"></i> Generate My Course
+                            </>
+                          )}
+                        </button>
+                      </div>
+                      
+                      {isGenerating && (
+                        <p style={{ textAlign: 'center', marginTop: '1rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                          This usually takes about 30-60 seconds. We are curating videos and writing quizzes.
+                        </p>
+                      )}
+                    </form>
+                  </>
+                )}
               </div>
             </section>
           )}

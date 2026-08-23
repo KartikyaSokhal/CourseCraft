@@ -53,7 +53,17 @@ function Header({ theme, toggleTheme }) {
 
                 {/* --- ADMIN LINKS --- */}
                 {auth && auth.user.role === 'ADMIN' && (
-                  <li><Link to="/admin-dashboard">Admin Dashboard</Link></li>
+                  <>
+                    <li><Link to="/admin-dashboard">Admin Dashboard</Link></li>
+                    <li>
+                      <Link 
+                        to="/student-dashboard?tab=my-courses"
+                        className={isActive('/student-dashboard?tab=my-courses') ? 'active-nav' : ''}
+                      >
+                        👤 My Paths
+                      </Link>
+                    </li>
+                  </>
                 )}
 
                 {/* --- STUDENT LINKS --- */}
@@ -65,14 +75,6 @@ function Header({ theme, toggleTheme }) {
                         className={isActive('/student-dashboard?tab=my-courses') ? 'active-nav' : ''}
                       >
                         👤 My Paths
-                      </Link>
-                    </li>
-                    <li>
-                      <Link 
-                        to="/student-dashboard?tab=create"
-                        className={isActive('/student-dashboard?tab=create') ? 'active-nav' : ''}
-                      >
-                        ✨ Generate
                       </Link>
                     </li>
                     <li>
