@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
           return null;
         }
         return { token, user: { role: decoded.role, username: decoded.username } };
-      } catch (e) {
+      } catch {
         localStorage.removeItem('accessToken');
         return null;
       }
@@ -44,4 +44,5 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);
