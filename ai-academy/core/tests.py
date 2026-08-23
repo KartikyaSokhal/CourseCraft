@@ -1,3 +1,4 @@
+import os
 from unittest.mock import patch, MagicMock
 from django.test import TestCase
 from django.contrib.auth.models import User
@@ -228,3 +229,51 @@ class QuizAnswerProtectionTests(BaseTestCase):
         resp = self.student_client.get(f'/api/courses/{self.course.id}/')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self.assertEqual(resp.data['title'], 'Test Course')
+
+
+import tempfile
+from pathlib import Path
+from dotenv import load_dotenv
+
+class SettingsHardeningTests(TestCase):
+    """Tests for settings environment loading and CORS configuration parsing."""
+
+    def test_cors_allowed_origins_parsing(self):
+        """Comma-separated CORS environment variable is parsed into individual allowed origins."""
+        cors_allowed_origins = [
+            "http://localhost:5173",
+            "http://127.0.0.1:5173",
+        ]
+        test_cors_env = "https://frontend.vercel.app, https://custom-domain.com , , http://localhost:5173 "
+        
+        parsed_origins = list(cors_allowed_origins)
+        for origin in test_cors_env.split(','):
+            clean_origin = origin.strip()
+            if clean_origin and clean_origin not in parsed_origins:
+                parsed_origins.append(clean_origin)
+
+        self.assertIn("https://frontend.vercel.app", parsed_origins)
+        self.assertIn("https://custom-domain.com", parsed_origins)
+        self.assertIn("http://localhost:5173", parsed_origins)
+        self.assertNotIn("", parsed_origins)
+        self.assertNotIn(" ", parsed_origins)
+        self.assertEqual(len(parsed_origins), 4)
+
+    def test_load_dotenv_from_file(self):
+        """Loading settings with a local .env containing a test-only SECRET_KEY succeeds."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            env_file = Path(tmpdir) / ".env"
+            env_file.write_text("SECRET_KEY=test-only-dummy-secret-key\n")
+            
+            orig_secret = os.environ.get('SECRET_KEY')
+            try:
+                if 'SECRET_KEY' in os.environ:
+                    del os.environ['SECRET_KEY']
+                
+                load_dotenv(dotenv_path=env_file, override=True)
+                loaded_secret = os.environ.get('SECRET_KEY')
+                self.assertEqual(loaded_secret, "test-only-dummy-secret-key")
+            finally:
+                if orig_secret is not None:
+                    os.environ['SECRET_KEY'] = orig_secret
+

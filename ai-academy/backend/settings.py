@@ -8,10 +8,14 @@ import os
 import dj_database_url
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
 from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env file if present
+load_dotenv(dotenv_path=BASE_DIR / '.env')
 
 
 # ==============================================================================
@@ -180,9 +184,13 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",  # Local React alternative
 ]
 
-# Add the production Vercel URL dynamically if set in environment variables
-if os.environ.get('CORS_ALLOWED_ORIGINS'):
-    CORS_ALLOWED_ORIGINS.append(os.environ.get('CORS_ALLOWED_ORIGINS'))
+# Add additional origins dynamically from environment variable (comma-separated)
+cors_env = os.environ.get('CORS_ALLOWED_ORIGINS', '')
+if cors_env:
+    for origin in cors_env.split(','):
+        clean_origin = origin.strip()
+        if clean_origin and clean_origin not in CORS_ALLOWED_ORIGINS:
+            CORS_ALLOWED_ORIGINS.append(clean_origin)
 
 CORS_ALLOW_HEADERS = [
     'content-type',
