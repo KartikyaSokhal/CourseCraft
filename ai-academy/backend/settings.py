@@ -8,6 +8,7 @@ import os
 import dj_database_url
 from pathlib import Path
 from datetime import timedelta
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,8 +19,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ==============================================================================
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# If on Render, get from env, otherwise use local fallback
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-uj1abhg&z(^0hhk@zi0g07)uaczs&a0(262_ws(0cv*()vti&z')
+# SECRET_KEY is required in all environments. Set it in .env or environment variables.
+# See .env.example for setup instructions.
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    raise ImproperlyConfigured(
+        'The SECRET_KEY environment variable is not set. '
+        'Copy .env.example to .env and fill in your values.'
+    )
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # If the 'RENDER' environment variable exists, we are in production (Debug=False)
@@ -171,7 +178,6 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Local React
     "http://127.0.0.1:5173",  # Local React alternative
-    "null"
 ]
 
 # Add the production Vercel URL dynamically if set in environment variables

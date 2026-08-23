@@ -198,3 +198,20 @@ export const createReview = (courseId, rating, comment) => {
     body: JSON.stringify({ course: courseId, rating, comment }),
   });
 };
+
+// =====================================================================
+//  QUIZ SUBMISSION & FEYNMAN EXPLANATION
+// =====================================================================
+export const submitQuiz = (moduleId, answers) => {
+  return apiFetch(`/modules/${moduleId}/submit-quiz/`, {
+    method: 'POST',
+    body: JSON.stringify({ answers }),
+  });
+};
+
+export const submitExplanation = (lessonId, transcript) => {
+  return apiFetch(`/lessons/${lessonId}/explain/`, {
+    method: 'POST',
+    body: JSON.stringify({ transcript }),
+  });
+};

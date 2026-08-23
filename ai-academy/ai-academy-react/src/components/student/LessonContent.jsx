@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import DOMPurify from 'dompurify';
+import { submitExplanation } from '../../services/api.jsx';
 import MCQForm from './MCQForm';
 
 function LessonContent({ lesson, courseId, onNextLesson, isLastLesson }) {
@@ -54,7 +56,20 @@ function LessonContent({ lesson, courseId, onNextLesson, isLastLesson }) {
   }, [lesson]);
 
   const createMarkup = (htmlString) => {
-    return { __html: htmlString || '' };
+    const clean = DOMPurify.sanitize(htmlString || '', {
+      ALLOWED_TAGS: [
+        'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+        'p', 'br', 'hr', 'blockquote',
+        'ul', 'ol', 'li',
+        'strong', 'em', 'b', 'i', 'u', 'sub', 'sup',
+        'a', 'code', 'pre', 'span', 'div',
+        'table', 'thead', 'tbody', 'tr', 'th', 'td',
+        'figure', 'figcaption',
+      ],
+      ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'id', 'colspan', 'rowspan'],
+      ALLOW_DATA_ATTR: false,
+    });
+    return { __html: clean };
   };
 
   // --- Handlers ---
@@ -81,53 +96,26 @@ function LessonContent({ lesson, courseId, onNextLesson, isLastLesson }) {
     }
   };
 
-  const submitExplanation = async () => {
+  const handleSubmitExplanation = async () => {
     if (!transcriptText.trim()) {
         alert("Please record or type an answer first.");
         return;
     }
 
-    const token = localStorage.getItem('access_token');
-    if (!token) {
-      alert("You are not logged in. Please log in again.");
-      return;
-    }
-
     setIsUploading(true);
 
     try {
-      // 2. Send TEXT (JSON) instead of Audio (FormData)
-      const response = await fetch(`http://127.0.0.1:8000/api/lessons/${lesson.id}/explain/`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify({ transcript: transcriptText })
-      });
-
-      if (response.status === 429) {
-          alert("❄️ AI is cooling down. Please wait 30 seconds.");
-          setIsUploading(false);
-          return;
-      }
-      
-      if (response.status === 401) {
-        alert("Session expired. Please log in again.");
-        return;
-      }
-
-      const data = await response.json();
-      
-      if (response.ok) {
-        setAiResult(data.data);
-        // If passed, you might want to refresh course progress here
-      } else {
-        alert(data.error || "Submission failed");
-      }
+      const data = await submitExplanation(lesson.id, transcriptText);
+      setAiResult(data.data);
     } catch (error) {
-      console.error("API error:", error);
-      alert("Error connecting to server.");
+      if (error.message && error.message.includes('429')) {
+        alert("❄️ AI is cooling down. Please wait 30 seconds.");
+      } else if (error.message && error.message.includes('401')) {
+        alert("Session expired. Please log in again.");
+      } else {
+        console.error("API error:", error);
+        alert(error.message || "Error connecting to server.");
+      }
     } finally {
       setIsUploading(false);
     }
@@ -258,7 +246,7 @@ function LessonContent({ lesson, courseId, onNextLesson, isLastLesson }) {
                         />
                         <div style={{display:'flex', gap:'10px', marginTop:'10px'}}>
                              <button 
-                                onClick={submitExplanation} 
+                                onClick={handleSubmitExplanation} 
                                 className="btn btn-success"
                                 disabled={isUploading || isRecording}
                             >

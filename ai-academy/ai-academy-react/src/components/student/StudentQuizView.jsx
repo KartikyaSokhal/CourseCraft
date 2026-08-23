@@ -1,5 +1,6 @@
 // src/components/student/StudentQuizView.jsx
 import React, { useState } from 'react';
+import { submitQuiz } from '../../services/api.jsx';
 
 function StudentQuizView({ quiz, moduleId, onComplete }) {
   const [answers, setAnswers] = useState({}); // { questionId: "selectedOption" }
@@ -24,33 +25,18 @@ function StudentQuizView({ quiz, moduleId, onComplete }) {
     setIsLoading(true);
 
     try {
-      const token = localStorage.getItem('access_token');
-      // Call the backend API to grade and unlock next module
-      const response = await fetch(`http://127.0.0.1:8000/api/modules/${moduleId}/submit-quiz/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ answers })
-      });
+      const data = await submitQuiz(moduleId, answers);
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setResultData(data); // { score: 85, passed: true, results: [...], next_module_unlocked: true }
-        setSubmitted(true);
-        
-        // If passed, notify parent (CourseViewer) to refresh the sidebar so next module unlocks
-        if (data.passed && onComplete) {
-            onComplete(); 
-        }
-      } else {
-        alert(data.error || "Error submitting quiz");
+      setResultData(data); // { score: 85, passed: true, results: [...], next_module_unlocked: true }
+      setSubmitted(true);
+      
+      // If passed, notify parent (CourseViewer) to refresh the sidebar so next module unlocks
+      if (data.passed && onComplete) {
+          onComplete(); 
       }
     } catch (error) {
       console.error("Submission error:", error);
-      alert("Network error. Please try again.");
+      alert(error.message || "Network error. Please try again.");
     } finally {
       setIsLoading(false);
     }

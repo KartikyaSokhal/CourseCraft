@@ -39,6 +39,7 @@ from .models import (
 )
 from .serializers import (
     CourseDetailSerializer,
+    StudentCourseDetailSerializer,
     UserSerializer,
     ModuleWriteSerializer,
     LessonWriteSerializer,
@@ -476,7 +477,7 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
 class CourseGenerateAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsAdminUser]
     def post(self, request, *args, **kwargs):
         # ... (Same implementation as previous, using helpers above) ...
         # For brevity, assuming this is unchanged from previous working version
@@ -568,14 +569,18 @@ def generate_single_module(request, course_pk):
             quiz = Quiz.objects.create(module=mod, title=qjson.get("quiz_title"))
             for k, q in enumerate(qjson.get("questions", [])):
                 Question.objects.create(quiz=quiz, question_text=q["question_text"], options=q["options"], correct_answer=q["correct_answer"], order=k+1)
-        return Response(CourseDetailSerializer(course).data, status=201)
+        return Response(CourseDetailSerializer(course, context={"request": request}).data, status=201)
     except Exception as e:
         traceback.print_exc()
         return Response({"error": str(e)}, status=500)
 
 class CourseListAPIView(generics.ListAPIView):
-    serializer_class = CourseDetailSerializer
     permission_classes = [permissions.IsAuthenticated]
+    def get_serializer_class(self):
+        user = self.request.user
+        if hasattr(user, 'profile') and user.profile.role == 'ADMIN':
+            return CourseDetailSerializer
+        return StudentCourseDetailSerializer
     def get_queryset(self):
         user = self.request.user
         if hasattr(user, "profile") and user.profile.role == "ADMIN": return Course.objects.all().order_by("-created_at")
@@ -583,8 +588,12 @@ class CourseListAPIView(generics.ListAPIView):
 
 class CourseDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Course.objects.all()
-    serializer_class = CourseDetailSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsAdminOrReadOnly]
+    def get_serializer_class(self):
+        user = self.request.user
+        if hasattr(user, 'profile') and user.profile.role == 'ADMIN':
+            return CourseDetailSerializer
+        return StudentCourseDetailSerializer
     def get_queryset(self):
         user = self.request.user
         if hasattr(user, "profile") and user.profile.role == "ADMIN": return Course.objects.all()
@@ -612,7 +621,7 @@ def hash_transcript(text: str) -> str:
 class ModuleDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Module.objects.all()
     serializer_class = ModuleWriteSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsAdminOrReadOnly]
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         user = request.user

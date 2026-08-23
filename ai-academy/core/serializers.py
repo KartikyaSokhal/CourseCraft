@@ -71,12 +71,28 @@ class LessonSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'content', 'video_id', 'order']
 
 class QuestionSerializer(serializers.ModelSerializer):
+    """Admin serializer — includes correct_answer for editing."""
     class Meta:
         model = Question
         fields = ['id', 'question_text', 'options', 'correct_answer', 'order']
 
+class StudentQuestionSerializer(serializers.ModelSerializer):
+    """Student serializer — excludes correct_answer to prevent cheating."""
+    class Meta:
+        model = Question
+        fields = ['id', 'question_text', 'options', 'order']
+
 class QuizSerializer(serializers.ModelSerializer):
+    """Admin quiz serializer — nests QuestionSerializer with correct_answer."""
     questions = QuestionSerializer(many=True, read_only=True) 
+
+    class Meta:
+        model = Quiz
+        fields = ['id', 'title', 'questions']
+
+class StudentQuizSerializer(serializers.ModelSerializer):
+    """Student quiz serializer — nests StudentQuestionSerializer without correct_answer."""
+    questions = StudentQuestionSerializer(many=True, read_only=True)
 
     class Meta:
         model = Quiz
@@ -137,10 +153,48 @@ class ModuleSerializer(serializers.ModelSerializer):
 
         return not is_prev_done
 
+class StudentModuleSerializer(serializers.ModelSerializer):
+    """Student module serializer — uses StudentQuizSerializer (no correct_answer)."""
+    lessons = LessonSerializer(many=True, read_only=True)
+    quiz = StudentQuizSerializer(read_only=True)
+    is_locked = serializers.SerializerMethodField()
+    is_completed = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Module
+        fields = ['id', 'title', 'order', 'module_type', 'lessons', 'quiz', 'is_locked', 'is_completed']
+
+    def get_is_completed(self, obj):
+        user = self.context.get('request').user
+        if not user or not user.is_authenticated:
+            return False
+        return UserProgress.objects.filter(user=user, module=obj, is_completed=True).exists()
+
+    def get_is_locked(self, obj):
+        user = self.context.get('request').user
+        if not user or not user.is_authenticated:
+            return True
+        if hasattr(user, 'profile') and user.profile.role == 'ADMIN':
+            return False
+        if obj.order == 1:
+            return False
+        prev_module = Module.objects.filter(
+            course=obj.course,
+            order__lt=obj.order
+        ).order_by('-order').first()
+        if not prev_module:
+            return False
+        is_prev_done = UserProgress.objects.filter(
+            user=user,
+            module=prev_module,
+            is_completed=True
+        ).exists()
+        return not is_prev_done
+
 class CourseDetailSerializer(serializers.ModelSerializer):
     """
-    The main serializer for the entire course structure.
-    Includes modules, lessons, and the calculated Average Rating.
+    Admin serializer for the entire course structure.
+    Includes modules with correct_answer visible.
     """
     modules = ModuleSerializer(many=True, read_only=True) 
     creator_username = serializers.CharField(source='created_by.username', read_only=True)
@@ -154,6 +208,30 @@ class CourseDetailSerializer(serializers.ModelSerializer):
             'status', 
             'creator_username', 
             'average_rating', 
+            'modules'
+        ]
+
+    def get_average_rating(self, obj):
+        aggregate = obj.reviews.aggregate(Avg('rating'))
+        avg = aggregate['rating__avg']
+        return round(avg, 1) if avg else 0
+
+class StudentCourseDetailSerializer(serializers.ModelSerializer):
+    """
+    Student serializer — uses StudentModuleSerializer (no correct_answer).
+    """
+    modules = StudentModuleSerializer(many=True, read_only=True)
+    creator_username = serializers.CharField(source='created_by.username', read_only=True)
+    average_rating = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Course
+        fields = [
+            'id',
+            'title',
+            'status',
+            'creator_username',
+            'average_rating',
             'modules'
         ]
 
