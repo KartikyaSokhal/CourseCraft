@@ -2,21 +2,13 @@
 import React, { useState } from 'react';
 
 function Module({ module, currentItem, onSelectItem, allItems }) {
-  const [isOpen, setIsOpen] = useState(!module.is_locked); // Auto-close locked modules
-
-  // Determine if this module contains the currently viewed item
+  const [isOpen, setIsOpen] = useState(!module.is_locked);
   const isActiveModule = currentItem.moduleId === module.id;
 
-  // Visual styles for locked state
-  const containerStyle = {
-    marginBottom: '0.5rem',
-    opacity: module.is_locked ? 0.75 : 1,
-  };
-
   return (
-    <div className={`module ${isOpen ? 'active' : ''}`} style={containerStyle}>
-      <div 
-        className="module-header" 
+    <div className={`module ${isOpen ? 'active' : ''}`} style={{ marginBottom: '0.75rem' }}>
+      <div
+        className="module-header"
         onClick={() => {
           if (module.is_locked) {
             const globalIndex = allItems.findIndex(item => item.type === 'locked' && item.moduleId === module.id);
@@ -25,85 +17,83 @@ function Module({ module, currentItem, onSelectItem, allItems }) {
             setIsOpen(!isOpen);
           }
         }}
-        style={{ 
-          padding: '0.75rem', 
-          background: isActiveModule ? 'rgba(255,255,255,0.05)' : 'transparent',
+        style={{
+          padding: '0.75rem 1rem',
+          background: isActiveModule ? 'var(--primary-light)' : '#FFFFFF',
           cursor: 'pointer',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          borderRadius: '8px',
+          borderRadius: '10px',
           fontWeight: '600',
-          border: isActiveModule ? '1px solid var(--border-color)' : '1px solid transparent'
+          fontSize: '0.92rem',
+          border: isActiveModule ? '1px solid #C7D2FE' : '1px solid var(--border-color)',
+          transition: 'all 0.2s ease'
         }}
       >
-        <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          {/* Status Icon */}
+        <span style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
           {module.is_locked ? (
-            <i className="fas fa-lock" style={{ color: '#9ca3af' }} title="Locked"></i>
+            <i className="fas fa-lock" style={{ color: '#94A3B8' }} title="Locked"></i>
           ) : module.is_completed ? (
-            <i className="fas fa-check-circle" style={{ color: '#10b981' }} title="Completed"></i>
+            <i className="fas fa-check-circle" style={{ color: 'var(--success-color)' }} title="Completed"></i>
           ) : (
-            <i className="fas fa-book-open" style={{ color: 'var(--accent-color)' }}></i>
+            <i className="fas fa-play-circle" style={{ color: 'var(--primary-color)' }}></i>
           )}
 
-          {/* Title */}
-          <span>{module.title}</span>
+          <span style={{ color: module.is_locked ? 'var(--text-muted)' : 'var(--text-primary)' }}>
+            {module.title}
+          </span>
         </span>
-        
-        {/* Chevron (Hide if locked) */}
+
         {!module.is_locked && (
-          <i className={`fas fa-chevron-down`} style={{ 
-            transition: 'transform 0.2s', 
+          <i className="fas fa-chevron-down" style={{
+            transition: 'transform 0.2s',
             transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-            fontSize: '0.8rem',
-            opacity: 0.7
+            fontSize: '0.75rem',
+            color: 'var(--text-muted)'
           }}></i>
         )}
       </div>
 
-      {/* Locked message indicator under module header */}
       {module.is_locked && (
-        <div 
+        <div
           onClick={() => {
             const globalIndex = allItems.findIndex(item => item.type === 'locked' && item.moduleId === module.id);
             if (globalIndex !== -1) onSelectItem(globalIndex);
           }}
-          style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem', color: 'var(--text-secondary)', fontStyle: 'italic', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+          style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
         >
-          <i className="fas fa-lock" style={{ fontSize: '0.75rem', color: '#9ca3af' }}></i>
+          <i className="fas fa-lock" style={{ fontSize: '0.7rem' }}></i>
           <span>Complete previous module to unlock</span>
         </div>
       )}
 
-      {/* Content List - Only show if Open and Not Locked */}
       {isOpen && !module.is_locked && (
-        <ul className="lesson-list" style={{ listStyle: 'none', paddingLeft: '1rem', marginTop: '0.5rem' }}>
-          
-          {/* RENDER LESSONS (For Content Modules) */}
+        <ul className="lesson-list" style={{ listStyle: 'none', paddingLeft: '0.75rem', marginTop: '0.4rem' }}>
           {module.module_type === 'CONTENT' && module.lessons?.map(lesson => {
             const globalIndex = allItems.findIndex(item => item.type === 'lesson' && item.data.id === lesson.id);
             const isActive = currentItem.type === 'lesson' && currentItem.data.id === lesson.id;
-            
+
             return (
-              <li key={lesson.id} style={{ marginBottom: '0.25rem' }}>
-                <a 
-                  href="#" 
+              <li key={lesson.id} style={{ marginBottom: '0.2rem' }}>
+                <a
+                  href="#"
                   onClick={(e) => { e.preventDefault(); onSelectItem(globalIndex); }}
-                  style={{ 
-                    display: 'block', 
-                    padding: '0.5rem', 
-                    borderRadius: '6px',
-                    color: isActive ? 'white' : 'var(--text-secondary)',
-                    background: isActive ? 'var(--accent-gradient)' : 'transparent',
-                    textDecoration: 'none',
-                    fontSize: '0.9rem',
+                  style={{
                     display: 'flex',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    padding: '0.5rem 0.75rem',
+                    borderRadius: '8px',
+                    color: isActive ? '#ffffff' : 'var(--text-secondary)',
+                    background: isActive ? 'var(--primary-color)' : 'transparent',
+                    textDecoration: 'none',
+                    fontSize: '0.88rem',
+                    fontWeight: isActive ? '600' : '400',
+                    transition: 'all 0.15s ease'
                   }}
                 >
-                  <i className={`fas fa-${lesson.video_id ? 'play-circle' : 'file-alt'}`} 
-                     style={{ marginRight: '8px', fontSize: '0.8em', opacity: isActive ? 1 : 0.7 }}>
+                  <i className={`fas fa-${lesson.video_id ? 'play-circle' : 'file-alt'}`}
+                     style={{ marginRight: '8px', fontSize: '0.85em', opacity: isActive ? 1 : 0.7 }}>
                   </i>
                   {lesson.title}
                 </a>
@@ -111,31 +101,30 @@ function Module({ module, currentItem, onSelectItem, allItems }) {
             );
           })}
 
-          {/* RENDER QUIZ LINK (For Assessment Modules) */}
           {module.module_type === 'ASSESSMENT' && module.quiz && (() => {
              const globalIndex = allItems.findIndex(item => item.type === 'quiz' && item.data.id === module.quiz.id);
              const isActive = currentItem.type === 'quiz' && currentItem.data.id === module.quiz.id;
-             
+
              return (
                <li key={module.quiz.id}>
-                 <a 
-                    href="#" 
+                 <a
+                    href="#"
                     onClick={(e) => { e.preventDefault(); onSelectItem(globalIndex); }}
-                    style={{ 
-                      display: 'block', 
-                      padding: '0.5rem', 
-                      borderRadius: '6px',
-                      color: isActive ? 'white' : 'var(--text-secondary)',
-                      background: isActive ? 'var(--accent-gradient)' : 'transparent',
-                      textDecoration: 'none',
-                      fontSize: '0.9rem',
-                      fontWeight: '500',
+                    style={{
                       display: 'flex',
-                      alignItems: 'center'
+                      alignItems: 'center',
+                      padding: '0.5rem 0.75rem',
+                      borderRadius: '8px',
+                      color: isActive ? '#ffffff' : 'var(--text-secondary)',
+                      background: isActive ? 'var(--primary-color)' : 'transparent',
+                      textDecoration: 'none',
+                      fontSize: '0.88rem',
+                      fontWeight: isActive ? '600' : '500',
+                      transition: 'all 0.15s ease'
                     }}
                  >
-                   <i className="fas fa-clipboard-check" 
-                      style={{ marginRight: '8px', fontSize: '0.8em', opacity: isActive ? 1 : 0.7 }}>
+                   <i className="fas fa-clipboard-check"
+                      style={{ marginRight: '8px', fontSize: '0.85em', opacity: isActive ? 1 : 0.7 }}>
                    </i>
                    {module.quiz.title || "Module Assessment"}
                  </a>
@@ -150,14 +139,30 @@ function Module({ module, currentItem, onSelectItem, allItems }) {
 
 function CourseSidebar({ course, currentItem, onSelectItem, allItems }) {
   if (!course) return null;
-  
+
+  const totalModules = course.modules ? course.modules.length : 0;
+  const completedModules = course.modules ? course.modules.filter(m => m.is_completed).length : 0;
+  const progressPercent = totalModules > 0 ? Math.round((completedModules / totalModules) * 100) : 0;
+
   return (
     <div className="course-sidebar-inner">
-      <h3 style={{ marginBottom: '1rem', paddingBottom: '0.5rem', borderBottom: '1px solid var(--border-color)' }}>
-        {course.title}
-      </h3>
+      <div style={{ marginBottom: '1.25rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
+        <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-primary)', marginBottom: '0.75rem', lineHeight: '1.3' }}>
+          {course.title}
+        </h3>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: '600', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
+          <span>Course Progress</span>
+          <span style={{ color: 'var(--teal-accent)' }}>{progressPercent}%</span>
+        </div>
+
+        <div style={{ width: '100%', height: '8px', background: 'var(--bg-subtle)', borderRadius: '999px', overflow: 'hidden' }}>
+          <div style={{ width: `${progressPercent}%`, height: '100%', background: 'var(--teal-accent)', borderRadius: '999px', transition: 'width 0.3s ease' }}></div>
+        </div>
+      </div>
+
       <div id="module-list">
-        {course.modules.map(module => (
+        {course.modules?.map(module => (
           <Module
             key={module.id}
             module={module}

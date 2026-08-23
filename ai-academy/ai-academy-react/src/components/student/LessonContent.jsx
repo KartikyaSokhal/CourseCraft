@@ -9,10 +9,10 @@ function LessonContent({ lesson, courseId, onNextLesson, isLastLesson, onComplet
 
   // --- Speech-to-Text State ---
   const [isRecording, setIsRecording] = useState(false);
-  const [transcriptText, setTranscriptText] = useState(""); 
+  const [transcriptText, setTranscriptText] = useState("");
   const [isUploading, setIsUploading] = useState(false);
-  const [aiResult, setAiResult] = useState(null); 
-  
+  const [aiResult, setAiResult] = useState(null);
+
   const recognitionRef = useRef(null);
 
   useEffect(() => {
@@ -126,17 +126,17 @@ function LessonContent({ lesson, courseId, onNextLesson, isLastLesson, onComplet
 
   // --------------------------------
 
-  const totalSteps = lesson.video_id ? 2 : 1; 
+  const totalSteps = lesson.video_id ? 2 : 1;
   const progressPercent = ((activeStep + 1) / totalSteps) * 100;
 
   return (
     <div id="lesson-viewer-content" style={styles.container}>
-      
+
       {/* HEADER */}
       <div style={styles.header}>
         <div style={styles.titleRow}>
           <h2 style={styles.lessonTitle}>{lesson.title}</h2>
-          
+
           <Link
             to={`/reviews?course_id=${courseId}`}
             className="btn btn-sm btn-outline-secondary"
@@ -151,18 +151,18 @@ function LessonContent({ lesson, courseId, onNextLesson, isLastLesson, onComplet
             {activeStep === 0 && lesson.video_id ? 'Step 1: Watch' : 'Step 2: Read & Verify'}
           </div>
           <div style={styles.progressBarBg}>
-            <div 
+            <div
               style={{
-                ...styles.progressBarFill, 
+                ...styles.progressBarFill,
                 width: `${progressPercent}%`
-              }} 
+              }}
             />
           </div>
         </div>
       </div>
 
       <div style={styles.contentBody}>
-        
+
         {/* STEP 1: VIDEO */}
         {activeStep === 0 && lesson.video_id && (
           <div className="fade-in-up">
@@ -182,8 +182,8 @@ function LessonContent({ lesson, courseId, onNextLesson, isLastLesson, onComplet
                 <i className="fas fa-info-circle" style={{marginRight: '8px', color: 'var(--accent-color)'}}></i>
                 Watch the video to grasp the core concepts.
               </p>
-              <button 
-                className="btn btn-primary" 
+              <button
+                className="btn btn-primary"
                 onClick={() => { setActiveStep(1); window.scrollTo(0,0); }}
                 style={styles.navBtn}
               >
@@ -199,7 +199,7 @@ function LessonContent({ lesson, courseId, onNextLesson, isLastLesson, onComplet
             <div style={styles.readingContainer}>
               <div
                 id="text-content"
-                className="course-content-typography" 
+                className="course-content-typography"
                 dangerouslySetInnerHTML={createMarkup(lesson.content)}
               />
 
@@ -210,15 +210,15 @@ function LessonContent({ lesson, courseId, onNextLesson, isLastLesson, onComplet
                   Feynman Challenge
                 </h3>
                 <p style={{color: 'var(--text-secondary)', marginBottom: '1.5rem'}}>
-                  Explain the core concept of this lesson in your own words. 
-                  The AI will analyze if you truly understand it. 
+                  Explain the core concept of this lesson in your own words.
+                  The AI will analyze if you truly understand it.
                 </p>
 
                 {/* CONTROLS */}
                 <div style={styles.recordControls}>
                     {!isRecording && (
                         <button onClick={startRecording} className="btn btn-outline-primary" style={styles.recordBtn}>
-                            <i className="fas fa-microphone" style={{color: 'red', marginRight:'8px'}}></i> 
+                            <i className="fas fa-microphone" style={{color: 'red', marginRight:'8px'}}></i>
                             {transcriptText ? "Resume Recording" : "Start Speaking"}
                         </button>
                     )}
@@ -233,7 +233,7 @@ function LessonContent({ lesson, courseId, onNextLesson, isLastLesson, onComplet
                 {/* TEXT OUTPUT AREA */}
                 {(isRecording || transcriptText) && (
                     <div style={{marginTop: '1rem'}}>
-                        <textarea 
+                        <textarea
                             value={transcriptText}
                             onChange={(e) => setTranscriptText(e.target.value)} // Allow manual edits
                             placeholder="Your explanation will appear here..."
@@ -248,15 +248,15 @@ function LessonContent({ lesson, courseId, onNextLesson, isLastLesson, onComplet
                             }}
                         />
                         <div style={{display:'flex', gap:'10px', marginTop:'10px'}}>
-                             <button 
-                                onClick={handleSubmitExplanation} 
+                             <button
+                                onClick={handleSubmitExplanation}
                                 className="btn btn-success"
                                 disabled={isUploading || isRecording}
                             >
                                 {isUploading ? 'AI is analyzing...' : 'Submit Explanation'}
                             </button>
-                            <button 
-                                onClick={() => { setTranscriptText(""); setAiResult(null); }} 
+                            <button
+                                onClick={() => { setTranscriptText(""); setAiResult(null); }}
                                 className="btn btn-link text-muted"
                             >
                                 Clear
@@ -268,15 +268,15 @@ function LessonContent({ lesson, courseId, onNextLesson, isLastLesson, onComplet
                 {/* AI RESULTS */}
                 {aiResult && (
                     <div style={{
-                        marginTop: '1.5rem', 
-                        padding: '1rem', 
-                        borderRadius: '8px', 
+                        marginTop: '1.5rem',
+                        padding: '1rem',
+                        borderRadius: '8px',
                         backgroundColor: aiResult.is_passed ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
                         border: `1px solid ${aiResult.is_passed ? '#10B981' : '#EF4444'}`
                     }}>
                         <div style={{display:'flex', alignItems:'center', gap:'10px', marginBottom:'0.5rem'}}>
                             <span style={{
-                                fontWeight:'bold', 
+                                fontWeight:'bold',
                                 color: aiResult.is_passed ? '#10B981' : '#EF4444',
                                 fontSize: '1.1rem'
                             }}>
@@ -284,7 +284,7 @@ function LessonContent({ lesson, courseId, onNextLesson, isLastLesson, onComplet
                             </span>
                             {aiResult.is_passed && <i className="fas fa-check-circle" style={{color:'#10B981'}}></i>}
                         </div>
-                        
+
                         <div style={{fontSize:'0.95rem'}}>
                             <strong>AI Feedback:</strong> {aiResult.feedback}
                         </div>
@@ -313,17 +313,17 @@ function LessonContent({ lesson, courseId, onNextLesson, isLastLesson, onComplet
             {/* NAVIGATION FOOTER */}
             <div style={styles.navigationRow}>
               {lesson.video_id && (
-                <button 
-                  className="btn btn-secondary" 
+                <button
+                  className="btn btn-secondary"
                   onClick={() => { setActiveStep(0); window.scrollTo(0,0); }}
                 >
                   <i className="fas fa-arrow-left" style={{marginRight:'8px'}}></i> Re-watch Video
                 </button>
               )}
-              
+
               <div style={{ marginLeft: 'auto' }}>
                 {!isLastLesson && (
-                  <button 
+                  <button
                     className="btn btn-primary"
                     onClick={onNextLesson}
                     style={styles.navBtn}
@@ -331,7 +331,7 @@ function LessonContent({ lesson, courseId, onNextLesson, isLastLesson, onComplet
                     Next Lesson <i className="fas fa-chevron-right" style={{marginLeft:'8px'}}></i>
                   </button>
                 )}
-                
+
                 {isLastLesson && (
                   <span className="text-muted" style={{fontStyle:'italic', color: 'var(--text-secondary)'}}>
                     End of Module
@@ -361,12 +361,12 @@ const styles = {
   titleRow: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center', 
+    alignItems: 'center',
     marginBottom: '1rem',
     gap: '1rem',
   },
   lessonTitle: {
-    flex: 1, 
+    flex: 1,
   },
   reviewBtn: {
     display: 'flex',
@@ -374,7 +374,7 @@ const styles = {
     gap: '0.5rem',
     fontSize: '0.9rem',
     whiteSpace: 'nowrap',
-    flexShrink: 0, 
+    flexShrink: 0,
   },
   progressContainer: {
     marginTop: '0.5rem',
@@ -438,14 +438,14 @@ const styles = {
   aiSection: {
     marginTop: '3rem',
     padding: '2rem',
-    backgroundColor: '#fff', 
+    backgroundColor: '#FFFFFF',
     borderRadius: '16px',
     border: '1px solid var(--border-color)',
-    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
+    boxShadow: 'var(--card-shadow)',
   },
   aiHeader: {
-    marginBottom: '1rem',
-    color: 'var(--primary-color)',
+    marginBottom: '0.75rem',
+    color: 'var(--text-primary)',
     fontSize: '1.25rem',
     fontWeight: '700',
     display: 'flex',
@@ -465,15 +465,16 @@ const styles = {
   quizSection: {
     marginTop: '3rem',
     padding: '2rem',
-    backgroundColor: 'var(--bg-secondary)',
+    backgroundColor: '#FFFFFF',
     borderRadius: '16px',
     border: '1px solid var(--border-color)',
+    boxShadow: 'var(--card-shadow)',
   },
   quizHeader: {
-    marginBottom: '1.5rem', 
-    borderBottom: '1px solid var(--border-color)', 
+    marginBottom: '1.5rem',
+    borderBottom: '1px solid var(--border-color)',
     paddingBottom: '1rem',
-    color: 'var(--accent-color)',
+    color: 'var(--text-primary)',
     fontSize: '1.25rem',
     fontWeight: '700'
   },
