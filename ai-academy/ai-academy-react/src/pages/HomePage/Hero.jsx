@@ -9,111 +9,107 @@ function Hero() {
       <div className="container">
         <div className="hero-grid">
           
-          {/* Left Hero Content */}
+          {/* Left Column: Editorial Headline & CTAs */}
           <div className="hero-content">
             <div className="powered-by">
-              <span>✨</span> GOOGLE GEMINI AI LEARNING STUDIO
+              <span>✨</span> AI-POWERED LEARNING STUDIO
             </div>
             
             <h1 className="hero-title">
-              Transform Ideas into <span className="highlight">Interactive Courses</span>
+              Transform Any Subject into an <span className="highlight">Interactive AI Course</span>
             </h1>
             
             <p className="hero-subtitle">
-              CourseCraft generates structured curricula, rich lesson modules, curated video demonstrations, and Feynman technique active-recall evaluations in seconds.
+              CourseCraft turns topic prompts into structured curricula with curated lessons, server-graded quizzes, and voice-assisted Feynman active recall.
             </p>
             
             <div className="hero-actions">
               <Link to="/signup" className="btn btn-primary">
-                Start Learning Free &rarr;
+                Create account &rarr;
               </Link>
-              <HashLink to="/#features-section" className="btn btn-secondary">
-                Explore Studio &darr;
+              <HashLink to="/#how-it-works" className="btn btn-secondary">
+                See how it works &darr;
               </HashLink>
-            </div>
-            
-            <div className="hero-highlights" style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-              gap: '1rem',
-              marginTop: '2.5rem'
-            }}>
-              <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: '12px', border: '1px solid #E2E8F0', boxShadow: '0 2px 4px rgba(15,23,42,0.02)' }}>
-                <div style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>⚡</div>
-                <h4 style={{ fontWeight: '700', fontSize: '0.9rem', color: 'var(--text-primary)', margin: 0 }}>Instant AI Generation</h4>
-              </div>
-
-              <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: '12px', border: '1px solid #E2E8F0', boxShadow: '0 2px 4px rgba(15,23,42,0.02)' }}>
-                <div style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>🧠</div>
-                <h4 style={{ fontWeight: '700', fontSize: '0.9rem', color: 'var(--text-primary)', margin: 0 }}>Feynman Speech AI</h4>
-              </div>
-
-              <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: '12px', border: '1px solid #E2E8F0', boxShadow: '0 2px 4px rgba(15,23,42,0.02)' }}>
-                <div style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>🔒</div>
-                <h4 style={{ fontWeight: '700', fontSize: '0.9rem', color: 'var(--text-primary)', margin: 0 }}>Sequential Mastery</h4>
-              </div>
             </div>
           </div>
 
-          {/* Right Hero Live Interactive Preview */}
+          {/* Right Column: Studio-Preview Card (recreating Course Player reference layout) */}
           <div className="hero-preview">
             <div className="hero-preview-card">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-color)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#EF4444' }}></div>
-                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#F59E0B' }}></div>
-                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10B981' }}></div>
-                </div>
-                <span className="badge badge-published">LIVE STUDIO DEMO</span>
-              </div>
-
-              <h3 style={{ fontSize: '1.25rem', fontWeight: '800', marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
-                Distributed Systems & Cloud Architecture
-              </h3>
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1.25rem' }}>
-                Master load balancing, sharding, event-driven streaming, and active recall.
-              </p>
-
-              {/* Module 1 - Completed */}
-              <div style={{ padding: '0.75rem 1rem', background: '#F8FAFC', borderRadius: '10px', border: '1px solid #E2E8F0', marginBottom: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                  <i className="fas fa-check-circle" style={{ color: 'var(--success-color)' }}></i>
-                  <span style={{ fontWeight: '600', fontSize: '0.88rem' }}>1. Foundations of Scalability</span>
-                </div>
-                <span style={{ fontSize: '0.75rem', color: 'var(--success-color)', fontWeight: '700' }}>100%</span>
-              </div>
-
-              {/* Module 2 - Active */}
-              <div style={{ padding: '0.85rem 1rem', background: 'var(--primary-light)', borderRadius: '10px', border: '1px solid #C7D2FE', marginBottom: '0.75rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                    <i className="fas fa-play-circle" style={{ color: 'var(--primary-color)' }}></i>
-                    <span style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--primary-color)' }}>2. Sharding & Event Streams</span>
+              
+              {/* Top Bar / Header */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: '#EEF2FF', color: '#6366F1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}>
+                    <i className="fas fa-project-diagram"></i>
                   </div>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--primary-color)', fontWeight: '700' }}>In Progress</span>
+                  <div>
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>Data Structures</h3>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Course progress</div>
+                  </div>
                 </div>
-                <div style={{ width: '100%', height: '6px', background: '#E0E7FF', borderRadius: '999px', overflow: 'hidden' }}>
-                  <div style={{ width: '65%', height: '100%', background: 'var(--primary-color)', borderRadius: '999px' }}></div>
+
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontSize: '0.85rem', fontWeight: '800', color: 'var(--teal-accent)' }}>65%</div>
+                  <div style={{ width: '80px', height: '6px', background: '#E2E8F0', borderRadius: '999px', overflow: 'hidden', marginTop: '4px' }}>
+                    <div style={{ width: '65%', height: '100%', background: 'var(--teal-accent)', borderRadius: '999px' }}></div>
+                  </div>
                 </div>
               </div>
 
-              {/* Module 3 - Locked */}
-              <div style={{ padding: '0.75rem 1rem', background: '#F8FAFC', borderRadius: '10px', border: '1px solid #E2E8F0', opacity: 0.7, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                  <i className="fas fa-lock" style={{ color: '#94A3B8' }}></i>
-                  <span style={{ fontWeight: '600', fontSize: '0.88rem', color: 'var(--text-muted)' }}>3. Resiliency & Case Studies</span>
+              {/* Course Modules List */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                
+                {/* Module 1: Foundations (Completed) */}
+                <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '0.75rem 1rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-primary)' }}>
+                      <i className="fas fa-check-circle" style={{ color: 'var(--success-color)' }}></i>
+                      <span>Module 1: Foundations</span>
+                    </div>
+                    <i className="fas fa-chevron-up" style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}></i>
+                  </div>
+                  
+                  {/* Active Lesson Item */}
+                  <div style={{ marginTop: '0.5rem', padding: '0.45rem 0.75rem', background: '#EEF2FF', borderRadius: '8px', color: '#6366F1', fontWeight: '600', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <i className="fas fa-play-circle" style={{ fontSize: '0.85rem' }}></i>
+                    <span>1.3 Binary Trees (Intro)</span>
+                  </div>
                 </div>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Locked</span>
-              </div>
 
-              {/* Feynman Prompt Preview */}
-              <div style={{ marginTop: '1.25rem', padding: '0.85rem', background: '#FFFFFF', borderRadius: '10px', border: '1px dashed #6366F1', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--primary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary-color)', flexShrink: 0 }}>
-                  <i className="fas fa-microphone"></i>
+                {/* Module 2: Linear Structures (In Progress) */}
+                <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '600', fontSize: '0.88rem', color: 'var(--text-primary)' }}>
+                    <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: '2px solid var(--teal-accent)' }}></div>
+                    <span>Module 2: Linear Structures</span>
+                  </div>
+                  <i className="fas fa-chevron-down" style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}></i>
                 </div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                  <strong>Feynman Evaluator:</strong> "Explain CAP theorem in your own words..."
+
+                {/* Module 3: Advanced Structures (Locked) */}
+                <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', opacity: 0.75 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '600', fontSize: '0.88rem', color: 'var(--text-muted)' }}>
+                    <i className="fas fa-lock" style={{ fontSize: '0.85rem' }}></i>
+                    <span>Module 3: Advanced Structures</span>
+                  </div>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Locked</span>
                 </div>
+
+                {/* Feynman Active Recall Card Preview */}
+                <div style={{ marginTop: '0.5rem', padding: '0.85rem 1rem', background: '#FAF8F5', borderRadius: '12px', border: '1px solid #EAE6DF' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '700', fontSize: '0.85rem', color: 'var(--text-primary)', marginBottom: '0.35rem' }}>
+                    <i className="fas fa-lightbulb" style={{ color: '#6366F1' }}></i>
+                    <span>Explain it in your own words</span>
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginBottom: '0.65rem' }}>
+                    Type or speak your explanation. AI evaluates your understanding.
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <input type="text" readOnly value="A binary tree has at most two children..." style={{ flex: 1, padding: '0.35rem 0.6rem', fontSize: '0.78rem', borderRadius: '6px', border: '1px solid #CBD5E1', background: '#FFFFFF' }} />
+                    <button type="button" className="btn btn-primary" style={{ padding: '0.35rem 0.85rem', fontSize: '0.78rem', borderRadius: '6px' }}>Explain</button>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>

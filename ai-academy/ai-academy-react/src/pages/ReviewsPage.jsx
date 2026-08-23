@@ -183,7 +183,7 @@ function ReviewsPage() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                     <span style={{ fontWeight: '700', color: 'var(--text-primary)', fontSize: '0.95rem' }}>
                       <i className="fas fa-user-circle" style={{ marginRight: '6px', color: 'var(--primary-color)' }}></i>
-                      {r.username || r.user_username || 'Student'}
+                      {r.user_username || 'Student'}
                     </span>
                     <div style={{ color: '#F59E0B', fontSize: '0.9rem' }}>
                       {'★'.repeat(r.rating)}

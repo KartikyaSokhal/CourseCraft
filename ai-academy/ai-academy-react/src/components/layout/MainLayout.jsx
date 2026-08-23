@@ -7,7 +7,7 @@ import Footer from './Footer'; // From previous step
 function MainLayout() {
   // Theme logic is now encapsulated in the layout
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('theme') || 'light';
+    return localStorage.getItem('theme') || 'dark';
   });
 
   useEffect(() => {
