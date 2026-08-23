@@ -422,4 +422,80 @@ class StudentProgressionAndLockingTests(BaseTestCase):
         )
 
 
+from django.core.management import call_command
+from io import StringIO
+
+class PromoteAdminCommandTests(TestCase):
+    """Tests for the promote_admin management command."""
+
+    def test_promote_admin_creates_new_admin_user(self):
+        """Command creates a new user and grants ADMIN profile role idempotently."""
+        out = StringIO()
+        call_command('promote_admin', username='cmd_admin_new', password='PassSecret123!', stdout=out)
+        output = out.getvalue()
+
+        user = User.objects.get(username='cmd_admin_new')
+        self.assertTrue(user.check_password('PassSecret123!'))
+        self.assertEqual(user.profile.role, Profile.Role.ADMIN)
+        self.assertIn("Created new Django user 'cmd_admin_new'", output)
+        self.assertNotIn("PassSecret123!", output)
+
+    def test_promote_admin_promotes_existing_student_user(self):
+        """Command promotes an existing student user profile to ADMIN role."""
+        student = User.objects.create_user(username='cmd_student_exist', password='StudentPass123!')
+        Profile.objects.create(user=student, role=Profile.Role.STUDENT)
+
+        out = StringIO()
+        call_command('promote_admin', username='cmd_student_exist', stdout=out)
+        output = out.getvalue()
+
+        student.profile.refresh_from_db()
+        self.assertEqual(student.profile.role, Profile.Role.ADMIN)
+        self.assertIn("Promoted user 'cmd_student_exist' to ADMIN role", output)
+        self.assertNotIn("StudentPass123!", output)
+
+
+class RoleBasedGenerationAccessTests(BaseTestCase):
+    """Tests for role-based generation access control on CourseGenerateAPIView."""
+
+    def test_unauthenticated_cannot_access_generate(self):
+        """Unauthenticated POST /api/courses/generate/ returns 401 Unauthorized."""
+        client = APIClient()
+        resp = client.post('/api/courses/generate/', {'prompt': 'Python'}, format='json')
+        self.assertEqual(resp.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_student_cannot_access_generate(self):
+        """Student POST /api/courses/generate/ returns 403 Forbidden."""
+        resp = self.student_client.post('/api/courses/generate/', {'prompt': 'Python'}, format='json')
+        self.assertEqual(resp.status_code, status.HTTP_403_FORBIDDEN)
+
+    @patch('core.views.generate_course_outline')
+    @patch('core.views.generate_lesson_plan_for_module')
+    @patch('core.views.search_youtube')
+    @patch('core.views.generate_deep_lesson_content')
+    @patch('core.views.generate_quiz_from_content')
+    def test_admin_can_access_generate(
+        self, mock_quiz, mock_deep, mock_yt, mock_lesson, mock_outline
+    ):
+        """Admin POST /api/courses/generate/ returns 201 Created (AI mocked)."""
+        mock_outline.return_value = {'course_title': 'AI Course', 'modules': [{'title': 'Mod 1'}]}
+        mock_lesson.return_value = [{'title': 'Lesson 1'}]
+        mock_yt.return_value = []
+        mock_deep.return_value = {'text_content': '<p>Content</p>', 'video_id': None}
+        mock_quiz.return_value = {
+            'quiz_title': 'Final Exam',
+            'questions': [{'question_text': 'Q1?', 'options': ['A', 'B'], 'correct_answer': 'A'}]
+        }
+
+        resp = self.admin_client.post('/api/courses/generate/', {
+            'prompt': 'Data Science',
+            'num_content_modules': 1,
+            'num_lessons_per_module': 1,
+            'num_test_modules': 0
+        }, format='json')
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(resp.data['title'], 'AI Course')
+
+
+
 

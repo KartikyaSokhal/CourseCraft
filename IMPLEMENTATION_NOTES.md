@@ -1,8 +1,8 @@
-# Implementation Notes — Server-Side Locked Assessment Protection & Progression Fixes
+# Implementation Notes — Demo Readiness & Admin Bootstrap
 
-## Overview of Correction
+## Overview of Changes
 
-Extracted a unified, reusable server-side `is_module_locked` progression helper in `core/permissions.py` and enforced strict pre-execution locking checks on quiz submissions and lesson explanations. Locked assessment/challenge requests now return HTTP 403 Forbidden with `{"error": "LOCKED"}` before grading, before invoking Gemini, and before creating progress or attempt database rows.
+Added a safe, idempotent Django management command (`promote_admin`) for bootstrapping admin users without exposing credentials, updated root setup documentation (`README.md` and `.env.example`), and added end-to-end verification tests covering admin creation and role-based course generation.
 
 ---
 
@@ -12,44 +12,49 @@ Extracted a unified, reusable server-side `is_module_locked` progression helper 
 
 | File | Changes |
 |---|---|
-| `core/permissions.py` | Added reusable `is_module_locked(user, module)` helper function. Returns `True` if user is unauthenticated or if the module (`order > 1`) lacks a preceding completed `UserProgress` entry. Returns `False` for `order == 1` or `ADMIN` users. |
-| `core/views.py` | 1. `QuizSubmissionAPIView`: Enforced `is_module_locked(request.user, module)` check before quiz grading. Returns 403 `{"error": "LOCKED"}` without creating/updating `UserProgress`.<br>2. `ExplainOrFailAPIView`: Enforced `is_module_locked(request.user, lesson.module)` check before processing transcript. Returns 403 `{"error": "LOCKED"}` without calling Gemini or creating `ExplanationAttempt`.<br>3. `ModuleDetailAPIView`: Replaced ad-hoc locking code with `is_module_locked` helper. |
-| `core/serializers.py` | Updated `StudentModuleSerializer.get_is_locked` to use the shared `is_module_locked(user, obj)` helper for consistency across serializers and API endpoints. |
-| `core/tests.py` | Updated `StudentProgressionAndLockingTests` (7 tests): verifies student locked quiz 403 + no progress created, student locked explanation 403 + no Gemini call + no attempt created, unlocked quiz grading & progress recording, first module access, locked module course-detail suppression, module unlocking upon previous completion, and preserved direct module-detail 403 locking. Total 21 tests in suite. |
-| `backend/settings.py` | Environment configuration & `SECRET_KEY` presence enforcement via `load_dotenv`. |
-| `.env.example` | Safe template with environment variable placeholders. |
+| `core/management/commands/promote_admin.py` | Created safe, idempotent management command (`python manage.py promote_admin --username <name> [--password <pass>] [--is-superuser]`). Safely creates Django users and assigns/promotes the `Profile.Role.ADMIN` role without printing passwords or secrets. |
+| `core/management/__init__.py` | Created Django management package file. |
+| `core/management/commands/__init__.py` | Created Django commands package file. |
+| `core/tests.py` | Added `PromoteAdminCommandTests` (2 tests) verifying command creation/promotion and password non-exposure. Added `RoleBasedGenerationAccessTests` (3 tests) verifying unauthenticated 401, student 403, and admin 201 generation access control. Total 26 tests in suite. |
+| `core/permissions.py` | Reusable `is_module_locked(user, module)` helper for server-side sequential progress checks. |
+| `core/views.py` | Enforced `is_module_locked` checks on `QuizSubmissionAPIView`, `ExplainOrFailAPIView`, and `ModuleDetailAPIView`. |
+| `core/serializers.py` | `StudentModuleSerializer` omits lessons/quiz for locked modules. |
+| `backend/settings.py` | Loads `.env` via `python-dotenv` before reading settings; parses `CORS_ALLOWED_ORIGINS` cleanly. |
+| `.env.example` | Added `GEMINI_MODEL=gemini-3.6-flash`. |
 
-### Frontend (`ai-academy/ai-academy-react/`)
+### Root & Frontend Documentation (`ai-academy/ai-academy-react/`)
 
 | File | Changes |
 |---|---|
-| `src/pages/StudentDashboard.jsx` | Passes `onRefreshCourse` callback to `<CourseViewer />` to refetch course state from backend upon assessment completion. |
-| `src/components/student/CourseViewer.jsx` | Generates `{ type: 'locked', module: module }` items for locked modules. Displays non-technical student lock notification card when a locked module is selected. Passes `onRefreshCourse` as `onComplete` to `StudentQuizView` (with `moduleId`) and `LessonContent`. |
-| `src/components/student/CourseSidebar.jsx` | Renders lock indicator message under locked module headers and enables selecting locked items to view the lock card. |
-| `src/components/student/LessonContent.jsx` | Triggers `onComplete()` when Feynman challenge is passed (`is_passed=True`). |
-| `src/components/student/StudentQuizView.jsx` | Standardized API call using `submitQuiz` helper with `onComplete()` trigger on pass. |
+| `README.md` | Replaced outdated stack references with actual architecture (Django REST Framework + React SPA + PostgreSQL/SQLite + Gemini AI). Added step-by-step local development setup, `.env` configuration, `promote_admin` bootstrap documentation, backend/frontend launch steps, and progression flow details. |
+| `src/pages/StudentDashboard.jsx` | Passed `onRefreshCourse` to refetch course state upon assessment completion. |
+| `src/components/student/CourseViewer.jsx` | Displays locked module card when selecting a locked module item. |
+| `src/components/student/CourseSidebar.jsx` | Shows lock indicator and enables selecting locked modules. |
+| `src/components/student/LessonContent.jsx` | Triggers `onComplete()` when Feynman challenge is passed. |
 
 ---
 
-## Server-Side Locking & Security Rules
+## End-to-End Verification Flow (No External API Calls)
 
-1. **Unified Lock Evaluation (`is_module_locked`)**:
-   - `ADMIN` role: Always unlocked (`is_locked = False`).
-   - Module `order = 1`: Always unlocked (`is_locked = False`).
-   - Module `order > 1`: Locked (`is_locked = True`) unless a `UserProgress(is_completed=True)` row exists for the immediately preceding module (`order - 1` or preceding order in course).
-
-2. **Endpoint Protection Guarantees**:
-   - `POST /api/modules/<locked_id>/submit-quiz/` → HTTP 403 `{"error": "LOCKED"}`. No answers graded; no `UserProgress` row created.
-   - `POST /api/lessons/<locked_id>/explain/` → HTTP 403 `{"error": "LOCKED"}`. Gemini API NOT invoked; no `ExplanationAttempt` row created.
-   - `GET /api/modules/<locked_id>/` → HTTP 403 `{"error": "LOCKED"}`.
-   - `GET /api/courses/<id>/` (Student Payload) → Locked module metadata returned (`id`, `title`, `order`, `module_type`, `is_locked`, `is_completed`), but `lessons = []` and `quiz = null`.
+1. **Admin Promotion & Login**:
+   - Run `python manage.py promote_admin --username demo_admin --password "AdminPass123!" --is-superuser`.
+   - Admin obtains JWT token (`POST /api/token/`) and logs in.
+2. **Course Creation & Generation Access**:
+   - Admin generates or creates a course with Module 1 (`CONTENT`) and Module 2 (`ASSESSMENT`).
+   - Admin sets status to `PUBLISHED`.
+3. **Student Progression & Content Protection**:
+   - Student logs in and fetches `GET /api/courses/<id>/`.
+   - Module 1 (`order = 1`) is unlocked; student views lesson content.
+   - Module 2 (`order = 2`) is locked (`is_locked = True`); `lessons = []` and `quiz = null`. Direct calls to submit quiz/explanation return HTTP 403 `{"error": "LOCKED"}` without evaluating answers or creating DB rows.
+   - Student completes Module 1 assessment / Feynman challenge.
+   - Student view refetches `GET /api/courses/<id>/`; Module 2 dynamically unlocks (`is_locked = False`).
 
 ---
 
 ## Verification Commands Run
 
 ```bash
-# Backend test suite (21/21 tests passed)
+# Backend test suite (26/26 tests passed)
 SECRET_KEY="test-secret-key-for-ci-only" ./venv/bin/python manage.py test core -v2
 
 # Frontend clean install + Vite production build (succeeded)
@@ -69,10 +74,15 @@ test_student_cannot_delete_module (core.tests.AuthorizationTests) ... ok
 test_student_cannot_generate_course (core.tests.AuthorizationTests) ... ok
 test_student_cannot_update_course (core.tests.AuthorizationTests) ... ok
 test_student_cannot_update_module (core.tests.AuthorizationTests) ... ok
+test_promote_admin_creates_new_admin_user (core.tests.PromoteAdminCommandTests) ... ok
+test_promote_admin_promotes_existing_student_user (core.tests.PromoteAdminCommandTests) ... ok
 test_admin_course_detail_shows_correct_answer (core.tests.QuizAnswerProtectionTests) ... ok
 test_student_can_read_published_course (core.tests.QuizAnswerProtectionTests) ... ok
 test_student_course_detail_hides_correct_answer (core.tests.QuizAnswerProtectionTests) ... ok
 test_student_course_list_hides_correct_answer (core.tests.QuizAnswerProtectionTests) ... ok
+test_admin_can_access_generate (core.tests.RoleBasedGenerationAccessTests) ... ok
+test_student_cannot_access_generate (core.tests.RoleBasedGenerationAccessTests) ... ok
+test_unauthenticated_cannot_access_generate (core.tests.RoleBasedGenerationAccessTests) ... ok
 test_cors_allowed_origins_parsing (core.tests.SettingsHardeningTests) ... ok
 test_load_dotenv_from_file (core.tests.SettingsHardeningTests) ... ok
 test_direct_module_detail_locking_behavior_preserved (core.tests.StudentProgressionAndLockingTests) ... ok
@@ -84,9 +94,9 @@ test_student_cannot_submit_quiz_for_locked_module (core.tests.StudentProgression
 test_submitting_passing_quiz_unlocks_next_module (core.tests.StudentProgressionAndLockingTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 21 tests in 6.215s — OK
+Ran 26 tests in 7.372s — OK
 ```
 
 ## Failed Verification
 
-None. All 21 backend tests pass. React Vite production build succeeds cleanly.
+None. All 26 backend tests pass. React Vite production build succeeds cleanly.
