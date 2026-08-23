@@ -2,14 +2,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../services/api';
-
-// Import the new reusable component
 import AuthModal from '../components/auth/AuthModal';
 
 function SignupPage() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -21,72 +20,82 @@ function SignupPage() {
 
     try {
       await registerUser(username, email, password);
-      
       setMessage({ text: 'Registration successful! Redirecting to login...', type: 'success' });
-      
       setTimeout(() => {
         navigate('/login');
-      }, 2000);
+      }, 1500);
 
-    } catch (error) {
-      setMessage({ text: error.message || 'Registration failed.', type: 'error' });
+    } catch (err) {
+      setMessage({ text: err.message || 'Registration failed.', type: 'error' });
       setLoading(false);
     }
   };
 
   return (
-    // Use the AuthModal as the wrapper
     <AuthModal
-      title="Create Your Account"
+      title="Create your account"
       footerText="Already have an account?"
       footerLink="/login"
       footerLinkText="Sign in"
     >
-      {/* This is passed in as 'children' */}
       {message.text && (
-        <p id="message" className={message.type} style={{ display: 'block' }}>
+        <p style={{ color: message.type === 'success' ? '#10B981' : '#EF4444', marginBottom: '1rem', fontSize: '0.9rem' }}>
           {message.text}
         </p>
       )}
+      
       <form id="signup-form" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Choose a username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
+          <label htmlFor="username">Name</label>
+          <div className="input-wrapper">
+            <i className="fas fa-user input-icon-left"></i>
+            <input
+              type="text"
+              id="username"
+              placeholder="Enter your name"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
         </div>
+
         <div className="form-group">
           <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <div className="input-wrapper">
+            <i className="fas fa-envelope input-icon-left"></i>
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
         </div>
+
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Create a strong password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="input-wrapper">
+            <i className="fas fa-lock input-icon-left"></i>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              placeholder="Create a password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <i
+              className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} input-icon-right`}
+              onClick={() => setShowPassword(!showPassword)}
+            ></i>
+          </div>
         </div>
+
         <button type="submit" className="btn btn-primary" disabled={loading || message.type === 'success'}>
-          {loading ? 'Creating...' : 'Create Account'}
+          {loading ? 'Creating...' : 'Create account'}
         </button>
       </form>
     </AuthModal>

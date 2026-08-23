@@ -4,13 +4,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../services/AuthContext';
 import { loginUser } from '../services/api';
 import { jwtDecode } from 'jwt-decode';
-
-// Import the new reusable component
-import AuthModal from '../components/auth/AuthModal'; 
+import AuthModal from '../components/auth/AuthModal';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
@@ -32,11 +31,8 @@ function LoginPage() {
 
     try {
       const data = await loginUser(username, password);
-      
-      // 1. UPDATE CONTEXT
       login(data.access); 
       
-      // 2. EXPLICITLY SAVE TO LOCAL STORAGE (Fixes 401 in other components)
       localStorage.setItem('access_token', data.access);
       if (data.refresh) {
         localStorage.setItem('refresh_token', data.refresh);
@@ -47,8 +43,8 @@ function LoginPage() {
       
       navigate(redirectPath, { replace: true });
 
-    } catch (error) {
-      setError(error.message || 'Invalid username or password.');
+    } catch (err) {
+      setError(err.message || 'Invalid username or password.');
     } finally {
       setLoading(false);
     }
@@ -56,38 +52,50 @@ function LoginPage() {
 
   return (
     <AuthModal
-      title="Welcome Back"
+      title="Welcome back"
       footerText="Don’t have an account?"
       footerLink="/signup"
-      footerLinkText="Sign up"
+      footerLinkText="Create account"
     >
-      {error && <p id="error-message" style={{ display: 'block', color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: '#EF4444', marginBottom: '1rem', fontSize: '0.9rem' }}>{error}</p>}
       
       <form id="login-form" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            placeholder="Enter your username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
+          <label htmlFor="username">Email or Username</label>
+          <div className="input-wrapper">
+            <i className="fas fa-envelope input-icon-left"></i>
+            <input
+              type="text"
+              id="username"
+              placeholder="Enter your email or username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
         </div>
+
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="input-wrapper">
+            <i className="fas fa-lock input-icon-left"></i>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <i
+              className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} input-icon-right`}
+              onClick={() => setShowPassword(!showPassword)}
+            ></i>
+          </div>
         </div>
+
         <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? 'Logging in...' : 'Login'}
+          {loading ? 'Signing in...' : 'Sign in'}
         </button>
       </form>
     </AuthModal>
